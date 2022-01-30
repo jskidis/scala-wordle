@@ -57,6 +57,7 @@ class WordMatchesWordPatternSpec extends AnyFunSpec with Matchers {
       WordMatchesWordPattern("TRADE", wordPattern) mustBe false // has an R which is a black letter
     }
 
+/*
     it("matches on positions regardless of case") {
       val wordPattern = List(('T', Green), ('r', Black), ('a', Yellow), ('C', Black), ('e', Green))
 
@@ -68,5 +69,6 @@ class WordMatchesWordPatternSpec extends AnyFunSpec with Matchers {
       WordMatchesWordPattern("tEaSe", wordPattern) mustBe false // does have an A but it's in the position as Yellow A
       WordMatchesWordPattern("tradE", wordPattern) mustBe false // has an R which is a black letter
     }
+*/
   }
 }

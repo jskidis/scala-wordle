@@ -2,23 +2,18 @@ package com.skidis.wordle
 
 import BlockColor.{Black, BlockColor, Green, Yellow}
 
-import scala.annotation.tailrec
-
 object WordMatchesWordPattern {
 
+  // Proactively not doing case insensitive here for performance reasons, may revisit
   def apply(word: String, wordPattern: List[(Char, BlockColor)]): Boolean = {
-    word.length == wordPattern.length &&
-      recursePatterns(word.toUpperCase, wordPattern.map { case (l, c) => (l.toUpper, c) })
-  }
-
-  @tailrec
-  private def recursePatterns(word: String, wordPattern: List[(Char, BlockColor)], index: Int = 0): Boolean = {
-    if (index >= word.length) true
-    else wordPattern(index) match {
-      case (letter, Green) if word(index) != letter => false
-      case (letter, Yellow) if !word.contains(letter) || word(index) == letter => false
-      case (letter, Black) if word.contains(letter) => false
-      case _ => recursePatterns(word, wordPattern, index +1)
+    word.length == wordPattern.length && !wordPattern.zipWithIndex.exists {
+      // if any letter pattern violates rules, return true which automatically short circuit .exists
+      // if each letter returns false then .exists returns false (meaning no violations)
+      // !exists means word didn't violate any rules so it is valid
+      case ((letter, Green), index) if word(index) != letter => true
+      case ((letter, Yellow), index) if !word.contains(letter) || word(index) == letter => true
+      case ((letter, Black), _) if word.contains(letter) => true
+      case _ => false
     }
   }
 }
