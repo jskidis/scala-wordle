@@ -35,7 +35,7 @@ class GatherResultSpec extends AnyFunSpec with Matchers {
       result must not be empty
       result.get mustBe validResult
 
-      mockWriter.lines.size mustBe 1
+      mockWriter.lines must have size 1
       mockWriter.lines.head mustBe GatherResult.PromptMsg
     }
 
