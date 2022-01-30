@@ -53,5 +53,16 @@ class GenerateMatchingDetailSpec extends AnyFunSpec with Matchers {
 
       GenerateMatchingDetail(letters, colors) mustBe expectedResult
     }
+
+    it("converts letter to upper case") {
+      val letters = "abcbe"
+      val colors = List(Green, Yellow, Black, Yellow, Green)
+      val expectedResult = MatchingDetail(
+        List(Option('A'), None, None, None, Option('E')),
+        Set('B')
+      )
+
+      GenerateMatchingDetail(letters, colors) mustBe expectedResult
+    }
   }
 }

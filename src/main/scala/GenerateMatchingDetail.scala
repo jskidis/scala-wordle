@@ -14,8 +14,8 @@ object GenerateMatchingDetail {
     if (word.isEmpty || colorPattern.isEmpty) acc
     else {
       val newAcc = colorPattern.head match {
-        case Green => MatchingDetail(acc.positions :+ Option(word.head), acc.otherLetters)
-        case Yellow => MatchingDetail(acc.positions :+ None, acc.otherLetters + word.head)
+        case Green => MatchingDetail(acc.positions :+ Option(word.head.toUpper), acc.otherLetters)
+        case Yellow => MatchingDetail(acc.positions :+ None, acc.otherLetters + word.head.toUpper)
         case _ => MatchingDetail(acc.positions :+ None, acc.otherLetters)
       }
       recurse(word.tail, colorPattern.tail, newAcc)

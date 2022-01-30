@@ -12,7 +12,7 @@ object GatherResult {
 
   def apply(reader: LineReader, writer: LineWriter, validator: Validator): List[BlockColor] = {
     writer(PromptMsg)
-    val input = reader().toLowerCase
+    val input = reader().toUpperCase
     if (input.isEmpty) Nil
     else if (validator(input)) ConvertInputToColors(input, Nil)
     else {

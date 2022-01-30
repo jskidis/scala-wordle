@@ -1,11 +1,10 @@
 package com.skidis
 
 package object wordle {
-  val (greenChar, yellowChar, blackChar) = ('g', 'y', 'b')
+  val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
 
   val validChars = List(
-    greenChar, yellowChar, blackChar,
-    greenChar.toUpper, yellowChar.toUpper, blackChar.toUpper
+    greenChar, yellowChar, blackChar
   )
 
   object BlockColor extends Enumeration {

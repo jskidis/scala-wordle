@@ -6,7 +6,7 @@ object ConvertInputToColors {
   def apply(input: String, colorPattern: List[BlockColor] = Nil): List[BlockColor] = {
     if (input.isEmpty) colorPattern
     else {
-      val value = input.head match {
+      val value = input.head.toUpper match {
         case `greenChar` => Green
         case `yellowChar` => Yellow
         case _ => Black
