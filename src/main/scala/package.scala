@@ -12,5 +12,5 @@ package object wordle {
     val Green, Yellow, Black = Value
   }
 
-  case class MatchingDetail(positions: List[Option[Char]], otherLetters: Set[Char])
+  case class MatchingDetail(positionMatchedLetters: List[Option[Char]], otherMatchedLetters: Set[Char])
 }
