@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColors.BlockColor
+import BlockColor.BlockColor
 
 object GatherResult {
   type LineReader = () => String
@@ -12,9 +12,9 @@ object GatherResult {
 
   def apply(reader: LineReader, writer: LineWriter, validator: Validator): List[BlockColor] = {
     writer(PromptMsg)
-    val result = reader()
-    if (result.isEmpty) Nil
-    else if (validator(result)) ConvertInputToColors(result.toLowerCase, Nil)
+    val input = reader().toLowerCase
+    if (input.isEmpty) Nil
+    else if (validator(input)) ConvertInputToColors(input, Nil)
     else {
       writer(ErrorMsg)
       apply(reader, writer, validator)
