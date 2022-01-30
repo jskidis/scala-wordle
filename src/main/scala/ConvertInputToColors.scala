@@ -1,15 +1,15 @@
 package com.skidis.wordle
 
-import BlockColors.{Black, BlockColors, Green, Yellow}
+import BlockColors.{Black, BlockColor, Green, Yellow}
 
 object ConvertInputToColors {
-  def apply(input: String, results: List[BlockColors] = Nil): List[BlockColors] = {
+  def apply(input: String, results: List[BlockColor] = Nil): List[BlockColor] = {
     if (input.isEmpty) results
     else {
       val value = input.head match {
         case `greenChar` => Green
         case `yellowChar` => Yellow
-        case `blackChar` => Black
+        case _ => Black
       }
       apply(input.tail, results :+ value)
     }

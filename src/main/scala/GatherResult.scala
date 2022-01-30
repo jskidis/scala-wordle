@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColors.BlockColors
+import BlockColors.BlockColor
 
 object GatherResult {
   type LineReader = () => String
@@ -10,7 +10,7 @@ object GatherResult {
   val PromptMsg = "Enter Results: "
   val ErrorMsg = s"Invalid results, results must be five characters and only contain (${validChars.mkString(", ")})"
 
-  def apply(reader: LineReader, writer: LineWriter, validator: Validator): List[BlockColors] = {
+  def apply(reader: LineReader, writer: LineWriter, validator: Validator): List[BlockColor] = {
     writer(PromptMsg)
     val result = reader()
     if (result.isEmpty) Nil

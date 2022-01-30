@@ -12,10 +12,10 @@ package object wordle {
   )
 
   object BlockColors extends Enumeration {
-    type BlockColors = Value
+    type BlockColor = Value
     val Green, Yellow, Black = Value
   }
 
-  case class LetterPattern(matchedPositions: List[Option[Char]], matchingLetters: List[Char])
+  case class ClusterDef(positions: List[Option[Char]], otherLetters: Set[Char])
 
 }
