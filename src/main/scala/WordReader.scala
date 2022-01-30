@@ -1,4 +1,4 @@
-package com.skidis.worlde
+package com.skidis.wordle
 
 import scala.io.BufferedSource
 

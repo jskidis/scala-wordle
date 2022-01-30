@@ -1,6 +1,6 @@
-package com.skidis.worlde
+package com.skidis.wordle
 
-object InputValidator extends ResultChars {
+object InputValidator {
   def apply(input: String): Boolean = {
     if (input.length != 5) false
     else input.filter{ch => validChars.contains(ch)} == input

@@ -1,4 +1,4 @@
-package com.skidis.worlde
+package com.skidis.wordle
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers

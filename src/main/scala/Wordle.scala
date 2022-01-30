@@ -1,8 +1,16 @@
-package com.skidis.worlde
+package com.skidis.wordle
 
-import scala.io.StdIn.readLine
+import scala.io.{Source, StdIn}
 
 object Wordle extends App {
-  val result = GatherResult(readLine, Console.println, InputValidator.apply)
-  println(s"Result: ${result.getOrElse("user exited before finishing")}")
+  val initialCandidate = "TRACE"
+  val candidateWords = WordReader(Source.fromResource("words.txt"))
+
+
+  val colorPattern = GatherResult(StdIn.readLine, Console.println, InputValidator.apply)
+  println(colorPattern match {
+    case Nil => "Process Aborted By User"
+    case _ => colorPattern.mkString(", ")
+  })
+
 }
