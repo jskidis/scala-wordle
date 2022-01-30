@@ -17,5 +17,12 @@ class ConvertInputToColorsSpec extends AnyFunSpec with Matchers {
 
       ConvertInputToColors(input) mustBe expectedPattern
     }
+
+    it("returns the correct color for each char in input for longer words") {
+      val input = List(greenChar, yellowChar, greenChar, blackChar, yellowChar).mkString
+      val expectedPattern = List(Green, Yellow, Green, Black, Yellow)
+
+      ConvertInputToColors(input) mustBe expectedPattern
+    }
   }
 }
