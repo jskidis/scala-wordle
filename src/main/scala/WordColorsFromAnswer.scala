@@ -10,6 +10,5 @@ object WordColorsFromAnswer {
       case (letter, _) if answer.contains(letter) => Yellow
       case _ => Black
     }.toList
-
   }
 }

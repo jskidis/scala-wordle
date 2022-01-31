@@ -3,7 +3,6 @@ package com.skidis.wordle
 import BlockColor.{Black, BlockColor, Green, Yellow}
 
 object WordMatchesWordPattern {
-
   // Proactively not doing case insensitive here for performance reasons, may revisit
   def apply(word: String, wordPattern: List[(Char, BlockColor)]): Boolean = {
     word.length == wordPattern.length && !wordPattern.zipWithIndex.exists {
