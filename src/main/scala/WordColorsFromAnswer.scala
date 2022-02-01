@@ -36,10 +36,3 @@ object WordColorsFromAnswer {
     }
   }
 }
-
-/*
-
-
-
-
- */
