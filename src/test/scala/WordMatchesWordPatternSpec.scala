@@ -36,7 +36,7 @@ class WordMatchesWordPatternSpec extends AnyFunSpec with Matchers {
       WordMatchesWordPattern("SAUCY", wordPattern) mustBe false // contains C & A but C in the yellow position
     }
 
-    it("return false if the word contains any black letters") {
+    it("return false if the word contains any black letters, but letter is not a green or yellow letter as well") {
       val wordPattern = List(('T', Black), ('R', Black), ('A', Black), ('C', Black), ('E', Black))
 
       WordMatchesWordPattern("SHINY", wordPattern) mustBe true
@@ -55,6 +55,33 @@ class WordMatchesWordPatternSpec extends AnyFunSpec with Matchers {
       WordMatchesWordPattern("TENSE", wordPattern) mustBe false // doesn't have an A
       WordMatchesWordPattern("TEASE", wordPattern) mustBe false // does have an A but it's in the position as Yellow A
       WordMatchesWordPattern("TRADE", wordPattern) mustBe false // has an R which is a black letter
+    }
+
+    it("handles multiple letter cases") {
+      // There's one Green A and one Black A
+      val wordPattern1G1B = List(('A', Black), ('A', Green), ('X', Black), ('Y', Black), ('Z', Black))
+      WordMatchesWordPattern("BATUV", wordPattern1G1B) mustBe true
+      WordMatchesWordPattern("BAATU", wordPattern1G1B) mustBe false
+
+      // There's two Green A's and one Black A
+      val wordPattern2G1B = List(('A', Green), ('X', Black), ('A', Black), ('Y', Black), ('A', Green))
+      WordMatchesWordPattern("ATUVA", wordPattern2G1B) mustBe true
+      WordMatchesWordPattern("AATUA", wordPattern2G1B) mustBe false
+
+      // There's one Yellow A and one Black A
+      val wordPattern1Y1B = List(('A', Yellow), ('A', Black), ('X', Black), ('Y', Black), ('Z', Black))
+      WordMatchesWordPattern("TUVAB", wordPattern1Y1B) mustBe true
+      WordMatchesWordPattern("TUVAA", wordPattern1Y1B) mustBe false
+
+      // There's two Yellow A's and one Black A
+      val wordPattern2Y1B = List(('A', Yellow), ('X', Black), ('A', Yellow), ('Y', Black), ('A', Black))
+      WordMatchesWordPattern("TAUAV", wordPattern2Y1B) mustBe true
+      WordMatchesWordPattern("TAUAA", wordPattern2Y1B) mustBe false
+
+      // There's one Green A, one Yellow A and one Black A
+      val wordPattern1G1Y1B = List(('A', Yellow), ('X', Black), ('A', Black), ('Y', Black), ('A', Green))
+      WordMatchesWordPattern("TAUVA", wordPattern1G1Y1B) mustBe true
+      WordMatchesWordPattern("TAUAA", wordPattern1G1Y1B) mustBe false
     }
 
 /*

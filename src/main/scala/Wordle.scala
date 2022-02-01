@@ -37,12 +37,16 @@ object Wordle extends App {
 
       // Generate a set with a pair of each word and the number of unique clusters from remaining word set for that word
       val wordsNumClusters: Set[(String, Int)] = remainingWords.map { word =>
-        (word, GenerateWordClusters(word, remainingWords).size)
+        (word, DetermineUniqueWordClusters(word, remainingWords))
       }
 
       // Next Guess is based on word with most unique clusters
       val wordWithMostClusters = wordsNumClusters.reduceLeft { (left, right) => if (left._2 >= right._2) left else right }
       val nextGuess = wordWithMostClusters._1
+
+      println(s"Remaining Words: ${remainingWords.size}")
+      println(s"Most Unique Clusters: ${wordWithMostClusters._2}")
+      println()
 
       // Start over with next guess
       process(nextGuess, remainingWords, guessNumber +1)
