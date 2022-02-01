@@ -3,7 +3,7 @@ package com.skidis.wordle
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
 
-class DetermineUniqueWordClustersSpec extends AnyFunSpec with Matchers {
+class WordClusterGeneratorSpec extends AnyFunSpec with Matchers {
   describe("Generate Word Clusters") {
     it("when all patterns are unique returns a set with entry for each") {
       val word = "ABCDE"
@@ -12,7 +12,7 @@ class DetermineUniqueWordClustersSpec extends AnyFunSpec with Matchers {
         "EDCBA" // Yellow, Yellow, Green, Yellow, Yellow
       )
       // 2 unique word clusters
-      DetermineUniqueWordClusters(word, wordSet) mustBe 2
+      WordClusterGenerator.generateUnique(word, wordSet) mustBe 2
     }
 
     it("if multiple words have the same color patter it is only included once in set") {
@@ -24,7 +24,7 @@ class DetermineUniqueWordClustersSpec extends AnyFunSpec with Matchers {
         "BASIN"  // Black, Yellow, Black, Black, Black
       )
       // 3 unique word clusters
-      DetermineUniqueWordClusters(word, wordSet) mustBe 3
+      WordClusterGenerator.generateUnique(word, wordSet) mustBe 3
     }
   }
 }
