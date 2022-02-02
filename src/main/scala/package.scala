@@ -14,4 +14,6 @@ package object wordle {
   }
 
   val winningColorPattern = List(Green, Green, Green, Green, Green)
+
+  case class WordClusterCount(word: String, clusterCount: Int)
 }

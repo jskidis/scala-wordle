@@ -2,9 +2,9 @@ package com.skidis.wordle
 
 import BlockColor.{Black, BlockColor, Green, Yellow}
 
-object WordPatternGenerator {
+object WordPatternMatcher {
   // Proactively not doing case insensitive here for performance reasons, may revisit
-  def generateFromWord(word: String, wordPattern: List[(Char, BlockColor)]): Boolean = {
+  def doesWordMatch(word: String, wordPattern: List[(Char, BlockColor)]): Boolean = {
 
     // If a the word pattern contains a Black letter doesn't mean that the word is excluded if it contains that letter
     // Since the word pattern could still contain a Green or Yellow (or both or multiple) for that letter
