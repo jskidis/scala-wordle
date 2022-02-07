@@ -11,7 +11,7 @@ object ResultInput {
   type Validator = String => Boolean
 
   val PromptMsg = "Enter Results: "
-  val ErrorMsg = s"Invalid results, results must be five characters and only contain (${validChars.mkString(", ")})"
+  val ErrorMsg = s"\nInvalid results, results must be five characters and only contain (${validChars.mkString(", ")})\n"
 
   @tailrec
   def generatePattern(reader: LineReader, writer: LineWriter, validator: Validator): List[BlockColor] = {
@@ -32,7 +32,7 @@ object ResultInput {
   //    even though this implement doesn't need the current guess (since it's derived from user input)
   def generatePatternCurryable(
       reader: LineReader = StdIn.readLine,
-      writer: LineWriter = Console.println,
+      writer: LineWriter = Console.print,
       validator: Validator = InputValidator.validate)
                               (guess: String = "")
   : List[BlockColor] = {

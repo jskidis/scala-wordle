@@ -1,13 +1,24 @@
 package com.skidis.wordle
 
+import BlockColor.BlockColor
+
 import scala.io.Source
 
 object Wordle extends App {
-  val candidateWords = WordReader.read(Source.fromResource("guessable-words.txt"))
-  val result = WordleProcessor.process(ResultInput.generatePatternCurryable())(candidateWords)
+  val wordleNumber = if (args.length > 0) args.head else "Unknown"
 
-  println(result match {
-    case None => "Process Aborted By User"
-    case Some((word, num)) => s"Correct Answer: $word was guessed in $num guesses"
-  })
+  val candidateWords = WordReader.read(Source.fromResource("guessable-words.txt"))
+  val result: List[(String, List[BlockColor])] = WordleProcessor.process(ResultInput.generatePatternCurryable())(candidateWords)
+
+  if (result.isEmpty) println("Process Aborted By User")
+  else printWordleBlock(result)
+
+  def printWordleBlock(result: List[(String, List[BlockColor])]): Unit = {
+    println(List.fill(40)('*').mkString)
+    println()
+    println(s"Wordle $wordleNumber ${if(result.size <=6) result.size else "X"}/6")
+    println()
+    result.foreach { case(_, colorPattern) => println(colorPattern.mkString) }
+    println()
+  }
 }

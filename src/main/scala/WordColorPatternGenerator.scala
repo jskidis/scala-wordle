@@ -30,7 +30,7 @@ object WordColorPatternGenerator {
     // if the color is yellow and the number of times the letter is included (in the yellow only version) so far (based on index)
     //    is greater then to the number times that letter occurs in the (in the yellow only answer) answer then flip the color to black
     firstPass map {
-      case (color: BlockColor.Value, _, _) if color != Yellow => color // If color is green or black then already correct
+      case (color: BlockColor, _, _) if color != Yellow => color // If color is green or black then already correct
       case (Yellow, index, letter) =>
         if (yellowOnlyWord.substring(0, index + 1).count(_ == letter) >
           yellowOnlyAnswer.count(_ == letter)) Black else Yellow

@@ -7,17 +7,26 @@ import scala.annotation.tailrec
 object WordleProcessor {
   @tailrec
   def process(colorPatternGenerator: ColorPatternGenerator, debugOutput: Boolean = true)
-             (wordSet: Set[String], currentGuess: String = "TRACE", guessNumber: Int = 1)
-  : Option[(String, Int)] = {
+             (wordSet: Set[String], currentGuess: String = "TRACE", guesses: List[(String, List[BlockColor])] = Nil)
+  : List[(String, List[BlockColor])] = {
 
-    if (debugOutput) println(s"Current Guess: $currentGuess, Guess #:$guessNumber")
+    if (debugOutput) {
+      println()
+      println(List.fill(40)('*').mkString)
+      println(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
+    }
 
-    // Generate Color Pattern Based On Input
+    // Generate Color Pattern Based On Input or Answer or whatever function turns a guess into a color pattern
     val colorPattern = colorPatternGenerator(currentGuess)
-    if (debugOutput) println(s"Color Pattern: ${colorPattern.mkString(", ")}")
+    if (debugOutput) {
+      println(colorPattern.mkString)
+      println()
+    }
 
-    if (colorPattern.isEmpty) None // User entered an empty string, so abort without finishing
-    else if (colorPattern == winningColorPattern) Option(currentGuess, guessNumber) // color pattern is all green, so word has been guessed
+    val updatedGuesses = guesses :+ (currentGuess, colorPattern)
+
+    if (colorPattern.isEmpty) Nil // User entered an empty string, so abort without finishing
+    else if (colorPattern == winningColorPattern) updatedGuesses // color pattern is all green, so word has been guessed
     else {
       // Create list of tuple with each letter of the current word and the color for that letter
       val wordPattern: List[(Char, BlockColor)] = currentGuess.toList zip colorPattern
@@ -37,11 +46,10 @@ object WordleProcessor {
       if (debugOutput) {
         println(s"Remaining Words: ${remainingWords.size}")
         println(s"Most Unique Clusters: ${nextGuess.clusterCount}")
-        println()
       }
 
       // Start over with next guess
-      process(colorPatternGenerator, debugOutput)(remainingWords, nextGuess.word, guessNumber +1)
+      process(colorPatternGenerator, debugOutput)(remainingWords, nextGuess.word, updatedGuesses)
     }
   }
 }

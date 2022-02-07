@@ -9,8 +9,10 @@ package object wordle {
   val validChars = List(greenChar, yellowChar, blackChar)
 
   object BlockColor extends Enumeration {
-    type BlockColor = Value
-    val Green, Yellow, Black = Value
+    type BlockColor = String
+    val Green = "\uD83D\uDFE9"
+    val Yellow = "\uD83D\uDFE8"
+    val Black = "\u2B1C"
   }
 
   val winningColorPattern = List(Green, Green, Green, Green, Green)
