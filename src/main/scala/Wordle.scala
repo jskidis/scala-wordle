@@ -7,7 +7,8 @@ import scala.io.Source
 object Wordle extends App {
   val wordleNumber = if (args.length > 0) args.head else "Unknown"
 
-  val candidateWords = WordReader.read(Source.fromResource("guessable-words.txt"))
+//  val candidateWords = WordReader.read(Source.fromResource("answers.txt"))
+  val candidateWords = WordReader.read(Source.fromResource("guessable-words-filtered.txt"))
   val result: List[(String, List[BlockColor])] = WordleProcessor.process(ResultInput.generatePatternCurryable())(candidateWords)
 
   if (result.isEmpty) println("Process Aborted By User")
