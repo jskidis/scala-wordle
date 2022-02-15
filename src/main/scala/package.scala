@@ -17,5 +17,16 @@ package object wordle {
 
   val winningColorPattern = List(Green, Green, Green, Green, Green)
 
-  case class WordClusterCount(word: String, clusterCount: Int)
+  trait WordleWord extends Ordered[WordleWord] {
+    def wordString(): String
+  }
+
+  case class SimpleWordleWord(word: String) extends WordleWord {
+    override def wordString(): String = word
+    override def compare(that: WordleWord): Int = that match {
+      case w2: SimpleWordleWord => -word.compareTo(w2.wordString())
+    }
+  }
+
+  case class WordClusterCount(word: WordleWord, clusterCount: Int)
 }

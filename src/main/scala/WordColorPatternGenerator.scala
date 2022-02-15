@@ -4,7 +4,10 @@ import BlockColor.{Black, BlockColor, Green, Yellow}
 
 object WordColorPatternGenerator {
 
-  // Proactively not doing case insensitive here for performance reasons, may revisit
+  def generate(answer: WordleWord, word: WordleWord): List[BlockColor] = {
+    generate(answer.wordString(), word.wordString())
+  }
+
   def generate(answer: String, word: String): List[BlockColor] = {
     // The first pass creates a tuple with a color, index, and letter
     // The coloring for green and black are the correct final result

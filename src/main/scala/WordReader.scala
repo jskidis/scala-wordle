@@ -3,8 +3,8 @@ package com.skidis.wordle
 import scala.io.BufferedSource
 
 object WordReader {
-  def read(source: BufferedSource): Set[String] = {
+  def readWords(source: BufferedSource): Set[SimpleWordleWord] = {
     val words = source.getLines.toSet
-    words.map(_.toUpperCase)
+    words.map(w => SimpleWordleWord(w.toUpperCase))
   }
 }

@@ -8,12 +8,15 @@ import scala.concurrent.{Await, Future}
 import scala.io.Source
 
 object WordleProcessorIntegrationTest extends App {
-  val candidateWords = WordReader.read(Source.fromResource("guessable-words-filtered.txt"))
-  val answers = WordReader.read(Source.fromResource("answers.txt"))
+  val candidateWords = WordReader.readWords(Source.fromResource("guessable-words-filtered.txt"))
+//  val candidateWords = WordReader.readWords(Source.fromResource("answers.txt"))
+  val answers = WordReader.readWords(Source.fromResource("answers.txt"))
 
   val startTimestamp = System.currentTimeMillis()
 
-  val results: Set[List[(String, List[BlockColor])]] = Await.result(Future.sequence(answers.map(runWordle)), 10.minutes)
+  val results: Set[List[(String, List[BlockColor])]] = Await.result(
+    Future.sequence(answers.map(w=> runWordle(w.wordString()))), 10.minutes
+  )
   printResults(results)
 
   val endTimestamp = System.currentTimeMillis()
