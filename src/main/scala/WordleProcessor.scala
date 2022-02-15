@@ -1,32 +1,28 @@
 package com.skidis.wordle
 
-import BlockColor.BlockColor
+import BlockColor.{BlockColor, Green}
 
 import scala.annotation.tailrec
 
 object WordleProcessor {
+  val winningColorPattern = List(Green, Green, Green, Green, Green)
+
   @tailrec
-  def process(colorPatternGenerator: ColorPatternGenerator, debugOutput: Boolean = true)
-    (wordSet: Set[_ <: WordleWord],
-      currentGuess: String = "SLATE",
-      guesses: List[(String, List[BlockColor])] = Nil
-    )
+  def process(colorPatternGenerator: ColorPatternGenerator,
+    lineWriter: LineWriter = Console.println)
+  ( wordSet: Set[_ <: WordleWord],
+    currentGuess: String = "SLATE",
+    guesses: List[(String, List[BlockColor])] = Nil)
   : List[(String, List[BlockColor])] = {
 
-    if (debugOutput) {
-      println()
-      println(List.fill(40)('*').mkString)
-      println(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
-    }
+    lineWriter(s"\n${List.fill(40)('*').mkString}")
+    lineWriter(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
 
     // Generate Color Pattern Based On Input or Answer or whatever function turns a guess into a color pattern
     val colorPattern = if(wordSet.size > 1) colorPatternGenerator(currentGuess) else winningColorPattern
 
-    if (debugOutput) {
-      if (wordSet.size == 1) println("Only 1 choice left!!!")
-      println(colorPattern.mkString)
-      println()
-    }
+    if (wordSet.size == 1) lineWriter("Only 1 choice left!!!")
+    lineWriter(s"${colorPattern.mkString}")
 
     val updatedGuesses = guesses :+ (currentGuess, colorPattern)
 
@@ -47,18 +43,15 @@ object WordleProcessor {
         }.size)
       }
 
-      val nextGuess = determineNextGuess(wordClusters)
-      if (debugOutput) {
-        println(s"Remaining Words: ${remainingWords.size}")
-        println(s"Most Unique Clusters: ${nextGuess.clusterCount}")
-      }
-
       // Start over with next guess
-      process(colorPatternGenerator, debugOutput)(remainingWords, nextGuess.word.wordString(), updatedGuesses)
+      val nextGuess = determineNextGuess(wordClusters)
+      lineWriter(s"Remaining Words: ${remainingWords.size}\nMost Unique Clusters: ${nextGuess.clusterCount}")
+      process(colorPatternGenerator, lineWriter)(remainingWords, nextGuess.word.wordString(), updatedGuesses)
     }
   }
 
   private def determineNextGuess(wordClusters: List[WordClusterCount]): WordClusterCount = {
+
     def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = {
       if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount > wc2.clusterCount
       else wc1.word > wc2.word

@@ -6,10 +6,6 @@ import scala.annotation.tailrec
 import scala.io.StdIn
 
 object ResultInput {
-  type LineReader = () => String
-  type LineWriter = String => Unit
-  type Validator = String => Boolean
-
   val PromptMsg = "Enter Results: "
   val ErrorMsg = s"\nInvalid results, results must be five characters and only contain (${validChars.mkString(", ")})\n"
 

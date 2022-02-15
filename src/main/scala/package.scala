@@ -1,9 +1,12 @@
 package com.skidis
 
-import com.skidis.wordle.BlockColor.{BlockColor, Green}
+import com.skidis.wordle.BlockColor.BlockColor
 
 package object wordle {
   type ColorPatternGenerator = String => List[BlockColor]
+  type LineReader = () => String
+  type LineWriter = String => Unit
+  type Validator = String => Boolean
 
   val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
   val validChars = List(greenChar, yellowChar, blackChar)
@@ -14,8 +17,6 @@ package object wordle {
     val Yellow = "\uD83D\uDFE8"
     val Black = "\u2B1C"
   }
-
-  val winningColorPattern = List(Green, Green, Green, Green, Green)
 
   trait WordleWord extends Ordered[WordleWord] {
     def wordString(): String
