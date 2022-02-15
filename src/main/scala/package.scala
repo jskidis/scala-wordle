@@ -28,5 +28,12 @@ package object wordle {
     }
   }
 
+  case class WordleWordFrequencies(word: String, frequency: Double) extends WordleWord {
+    override def wordString(): String = word
+    override def compare(that: WordleWord): Int = that match {
+      case w2: WordleWordFrequencies => frequency.compareTo(w2.frequency)
+    }
+  }
+
   case class WordClusterCount(word: WordleWord, clusterCount: Int)
 }

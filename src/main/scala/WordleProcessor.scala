@@ -64,6 +64,5 @@ object WordleProcessor {
     // Next Guess is based on word with most unique clusters, with ties resolved based on type
     val sortedClustersByWord = wordClusters.sortWith(sortWordCluster)
     sortedClustersByWord.head
-
   }
 }
