@@ -2,9 +2,9 @@ package com.skidis.wordle
 
 import BlockColor.BlockColor
 
-case class WordClusterCount(word: WordleWord, clusterCount: Int)
-
 object ClusterWithFrequencyStrategy extends SolveStrategy {
+  case class WordClusterCount(word: WordleWord, clusterCount: Int)
+
   def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: List[BlockColor])
   : WordSet = {
 
