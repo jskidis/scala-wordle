@@ -8,7 +8,7 @@ object WordleProcessor {
   @tailrec
   def process(colorPatternGenerator: ColorPatternGenerator, debugOutput: Boolean = true)
     (wordSet: Set[_ <: WordleWord],
-      currentGuess: String = "TRACE",
+      currentGuess: String = "SLATE",
       guesses: List[(String, List[BlockColor])] = Nil
     )
   : List[(String, List[BlockColor])] = {
