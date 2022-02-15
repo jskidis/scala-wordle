@@ -14,10 +14,10 @@ object WordleProcessorIntegrationTest extends App {
 
   val startTimestamp = System.currentTimeMillis()
 
-  val results: Set[List[(String, List[BlockColor])]] = Await.result(
+  val results: Iterator[List[(String, List[BlockColor])]] = Await.result(
     Future.sequence(answers.map(w=> runWordle(w.wordString()))), 10.minutes
   )
-  printResults(results)
+  printResults(results.toList)
 
   val endTimestamp = System.currentTimeMillis()
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp)/1000}")
@@ -27,8 +27,8 @@ object WordleProcessorIntegrationTest extends App {
     WordleProcessor.process(colorPatternGenerator, debugOutput = false)(candidateWords)
   }
 
-  def printResults(results: Set[List[(String, List[BlockColor])]]): Unit = {
-    val groupedByGuesses: List[(Int, Set[List[(String, List[BlockColor])]])] = results.groupBy{
+  def printResults(results: List[List[(String, List[BlockColor])]]): Unit = {
+    val groupedByGuesses: List[(Int, List[List[(String, List[BlockColor])]])] = results.groupBy{
       case Nil => -1
       case result => result.size
     }.toList.sortWith(_._1 < _._1)

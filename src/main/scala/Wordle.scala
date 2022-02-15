@@ -9,7 +9,7 @@ object Wordle extends App {
 
 //  val candidateWords = WordReader.read(Source.fromResource("answers.txt"))
   val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency.txt"))
-  val result: List[(String, List[BlockColor])] = WordleProcessor.process(ResultInput.generatePatternCurryable())(candidateWords)
+  val result = WordleProcessor.process(ResultInput.generatePatternCurryable())(candidateWords)
 
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
