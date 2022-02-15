@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColor.{BlockColor, Green}
+import BlockColor.Green
 
 import scala.annotation.tailrec
 
@@ -12,10 +12,10 @@ object WordleProcessor {
     solver: SolveStrategy,
     colorPatternGenerator: ColorPatternGenerator,
     lineWriter: LineWriter = Console.println)
-  ( wordSet: Set[_ <: WordleWord],
+  ( wordSet: WordSet,
     currentGuess: String = "SLATE",
-    guesses: List[(String, List[BlockColor])] = Nil)
-  : List[(String, List[BlockColor])] = {
+    guesses: List[(String, ColorPattern)] = Nil)
+  : List[(String, ColorPattern)] = {
 
     lineWriter(s"\n${List.fill(40)('*').mkString}")
     lineWriter(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")

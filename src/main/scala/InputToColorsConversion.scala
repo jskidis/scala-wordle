@@ -1,9 +1,9 @@
 package com.skidis.wordle
 
-import BlockColor.{Black, BlockColor, Green, Yellow}
+import BlockColor.{Black, Green, Yellow}
 
 object InputToColorsConversion {
-  def convert(input: String): List[BlockColor] = {
+  def convert(input: String): ColorPattern = {
     input.map { ch =>
       ch.toUpper match {
         case `greenChar` => Green
