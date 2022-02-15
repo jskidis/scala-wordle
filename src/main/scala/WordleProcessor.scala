@@ -20,8 +20,10 @@ object WordleProcessor {
     }
 
     // Generate Color Pattern Based On Input or Answer or whatever function turns a guess into a color pattern
-    val colorPattern = colorPatternGenerator(currentGuess)
+    val colorPattern = if(wordSet.size > 1) colorPatternGenerator(currentGuess) else winningColorPattern
+
     if (debugOutput) {
+      if (wordSet.size == 1) println("Only 1 choice left!!!")
       println(colorPattern.mkString)
       println()
     }
