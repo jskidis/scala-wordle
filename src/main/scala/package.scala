@@ -37,4 +37,14 @@ package object wordle {
   }
 
   case class WordClusterCount(word: WordleWord, clusterCount: Int)
+
+  trait SolveStrategy {
+    def reduceWordSet(
+      wordSet: Set[_ <: WordleWord],
+      currentGuess: String,
+      colorPattern: List[BlockColor])
+    : Set[_ <: WordleWord]
+
+    def generateNextGuess(remainingWords: Set[_ <: WordleWord]): (String, String)
+  }
 }
