@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 object WordleProcessor {
   @tailrec
   def process(colorPatternGenerator: ColorPatternGenerator, debugOutput: Boolean = true)
-    (wordSet: Iterator[_ <: WordleWord],
+    (wordSet: Set[_ <: WordleWord],
       currentGuess: String = "TRACE",
       guesses: List[(String, List[BlockColor])] = Nil
     )
