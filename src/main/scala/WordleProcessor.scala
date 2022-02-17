@@ -30,6 +30,7 @@ object WordleProcessor {
 
     if (colorPattern.isEmpty) Nil // User entered an empty string, so abort without finishing
     else if (colorPattern == winningColorPattern) updatedGuesses // color pattern is all green, so word has been guessed
+    else if (updatedGuesses.size == 6) updatedGuesses :+ ("", Nil)
     else {
       // Eliminate words from set based on current guess and color pattern
       val remainingWords = solver.reduceWordSet(wordSet, currentGuess, colorPattern)

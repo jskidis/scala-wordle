@@ -6,7 +6,7 @@ object Wordle extends App {
   val wordleNumber = if (args.length > 0) args.head else "Unknown"
 
 //  val candidateWords = WordReader.readWords(Source.fromResource("answers.txt"))
-  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency.txt"))
+  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency-unfiltered.txt"))
   val result = WordleProcessor.process(
     ClusterWithFrequencyStrategy, ResultInput.generatePatternCurryable())(candidateWords)
 
