@@ -3,12 +3,22 @@ package com.skidis.wordle
 import scala.io.Source
 
 object Wordle extends App {
-  val wordleNumber = if (args.length > 0) args.head else "Unknown"
+  case class Parameters(startWord: String, strategy: SolveStrategy, wordSet: WordSet)
 
-//  val candidateWords = WordReader.readWords(Source.fromResource("answers.txt"))
-  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency-unfiltered.txt"))
+  val parameters = (if(args.length > 0) args(0) else "") match {
+    case s if s == "answer-only" => Parameters("SLATE", ClusterStrategy,
+      WordReader.readWords(Source.fromResource("answers.txt")))
+    case s if s == "reverse" => Parameters("JAZZY", ReverseClusterStrategy,
+      WordReader.readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")))
+    case _ => Parameters("SLATE", ClusterStrategy,
+      WordReader.readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")))
+  }
+
+  val wordleNumber = if (args.length > 1) args(1) else "Unknown"
+
   val result = WordleProcessor.process(
-    ClusterWithFrequencyStrategy, ResultInput.generatePatternCurryable())(candidateWords)
+    parameters.strategy, ResultInput.generatePatternCurryable()
+  )(parameters.wordSet, parameters.startWord)
 
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
