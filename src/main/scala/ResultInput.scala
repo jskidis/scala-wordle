@@ -4,17 +4,17 @@ import scala.annotation.tailrec
 import scala.io.StdIn
 
 object ResultInput {
-  val PromptMsg = "Enter Results: "
-  val ErrorMsg = s"\nInvalid results, results must be five characters and only contain (${validChars.mkString(", ")})\n"
+  val promptMsg = "Enter Results: "
+  val errorMsg = s"\nInvalid results, results must be five characters and only contain (${validBlockChars.mkString(", ")})\n"
 
   @tailrec
   def generatePattern(reader: LineReader, writer: LineWriter, validator: Validator): ColorPattern = {
-    writer(PromptMsg)
+    writer(promptMsg)
     val input = reader().toUpperCase
     if (input.isEmpty) Nil
     else if (validator(input)) InputToColorsConversion.convert(input)
     else {
-      writer(ErrorMsg)
+      writer(errorMsg)
       generatePattern(reader, writer, validator)
     }
   }
@@ -27,7 +27,7 @@ object ResultInput {
   def generatePatternCurryable(
     reader: LineReader = StdIn.readLine,
     writer: LineWriter = Console.print,
-    validator: Validator = InputValidator.validate)
+    validator: Validator = StandardResultValidator.validate)
     (guess: String = "")
   : ColorPattern = generatePattern(reader, writer, validator)
 }

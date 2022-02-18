@@ -39,7 +39,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       result mustBe validInputColors
 
       mockWriter.lines must have size 1
-      mockWriter.lines.head mustBe ResultInput.PromptMsg
+      mockWriter.lines.head mustBe ResultInput.promptMsg
     }
 
     it("re-asks for results if not valid") {
@@ -55,8 +55,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       mockReader.timesCalled mustBe 2
 
       // It should have written the prompt text twice, and written the error message once
-      mockWriter.lines.count(_ == ResultInput.PromptMsg) mustBe 2
-      mockWriter.lines.count(_ == ResultInput.ErrorMsg) mustBe 1
+      mockWriter.lines.count(_ == ResultInput.promptMsg) mustBe 2
+      mockWriter.lines.count(_ == ResultInput.errorMsg) mustBe 1
     }
 
     it("returns None if input is blank") {
@@ -71,8 +71,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       mockReader.timesCalled mustBe 3
 
       // It should have written the prompt text 3 times, and written the error message twice
-      mockWriter.lines.count(_ == ResultInput.PromptMsg) mustBe 3
-      mockWriter.lines.count(_ == ResultInput.ErrorMsg) mustBe 2
+      mockWriter.lines.count(_ == ResultInput.promptMsg) mustBe 3
+      mockWriter.lines.count(_ == ResultInput.errorMsg) mustBe 2
     }
   }
 }

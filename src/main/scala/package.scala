@@ -7,6 +7,7 @@ package object wordle {
   type WordSet = Set[_ <: WordleWord]
 
   type ColorPatternGenerator = String => ColorPattern
+  type GuessGatherer = String => String
   type LineReader = () => String
   type LineWriter = String => Unit
   type Validator = String => Boolean
@@ -19,5 +20,5 @@ package object wordle {
   }
 
   val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
-  val validChars = List(greenChar, yellowChar, blackChar)
+  val validBlockChars = List(greenChar, yellowChar, blackChar)
 }

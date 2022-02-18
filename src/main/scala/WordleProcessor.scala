@@ -10,18 +10,25 @@ object WordleProcessor {
   @tailrec
   def process(
     solver: SolveStrategy,
+    guessGatherer: GuessGatherer,
     colorPatternGenerator: ColorPatternGenerator,
     lineWriter: LineWriter = Console.println)
   ( wordSet: WordSet,
-    currentGuess: String = "SLATE",
+    suggestion: String = "SLATE",
     guesses: List[(String, ColorPattern)] = Nil)
   : List[(String, ColorPattern)] = {
 
     lineWriter(s"\n${List.fill(40)('*').mkString}")
-    lineWriter(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
 
-    // Generate Color Pattern Based On Input or Answer or whatever function turns a guess into a color pattern
-    val colorPattern = if(wordSet.size > 1) colorPatternGenerator(currentGuess) else winningColorPattern
+    val (currentGuess, colorPattern) =
+      if (wordSet.size == 1) (suggestion, winningColorPattern)
+      else {
+        val guess = guessGatherer(suggestion)
+        val pattern = colorPatternGenerator(guess)
+        (guess, pattern)
+      }
+
+    lineWriter(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
 
     if (wordSet.size == 1) lineWriter("Only 1 choice left!!!")
     lineWriter(s"${colorPattern.mkString}")
@@ -39,7 +46,7 @@ object WordleProcessor {
       // Determine next guess and start next iteration
       val (nextGuess, info) = solver.generateNextGuess(remainingWords)
       lineWriter(info)
-      process(solver, colorPatternGenerator, lineWriter)(remainingWords, nextGuess, updatedGuesses)
+      process(solver, guessGatherer, colorPatternGenerator, lineWriter)(remainingWords, nextGuess, updatedGuesses)
     }
   }
 }

@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import scala.io.Source
+import scala.io.{Source, StdIn}
 
 object Wordle extends App {
   case class Parameters(startWord: String, strategy: SolveStrategy, wordSet: WordSet)
@@ -17,7 +17,7 @@ object Wordle extends App {
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
 
   val result = WordleProcessor.process(
-    parameters.strategy, ResultInput.generatePatternCurryable()
+    parameters.strategy, ManualInput.gatherGuess, ManualInput.generatePattern
   )(parameters.wordSet, parameters.startWord)
 
   if (result.isEmpty) println("Process Aborted By User")
@@ -30,5 +30,15 @@ object Wordle extends App {
     println()
     result.foreach { case(_, colorPattern) => println(colorPattern.mkString) }
     println()
+  }
+}
+
+object ManualInput {
+  def gatherGuess(suggestion: String): String = {
+    GuessInput.gatherGuess(StdIn.readLine, Console.print, StandardGuessValidator.validate)(suggestion)
+  }
+
+  def generatePattern(guess: String): ColorPattern = {
+    ResultInput.generatePattern(StdIn.readLine, Console.print, StandardResultValidator.validate)
   }
 }

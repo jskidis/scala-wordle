@@ -27,12 +27,13 @@ object WordleProcessorIntegrationTest extends App {
   val endTimestamp = System.currentTimeMillis()
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp)/1000}")
 
-  def dummyLineWriter(s: String): Unit = {}
+  def dummyLineWriter(line: String): Unit = {}
+  def guessGatherer(suggestion: String): String = suggestion
 
   def runWordle(answer: String): Future[List[(String, List[BlockColor])]] = Future {
     val colorPatternGenerator: ColorPatternGenerator = WordColorPatternGenerator.generateCurryable(answer)
     val result = WordleProcessor.process(
-      strategy, colorPatternGenerator, dummyLineWriter
+      strategy, guessGatherer, colorPatternGenerator, dummyLineWriter
     )(candidateWords, firstWord)
     println("Processes")
     result
