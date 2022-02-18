@@ -14,7 +14,7 @@ object WordleProcessor {
     colorPatternGenerator: ColorPatternGenerator,
     lineWriter: LineWriter = Console.println)
   ( wordSet: WordSet,
-    suggestion: String = "SLATE",
+    suggestion: String,
     guesses: List[(String, ColorPattern)] = Nil)
   : List[(String, ColorPattern)] = {
 
