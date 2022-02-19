@@ -2,6 +2,8 @@ package com.skidis.wordle
 
 import BlockColor.BlockColor
 
+import scala.collection.mutable
+
 trait ClusterStrategy extends SolveStrategy {
   case class WordClusterCount(word: WordleWord, clusterCount: Int)
 
@@ -17,9 +19,9 @@ trait ClusterStrategy extends SolveStrategy {
 
   def generateNextGuess(remainingWords: WordSet): (String, String) = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
-    val wordClusters: List[WordClusterCount] = remainingWords.toList.map { word: WordleWord =>
-      val clusterCount = remainingWords.map{ w: WordleWord => WordColorPatternGenerator.generate(word, w)}.size
-      WordClusterCount tupled (word, clusterCount)
+    val wordClusters: List[WordClusterCount] = remainingWords.toList.map { potentialAnswer: WordleWord =>
+      val clusterCount = remainingWords.map{ word : WordleWord => generateWordPattern(potentialAnswer, word)}.size
+      WordClusterCount tupled (potentialAnswer, clusterCount)
     }
 
     // Next Guess is based on word with most unique clusters, with ties resolved based on type
@@ -27,6 +29,10 @@ trait ClusterStrategy extends SolveStrategy {
     val nextGuess = sortedClustersByWord.head
 
     (nextGuess.word.wordString(), s"Most Unique Clusters: ${nextGuess.clusterCount}")
+  }
+
+  def generateWordPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
+    WordColorPatternGenerator.generate(answer, word)
   }
 
   def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = (wc1.word, wc2.word) match {
@@ -37,7 +43,14 @@ trait ClusterStrategy extends SolveStrategy {
   }
 }
 
-object ClusterStrategy extends ClusterStrategy
+object ClusterStrategy extends ClusterStrategy {
+  val patternCache: mutable.Map[(WordleWord, WordleWord), ColorPattern] =
+    collection.mutable.Map[(WordleWord, WordleWord), ColorPattern]()
+
+  override def generateWordPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
+    patternCache.getOrElseUpdate((answer, word), super.generateWordPattern(answer, word))
+  }
+}
 
 trait ReverseClusterStrategy extends ClusterStrategy {
   override def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = !super.sortWordCluster(wc1, wc2)

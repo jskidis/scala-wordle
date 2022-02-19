@@ -8,14 +8,14 @@ import scala.concurrent.{Await, Future}
 import scala.io.Source
 
 object WordleProcessorIntegrationTest extends App {
-  val answers = WordReader.readWords(Source.fromResource("answers.txt"))
+  val answers = WordReader.readWords(Source.fromResource("answers.txt")).take(100)
 
-//  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
-  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
+  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
+//  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
 //  val candidateWords = WordReader.readWords(Source.fromResource("answers.txt"))
 
-  val strategy = ClusterStrategy
-  val firstWord = "SLATE"
+  val strategy = ReverseClusterStrategy
+  val firstWord = "JAZZY"
 
   val startTimestamp = System.currentTimeMillis()
 
