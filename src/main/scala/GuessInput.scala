@@ -2,21 +2,20 @@ package com.skidis.wordle
 
 import scala.annotation.tailrec
 
-trait GuessInput {
+trait GuessInput extends LineReader with LineWriter with GuessValidator {
   def guessPromptMsg(suggestion: String) = s"Suggested Guess: $suggestion\nEnter Guess (or blank line to accept): "
   val guessErrorMsg = s"\nInvalid word, guess must be five characters and only contain letters\n"
 
   @tailrec
-  final def gatherGuess(reader: LineReader, writer: LineWriter, validator: Validator)(suggestion: String): String = {
-    writer(guessPromptMsg(suggestion))
-    val input = reader().toUpperCase
+  final def getGuessFromInput(suggestion: String): String = {
+    writeLine(guessPromptMsg(suggestion))
+    val input = readLine().toUpperCase
     if (input.trim.isEmpty) suggestion.toUpperCase
-    else if (validator(input)) input
+    else if (validateGuess(input)) input
     else {
-      writer(guessErrorMsg)
-      gatherGuess(reader, writer, validator)(suggestion)
+      writeLine(guessErrorMsg)
+      getGuessFromInput(suggestion)
     }
   }
 }
 
-object GuessInput extends GuessInput

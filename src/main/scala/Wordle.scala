@@ -17,7 +17,7 @@ object Wordle extends App with WordReader {
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
 
   val result = WordleProcessor.process(
-    parameters.strategy, ManualInput.gatherGuess, ManualInput.generatePattern
+    parameters.strategy, ManualInput.retrieveGuess, ManualInput.retrievePattern
   )(parameters.wordSet, parameters.startWord)
 
   if (result.isEmpty) println("Process Aborted By User")
@@ -34,11 +34,14 @@ object Wordle extends App with WordReader {
 }
 
 object ManualInput extends GuessInput with ResultInput with GuessValidator with ResultValidator {
-  def gatherGuess(suggestion: String): String = {
-    gatherGuess(StdIn.readLine, Console.print, validateGuess)(suggestion)
+  override def readLine(): String = StdIn.readLine()
+  override def writeLine(s: String): Unit = Console.print(s)
+
+  def retrieveGuess(suggestion: String): String = {
+    getGuessFromInput(suggestion)
   }
 
-  def generatePattern(guess: String): ColorPattern = {
-    generatePattern(StdIn.readLine, Console.print, validateResult)
+  def retrievePattern(guess: String): ColorPattern = {
+    generatePattern()
   }
 }

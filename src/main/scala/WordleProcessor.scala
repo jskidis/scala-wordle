@@ -12,7 +12,7 @@ object WordleProcessor {
     solver: SolveStrategy,
     guessGatherer: GuessGatherer,
     colorPatternGenerator: ColorPatternGenerator,
-    lineWriter: LineWriter = Console.println)
+    lineWriter: LineWriterF = Console.println)
   ( wordSet: WordSet,
     suggestion: String,
     guesses: List[(String, ColorPattern)] = Nil)

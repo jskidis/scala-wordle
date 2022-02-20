@@ -8,9 +8,7 @@ package object wordle {
 
   type ColorPatternGenerator = String => ColorPattern
   type GuessGatherer = String => String
-  type LineReader = () => String
-  type LineWriter = String => Unit
-  type Validator = String => Boolean
+  type LineWriterF = String => Unit
 
   object BlockColor extends Enumeration {
     type BlockColor = String
@@ -22,7 +20,6 @@ package object wordle {
   val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
   val validBlockChars = List(greenChar, yellowChar, blackChar)
 
-  trait LineReaderT {
-    def readLine(): String
-  }
+  trait LineReader { def readLine(): String }
+  trait LineWriter { def writeLine(s: String): Unit }
 }
