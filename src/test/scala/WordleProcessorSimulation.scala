@@ -1,14 +1,14 @@
 package com.skidis.wordle
 
 import BlockColor.BlockColor
+import frequency.CachingWordColorPatternGenerator
 
-import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 import scala.io.Source
 
-object WordleProcessorIntegrationTest extends App with WordReader {
+object WordleProcessorSimulation extends App with WordReader {
   case class Parameters(startWord: String, wordSet: WordSet, processorFactory: String => SimulationWordleProcessor)
 
   val parameters = (if(args.length > 0) args(0) else "") match {
@@ -54,20 +54,11 @@ object WordleProcessorIntegrationTest extends App with WordReader {
       case (numGuesses, results) => println(s"$numGuesses Guesses: ${results.size}")
     }
   }
-}
 
-trait CachingWordColorPatternGenerator extends WordColorPatternGenerator {
-  val patternCache: mutable.Map[(WordleWord, WordleWord), ColorPattern] =
-    collection.mutable.Map[(WordleWord, WordleWord), ColorPattern]()
-
-  override def generateWordColorPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
-    patternCache.getOrElseUpdate((answer, word), super.generateWordColorPattern(answer, word))
+  abstract class SimulationWordleProcessor(answer: String) extends WordleProcessor with CachingWordColorPatternGenerator {
+    override def retrieveColorPattern(guess: String): ColorPattern = generateStringColorPattern(answer, guess)
+    override def retrieveGuess(suggestion: String): String = suggestion
+    override def writeLine(line: String): Unit = {}
+    override def writeString(s: String): Unit = {}
   }
-}
-
-abstract class SimulationWordleProcessor(answer: String) extends WordleProcessor with CachingWordColorPatternGenerator {
-  override def retrieveColorPattern(guess: String): ColorPattern = generateStringColorPattern(answer, guess)
-  override def retrieveGuess(suggestion: String): String = suggestion
-  override def writeLine(line: String): Unit = {}
-  override def writeString(s: String): Unit = {}
 }

@@ -8,7 +8,3 @@ trait ResultValidator {
 }
 
 object ResultValidator extends ResultValidator
-
-
-
-

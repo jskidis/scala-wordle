@@ -5,18 +5,6 @@ import scala.io.{Source, StdIn}
 object Wordle extends App with WordReader {
   case class Parameters(startWord: String, wordSet: WordSet, wordleProcessor: WordleProcessor)
 
-  trait InteractiveWordleProcessor extends WordleProcessor
-    with GuessInput with ResultInput with GuessValidator with ResultValidator {
-
-    override def readLine(): String = StdIn.readLine()
-    override def writeLine(s: String): Unit = Console.println(s)
-    override def writeString(s: String): Unit = Console.print(s)
-
-    override def retrieveGuess(suggestion: String): String = { getGuessFromInput(suggestion) }
-    override def retrieveColorPattern(guess: String): ColorPattern = { generatePattern() }
-  }
-
-
   val parameters = (if(args.length > 0) args(0) else "") match {
     case s if s == "answer-only" => Parameters("SLATE",
       readWords(Source.fromResource("answers.txt")),
@@ -31,7 +19,6 @@ object Wordle extends App with WordReader {
       new InteractiveWordleProcessor with ClusterStrategy
     )
   }
-
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
 
   val result = parameters.wordleProcessor.process(parameters.wordSet, parameters.startWord)
@@ -46,6 +33,17 @@ object Wordle extends App with WordReader {
     println()
     result.foreach { case(_, colorPattern) => println(colorPattern.mkString) }
     println()
+  }
+
+  trait InteractiveWordleProcessor extends WordleProcessor
+    with GuessInput with ResultInput with GuessValidator with ResultValidator {
+
+    override def readLine(): String = StdIn.readLine()
+    override def writeLine(s: String): Unit = Console.println(s)
+    override def writeString(s: String): Unit = Console.print(s)
+
+    override def retrieveGuess(suggestion: String): String = { getGuessFromInput(suggestion) }
+    override def retrieveColorPattern(guess: String): ColorPattern = { generatePattern() }
   }
 }
 

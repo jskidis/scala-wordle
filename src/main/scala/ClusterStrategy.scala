@@ -37,7 +37,3 @@ trait ClusterStrategy extends SolveStrategy with WordColorPatternGenerator with 
 }
 
 object ClusterStrategy extends ClusterStrategy
-
-
-
-

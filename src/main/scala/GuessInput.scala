@@ -18,4 +18,3 @@ trait GuessInput extends LineReader with Writer with GuessValidator {
     }
   }
 }
-
