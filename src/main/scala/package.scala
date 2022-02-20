@@ -16,6 +16,14 @@ package object wordle {
   val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
   val validBlockChars = List(greenChar, yellowChar, blackChar)
 
+  trait GuessRetriever { def retrieveGuess(suggestion: String): String }
+  trait ColorPatternRetriever { def retrieveColorPattern(guess: String): ColorPattern }
+
+  trait SolveStrategy {
+    def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: ColorPattern): WordSet
+    def generateNextGuess(remainingWords: WordSet): (String, String)
+  }
+
   trait LineReader {
     def readLine(): String
   }

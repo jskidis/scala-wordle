@@ -4,9 +4,6 @@ import BlockColor.Green
 
 import scala.annotation.tailrec
 
-trait GuessRetriever { def retrieveGuess(suggestion: String): String }
-trait ColorPatternRetriever { def retrieveColorPattern(guess: String): ColorPattern }
-
 trait WordleProcessor extends SolveStrategy with GuessRetriever with ColorPatternRetriever with Writer {
   val winningColorPattern = List(Green, Green, Green, Green, Green)
 
