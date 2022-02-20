@@ -38,7 +38,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       result mustBe suggestion.toUpperCase
 
       mockWriter.lines must have size 1
-      mockWriter.lines.head mustBe GuessInput.promptMsg(suggestion)
+      mockWriter.lines.head mustBe GuessInput.guessPromptMsg(suggestion)
     }
 
     it("returns the suggested word if the trim of input is empty") {
@@ -50,7 +50,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       result mustBe suggestion.toUpperCase
 
       mockWriter.lines must have size 1
-      mockWriter.lines.head mustBe GuessInput.promptMsg(suggestion)
+      mockWriter.lines.head mustBe GuessInput.guessPromptMsg(suggestion)
     }
 
     it("returns results from reader when valid result is entered on first try") {
@@ -62,7 +62,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       result mustBe validInput.toUpperCase
 
       mockWriter.lines must have size 1
-      mockWriter.lines.head mustBe GuessInput.promptMsg(suggestion)
+      mockWriter.lines.head mustBe GuessInput.guessPromptMsg(suggestion)
     }
 
     it("re-asks for results if not valid") {
@@ -77,8 +77,8 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       mockReader.timesCalled mustBe 2
 
       // It should have written the prompt text twice, and written the error message once
-      mockWriter.lines.count(_ == GuessInput.promptMsg(suggestion)) mustBe 2
-      mockWriter.lines.count(_ == GuessInput.errorMsg) mustBe 1
+      mockWriter.lines.count(_ == GuessInput.guessPromptMsg(suggestion)) mustBe 2
+      mockWriter.lines.count(_ == GuessInput.guessErrorMsg) mustBe 1
     }
   }
 }

@@ -7,12 +7,12 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 import scala.io.Source
 
-object WordleProcessorIntegrationTest extends App {
-  val answers = WordReader.readWords(Source.fromResource("answers.txt")).take(100)
+object WordleProcessorIntegrationTest extends App with WordReader {
+  val answers = readWords(Source.fromResource("answers.txt")).take(100)
 
-  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
-//  val candidateWords = WordReader.readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
-//  val candidateWords = WordReader.readWords(Source.fromResource("answers.txt"))
+  val candidateWords = readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
+//  val candidateWords = readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
+//  val candidateWords = readWords(Source.fromResource("answers.txt"))
 
   val strategy = ReverseClusterStrategy
   val firstWord = "JAZZY"
@@ -31,7 +31,7 @@ object WordleProcessorIntegrationTest extends App {
   def guessGatherer(suggestion: String): String = suggestion
 
   def runWordle(answer: String): Future[List[(String, List[BlockColor])]] = Future {
-    val colorPatternGenerator: ColorPatternGenerator = WordColorPatternGenerator.generateCurryable(answer)
+    val colorPatternGenerator: ColorPatternGenerator = WordColorPatternGenerator.generateColorPatternCurryable(answer)
     val result = WordleProcessor.process(
       strategy, guessGatherer, colorPatternGenerator, dummyLineWriter
     )(candidateWords, firstWord)

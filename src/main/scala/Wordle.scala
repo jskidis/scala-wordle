@@ -2,16 +2,16 @@ package com.skidis.wordle
 
 import scala.io.{Source, StdIn}
 
-object Wordle extends App {
+object Wordle extends App with WordReader {
   case class Parameters(startWord: String, strategy: SolveStrategy, wordSet: WordSet)
 
   val parameters = (if(args.length > 0) args(0) else "") match {
     case s if s == "answer-only" => Parameters("SLATE", ClusterStrategy,
-      WordReader.readWords(Source.fromResource("answers.txt")))
+      readWords(Source.fromResource("answers.txt")))
     case s if s == "reverse" => Parameters("JAZZY", ReverseClusterStrategy,
-      WordReader.readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")))
+      readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")))
     case _ => Parameters("SLATE", ClusterStrategy,
-      WordReader.readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")))
+      readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")))
   }
 
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
@@ -33,12 +33,12 @@ object Wordle extends App {
   }
 }
 
-object ManualInput {
+object ManualInput extends GuessInput with ResultInput with GuessValidator with ResultValidator {
   def gatherGuess(suggestion: String): String = {
-    GuessInput.gatherGuess(StdIn.readLine, Console.print, StandardGuessValidator.validate)(suggestion)
+    gatherGuess(StdIn.readLine, Console.print, validateGuess)(suggestion)
   }
 
   def generatePattern(guess: String): ColorPattern = {
-    ResultInput.generatePattern(StdIn.readLine, Console.print, StandardResultValidator.validate)
+    generatePattern(StdIn.readLine, Console.print, validateResult)
   }
 }

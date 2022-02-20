@@ -2,13 +2,15 @@ package com.skidis.wordle
 
 import BlockColor.{Black, BlockColor, Green, Yellow}
 
-object WordColorPatternGenerator {
+import scala.collection.mutable
 
-  def generate(answer: WordleWord, word: WordleWord): ColorPattern = {
-    generate(answer.string, word.string)
+trait WordColorPatternGenerator {
+
+  def generateWordColorPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
+    generateStringColorPattern(answer.string, word.string)
   }
 
-  def generate(answer: String, word: String): ColorPattern = {
+  def generateStringColorPattern(answer: String, word: String): ColorPattern = {
     // The first pass creates a tuple with a color, index, and letter
     // The coloring for green and black are the correct final result
     //    (green = letter at correct posistion, black = letter not in answer)
@@ -43,7 +45,18 @@ object WordColorPatternGenerator {
   // This version of the function is used align it with the ColorPatternGenerator function signature
   //    re: (guess: String) => ColorPattern}
   // The curried function that provides the answer can used to generate color pattern for given guesses
-  def generateCurryable(answer: String)(guess: String): ColorPattern = {
-    generate(answer, guess)
+  def generateColorPatternCurryable(answer: String)(guess: String): ColorPattern = {
+    generateStringColorPattern(answer, guess)
+  }
+}
+
+object WordColorPatternGenerator extends WordColorPatternGenerator
+
+trait CachingWordColorPatternGenerator extends WordColorPatternGenerator {
+  val patternCache: mutable.Map[(WordleWord, WordleWord), ColorPattern] =
+    collection.mutable.Map[(WordleWord, WordleWord), ColorPattern]()
+
+  override def generateWordColorPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
+    patternCache.getOrElseUpdate((answer, word), super.generateWordColorPattern(answer, word))
   }
 }

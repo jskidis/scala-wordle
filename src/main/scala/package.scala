@@ -21,4 +21,8 @@ package object wordle {
 
   val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
   val validBlockChars = List(greenChar, yellowChar, blackChar)
+
+  trait LineReaderT {
+    def readLine(): String
+  }
 }

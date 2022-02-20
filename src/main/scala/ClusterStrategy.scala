@@ -2,9 +2,7 @@ package com.skidis.wordle
 
 import BlockColor.BlockColor
 
-import scala.collection.mutable
-
-trait ClusterStrategy extends SolveStrategy {
+trait ClusterStrategy extends SolveStrategy with WordColorPatternGenerator with WordPatternMatcher {
   case class WordClusterCount(word: WordleWord, clusterCount: Int)
 
   def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: List[BlockColor]): WordSet = {
@@ -12,15 +10,13 @@ trait ClusterStrategy extends SolveStrategy {
     val wordPattern: List[(Char, BlockColor)] = currentGuess.toList zip colorPattern
 
     // Eliminate words from set that don't fit color pattern for current answer
-    wordSet.filter { w: WordleWord =>
-      WordPatternMatcher.doesWordMatch(w.string, wordPattern) && w.string != currentGuess
-    }
+    wordSet.filter { w: WordleWord => doesWordMatch(w.string, wordPattern) && w.string != currentGuess }
   }
 
   def generateNextGuess(remainingWords: WordSet): (String, String) = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
     val wordClusters: List[WordClusterCount] = remainingWords.toList.map { potentialAnswer: WordleWord =>
-      val clusterCount = remainingWords.map{ word : WordleWord => generateWordPattern(potentialAnswer, word)}.size
+      val clusterCount = remainingWords.map{ word : WordleWord => generateWordColorPattern(potentialAnswer, word)}.size
       WordClusterCount tupled (potentialAnswer, clusterCount)
     }
 
@@ -31,9 +27,6 @@ trait ClusterStrategy extends SolveStrategy {
     (nextGuess.word.string, s"Most Unique Clusters: ${nextGuess.clusterCount}")
   }
 
-  def generateWordPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
-    WordColorPatternGenerator.generate(answer, word)
-  }
 
   def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = (wc1.word, wc2.word) match {
     case (wwf1:WordleWordFrequencies, wwf2:WordleWordFrequencies) =>
@@ -43,14 +36,7 @@ trait ClusterStrategy extends SolveStrategy {
   }
 }
 
-object ClusterStrategy extends ClusterStrategy {
-  val patternCache: mutable.Map[(WordleWord, WordleWord), ColorPattern] =
-    collection.mutable.Map[(WordleWord, WordleWord), ColorPattern]()
-
-  override def generateWordPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
-    patternCache.getOrElseUpdate((answer, word), super.generateWordPattern(answer, word))
-  }
-}
+object ClusterStrategy extends ClusterStrategy
 
 trait ReverseClusterStrategy extends ClusterStrategy {
   override def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = !super.sortWordCluster(wc1, wc2)

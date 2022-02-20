@@ -2,7 +2,7 @@ package com.skidis.wordle
 
 import BlockColor.{Black, BlockColor, Green, Yellow}
 
-object WordPatternMatcher {
+trait WordPatternMatcher {
   // Proactively not doing case insensitive here for performance reasons, may revisit
   def doesWordMatch(word: String, wordPattern: List[(Char, BlockColor)]): Boolean = {
 
@@ -25,3 +25,5 @@ object WordPatternMatcher {
     }
   }
 }
+
+object WordPatternMatcher extends WordPatternMatcher

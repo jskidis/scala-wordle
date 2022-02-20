@@ -2,7 +2,7 @@ package com.skidis.wordle
 
 import scala.io.BufferedSource
 
-object WordReader {
+trait WordReader {
   def readWords(source: BufferedSource): Set[SimpleWordleWord] = {
     val lines = source.getLines.toSet
     lines.map(l => SimpleWordleWord(l.toUpperCase))
@@ -17,3 +17,5 @@ object WordReader {
     }
   }
 }
+
+object WordReader extends WordReader
