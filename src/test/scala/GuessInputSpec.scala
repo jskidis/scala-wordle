@@ -18,13 +18,9 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       inputs(linesRead -1)
     }
 
-    override def writeLine(s: String): Unit = {
-      linesWritten.addOne(s)
-    }
-
-    override def validateGuess(s: String): Boolean = {
-      s == validInput.toUpperCase()
-    }
+    override def writeLine(s: String): Unit = linesWritten.addOne(s)
+    override def writeString(s: String): Unit = linesWritten.addOne(s)
+    override def validateGuess(s: String): Boolean = s == validInput.toUpperCase()
   }
 
 

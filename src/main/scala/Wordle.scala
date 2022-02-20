@@ -3,22 +3,26 @@ package com.skidis.wordle
 import scala.io.{Source, StdIn}
 
 object Wordle extends App with WordReader {
-  case class Parameters(startWord: String, strategy: SolveStrategy, wordSet: WordSet)
+  case class Parameters(startWord: String, wordSet: WordSet, wordleProcessor: WordleProcessor)
 
   val parameters = (if(args.length > 0) args(0) else "") match {
-    case s if s == "answer-only" => Parameters("SLATE", ClusterStrategy,
-      readWords(Source.fromResource("answers.txt")))
-    case s if s == "reverse" => Parameters("JAZZY", ReverseClusterStrategy,
-      readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")))
-    case _ => Parameters("SLATE", ClusterStrategy,
-      readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")))
+    case s if s == "answer-only" => Parameters("SLATE",
+      readWords(Source.fromResource("answers.txt")),
+      new InteractiveWordleProcessor with ClusterStrategy
+    )
+    case s if s == "reverse" => Parameters("JAZZY",
+      readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")),
+      new InteractiveWordleProcessor with ReverseClusterStrategy
+    )
+    case _ => Parameters("SLATE",
+      readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")),
+      new InteractiveWordleProcessor with ClusterStrategy
+    )
   }
 
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
 
-  val result = WordleProcessor.process(
-    parameters.strategy, ManualInput.retrieveGuess, ManualInput.retrievePattern
-  )(parameters.wordSet, parameters.startWord)
+  val result = parameters.wordleProcessor.process(parameters.wordSet, parameters.startWord)
 
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
@@ -33,15 +37,15 @@ object Wordle extends App with WordReader {
   }
 }
 
-object ManualInput extends GuessInput with ResultInput with GuessValidator with ResultValidator {
+trait InteractiveWordleProcessor extends WordleProcessor
+  with GuessInput with ResultInput with GuessValidator with ResultValidator {
+
   override def readLine(): String = StdIn.readLine()
-  override def writeLine(s: String): Unit = Console.print(s)
+  override def writeLine(s: String): Unit = Console.println(s)
+  override def writeString(s: String): Unit = Console.print(s)
 
-  def retrieveGuess(suggestion: String): String = {
-    getGuessFromInput(suggestion)
-  }
-
-  def retrievePattern(guess: String): ColorPattern = {
-    generatePattern()
-  }
+  override def retrieveGuess(suggestion: String): String = { getGuessFromInput(suggestion) }
+  override def retrieveColorPattern(guess: String): ColorPattern = { generatePattern() }
 }
+
+

@@ -20,13 +20,9 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       inputs(linesRead -1)
     }
 
-    override def writeLine(s: String): Unit = {
-      lineWritten.addOne(s)
-    }
-
-    override def validateResult(input: String): Boolean = {
-      input == validInput
-    }
+    override def writeLine(s: String): Unit = lineWritten.addOne(s)
+    override def writeString(s: String): Unit = lineWritten.addOne(s)
+    override def validateResult(input: String): Boolean = input == validInput
   }
 
   describe("Gather Results") {

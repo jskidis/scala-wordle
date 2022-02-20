@@ -4,34 +4,34 @@ import BlockColor.Green
 
 import scala.annotation.tailrec
 
-object WordleProcessor {
+trait GuessRetriever { def retrieveGuess(suggestion: String): String }
+trait ColorPatternRetriever { def retrieveColorPattern(guess: String): ColorPattern }
+
+trait WordleProcessor extends SolveStrategy with GuessRetriever with ColorPatternRetriever with Writer {
   val winningColorPattern = List(Green, Green, Green, Green, Green)
 
+  def process(wordSet: WordSet, suggestion: String): List[(String, ColorPattern)] = {
+    processRecurse(wordSet, suggestion)
+  }
+
   @tailrec
-  def process(
-    solver: SolveStrategy,
-    guessGatherer: GuessGatherer,
-    colorPatternGenerator: ColorPatternGenerator,
-    lineWriter: LineWriterF = Console.println)
-  ( wordSet: WordSet,
-    suggestion: String,
-    guesses: List[(String, ColorPattern)] = Nil)
+  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: List[(String, ColorPattern)] = Nil)
   : List[(String, ColorPattern)] = {
 
-    lineWriter(s"\n${List.fill(40)('*').mkString}")
+    writeLine(s"${List.fill(40)('*').mkString}")
 
     val (currentGuess, colorPattern) =
       if (wordSet.size == 1) (suggestion, winningColorPattern)
       else {
-        val guess = guessGatherer(suggestion)
-        val pattern = colorPatternGenerator(guess)
+        val guess = retrieveGuess(suggestion)
+        val pattern = retrieveColorPattern(guess)
         (guess, pattern)
       }
 
-    lineWriter(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
+    writeLine(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
 
-    if (wordSet.size == 1) lineWriter("Only 1 choice left!!!")
-    lineWriter(s"${colorPattern.mkString}")
+    if (wordSet.size == 1) writeLine("Only 1 choice left!!!")
+    writeLine(s"${colorPattern.mkString}")
 
     val updatedGuesses = guesses :+ (currentGuess, colorPattern)
 
@@ -40,13 +40,13 @@ object WordleProcessor {
     else if (updatedGuesses.size == 6) updatedGuesses :+ ("", Nil)
     else {
       // Eliminate words from set based on current guess and color pattern
-      val remainingWords = solver.reduceWordSet(wordSet, currentGuess, colorPattern)
-      lineWriter(s"Remaining Words: ${remainingWords.size}")
+      val remainingWords = reduceWordSet(wordSet, currentGuess, colorPattern)
+      writeLine(s"Remaining Words: ${remainingWords.size}")
 
       // Determine next guess and start next iteration
-      val (nextGuess, info) = solver.generateNextGuess(remainingWords)
-      lineWriter(info)
-      process(solver, guessGatherer, colorPatternGenerator, lineWriter)(remainingWords, nextGuess, updatedGuesses)
+      val (nextGuess, info) = generateNextGuess(remainingWords)
+      writeLine(info)
+      processRecurse(remainingWords, nextGuess, updatedGuesses)
     }
   }
 }

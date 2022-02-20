@@ -2,13 +2,13 @@ package com.skidis.wordle
 
 import scala.annotation.tailrec
 
-trait ResultInput extends LineReader with LineWriter with ResultValidator with InputToColorsConversion {
+trait ResultInput extends LineReader with Writer with ResultValidator with InputToColorsConversion {
   val resultPrompt = "Enter Results: "
-  val resultErrorMsg = s"\nInvalid results, results must be five characters and only contain (${validBlockChars.mkString(", ")})\n"
+  val resultErrorMsg = s"Invalid results, results must be five characters and only contain (${validBlockChars.mkString(", ")})"
 
   @tailrec
   final def generatePattern(): ColorPattern = {
-    writeLine(resultPrompt)
+    writeString(resultPrompt)
     val input = readLine().toUpperCase
     if (input.isEmpty) Nil
     else if (validateResult(input)) convertInputToColors(input)
