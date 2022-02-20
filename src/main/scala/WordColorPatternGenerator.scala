@@ -5,7 +5,7 @@ import BlockColor.{Black, BlockColor, Green, Yellow}
 object WordColorPatternGenerator {
 
   def generate(answer: WordleWord, word: WordleWord): ColorPattern = {
-    generate(answer.wordString(), word.wordString())
+    generate(answer.string, word.string)
   }
 
   def generate(answer: String, word: String): ColorPattern = {

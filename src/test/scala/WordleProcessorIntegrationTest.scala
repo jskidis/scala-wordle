@@ -20,7 +20,7 @@ object WordleProcessorIntegrationTest extends App {
   val startTimestamp = System.currentTimeMillis()
 
   val results: List[List[(String, List[BlockColor])]] = Await.result(
-    Future.sequence(answers.map(w=> runWordle(w.wordString()))), 1.hour
+    Future.sequence(answers.map(w=> runWordle(w.string))), 1.hour
   ).toList
   printResults(results)
 

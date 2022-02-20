@@ -1,18 +1,16 @@
 package com.skidis.wordle
 
 trait WordleWord extends Ordered[WordleWord] {
-  def wordString(): String
+  def string: String
 }
 
-case class SimpleWordleWord(word: String) extends WordleWord {
-  override def wordString(): String = word
+case class SimpleWordleWord(string: String) extends WordleWord {
   override def compare(that: WordleWord): Int = that match {
-    case w2: SimpleWordleWord => -word.compareTo(w2.wordString())
+    case w2: SimpleWordleWord => -string.compareTo(w2.string)
   }
 }
 
-case class WordleWordFrequencies(word: String, frequency: Double) extends WordleWord {
-  override def wordString(): String = word
+case class WordleWordFrequencies(string: String, frequency: Double) extends WordleWord {
   override def compare(that: WordleWord): Int = that match {
     case w2: WordleWordFrequencies => frequency.compareTo(w2.frequency)
   }

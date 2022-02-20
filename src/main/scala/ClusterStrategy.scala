@@ -13,7 +13,7 @@ trait ClusterStrategy extends SolveStrategy {
 
     // Eliminate words from set that don't fit color pattern for current answer
     wordSet.filter { w: WordleWord =>
-      WordPatternMatcher.doesWordMatch(w.wordString(), wordPattern) && w.wordString() != currentGuess
+      WordPatternMatcher.doesWordMatch(w.string, wordPattern) && w.string != currentGuess
     }
   }
 
@@ -28,7 +28,7 @@ trait ClusterStrategy extends SolveStrategy {
     val sortedClustersByWord = wordClusters.sortWith(sortWordCluster)
     val nextGuess = sortedClustersByWord.head
 
-    (nextGuess.word.wordString(), s"Most Unique Clusters: ${nextGuess.clusterCount}")
+    (nextGuess.word.string, s"Most Unique Clusters: ${nextGuess.clusterCount}")
   }
 
   def generateWordPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
