@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColor.{Black, Green, Yellow}
+import BlockColor.{Blank, Green, Yellow}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -8,8 +8,8 @@ import org.scalatest.matchers.must.Matchers
 import scala.collection.mutable.ListBuffer
 
 class ResultInputSpec extends AnyFunSpec with Matchers {
-  val validInput:String = List(greenChar, yellowChar, blackChar, greenChar, yellowChar).mkString
-  val validInputColors = List(Green, Yellow, Black, Green, Yellow)
+  val validInput:String = List(greenChar, yellowChar, blankChar, greenChar, yellowChar).mkString
+  val validInputColors = List(Green, Yellow, Blank, Green, Yellow)
 
   class TestResultInput(inputs: List[String]) extends ResultInput {
     var linesRead = 0

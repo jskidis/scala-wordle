@@ -10,11 +10,11 @@ package object wordle {
     type BlockColor = String
     val Green = "\uD83D\uDFE9"
     val Yellow = "\uD83D\uDFE8"
-    val Black = "\u2B1C"
+    val Blank = "\u2B1C"
   }
 
-  val (greenChar, yellowChar, blackChar) = ('G', 'Y', 'B')
-  val validBlockChars = List(greenChar, yellowChar, blackChar)
+  val (greenChar, yellowChar, blankChar) = ('G', 'Y', 'B')
+  val validBlockChars = List(greenChar, yellowChar, blankChar)
 
   trait GuessRetriever {
     def retrieveGuess(suggestion: String): String

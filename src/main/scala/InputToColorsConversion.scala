@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColor.{Black, Green, Yellow}
+import BlockColor.{Blank, Green, Yellow}
 
 trait InputToColorsConversion {
   def convertInputToColors(input: String): ColorPattern = {
@@ -8,7 +8,7 @@ trait InputToColorsConversion {
       ch.toUpper match {
         case `greenChar` => Green
         case `yellowChar` => Yellow
-        case _ => Black
+        case _ => Blank
       }
     }.toList
   }

@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-import BlockColor.{Black, Green, Yellow}
+import BlockColor.{Blank, Green, Yellow}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -37,7 +37,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
 
   val allGreen: ColorPattern = List.fill(5)(Green)
   val allYellow: ColorPattern = List.fill(5)(Yellow)
-  val allBlack: ColorPattern = List.fill(5)(Black)
+  val allBlack: ColorPattern = List.fill(5)(Blank)
   val emptyPattern: ColorPattern = List()
 
   describe("Wordle Processor") {
