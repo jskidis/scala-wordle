@@ -25,10 +25,9 @@ trait WordleProcessor extends SolveStrategy with GuessRetriever with ColorPatter
         (guess, pattern)
       }
 
-    writeLine(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
-
-    if (wordSet.size == 1) writeLine("Only 1 choice left!!!")
     writeLine(s"${colorPattern.mkString}")
+    writeLine(s"Current Guess: $currentGuess, Guess #:${guesses.size +1}")
+    if (wordSet.size == 1) writeLine("Only 1 choice left!!!")
 
     val updatedGuesses = guesses :+ (currentGuess, colorPattern)
 
