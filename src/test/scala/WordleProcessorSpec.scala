@@ -15,7 +15,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: ColorPattern): WordSet = wordSet.tail
-    override def generateNextGuess(remainingWords: WordSet): (String, String) = (remainingWords.head.string, "")
+    override def generateNextGuess(remainingWords: WordSet): (String, String) = (remainingWords.head.phrase, "")
 
     // GuessRetriever and ColorPatternRetriever
     override def retrieveGuess(suggestion: String): String = suggestion
@@ -45,10 +45,10 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
     it("returns the the guess/color pattern list when the color pattern is all green") {
       val colorPatterns = List(allYellow, allGreen)
 
-      val expectedResult = List( (word1.string, allYellow), (word2.string, allGreen) )
+      val expectedResult = List( (word1.phrase, allYellow), (word2.phrase, allGreen) )
 
       val processor = new TestWordleProcessor(colorPatterns)
-      val result = processor.process(words, word1.string)
+      val result = processor.process(words, word1.phrase)
 
       result mustBe expectedResult
     }
@@ -57,7 +57,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
       val colorPatterns: List[ColorPattern] = List(allYellow, emptyPattern)
 
       val processor = new TestWordleProcessor(colorPatterns)
-      val result = processor.process(words, word1.string)
+      val result = processor.process(words, word1.phrase)
 
       result mustBe empty
     }
@@ -65,10 +65,10 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
     it("if wordset is down to 1 word, it automatically selected that word as the winner") {
       val colorPatterns: List[ColorPattern] = Nil // it should never check these, so if it does this will fail
 
-      val expectedResult = List( (word1.string, allGreen) )
+      val expectedResult = List( (word1.phrase, allGreen) )
 
       val processor = new TestWordleProcessor(colorPatterns)
-      val result = processor.process(List(word1).toSet, word1.string)
+      val result = processor.process(List(word1).toSet, word1.phrase)
 
       result mustBe expectedResult
     }
@@ -79,13 +79,13 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
       )
 
       val expectedResult = List(
-        (word1.string, allBlack), (word2.string, allBlack), (word3.string, allBlack),
-        (word4.string, allYellow), (word5.string, allYellow), (word6.string, allYellow),
+        (word1.phrase, allBlack), (word2.phrase, allBlack), (word3.phrase, allBlack),
+        (word4.phrase, allYellow), (word5.phrase, allYellow), (word6.phrase, allYellow),
         ("", Nil)
       )
 
       val processor = new TestWordleProcessor(colorPatterns)
-      val result = processor.process(words, words.head.string)
+      val result = processor.process(words, words.head.phrase)
 
       result mustBe expectedResult
     }

@@ -11,7 +11,7 @@ class NerdleGuessableGeneratorSpec extends AnyFunSpec with Matchers {
     val equations = NerdleGuessableGenerator.generateOneOpEqs()
 
     it("all equations must translate into 8 characters") {
-      val non8CharEqs = equations.filter(_.string.length != 8)
+      val non8CharEqs = equations.filter(_.phrase.length != 8)
       non8CharEqs mustBe empty
     }
 
@@ -43,7 +43,7 @@ class NerdleGuessableGeneratorSpec extends AnyFunSpec with Matchers {
     val equations = NerdleGuessableGenerator.generateTwoOpEqs()
 
     it("all should equations translate into 8 characters") {
-      val non8CharEqs = equations.filter(eq => eq.string.length != 8)
+      val non8CharEqs = equations.filter(eq => eq.phrase.length != 8)
       non8CharEqs mustBe empty
     }
 

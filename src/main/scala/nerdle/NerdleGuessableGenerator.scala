@@ -4,11 +4,11 @@ package nerdle
 import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
 
 trait NerdleGuessableGenerator {
-  def generatateEquations(): Set[NerdleWord] = {
+  def generatateEquations(): Set[NerdleEquation] = {
     (generateOneOpEqs() ++ generateTwoOpEqs()).toSet
   }
 
-  def generateOneOpEqs(): Seq[NerdleWord] = {
+  def generateOneOpEqs(): Seq[NerdleEquation] = {
     def createExpression(operand1: Int, operator: Char, operand2: Int): OperatorExpr = {
       OperatorExpr(IntExpr(operand1), operator, IntExpr(operand2))
     }
@@ -28,7 +28,7 @@ trait NerdleGuessableGenerator {
     }.flatten
   }.flatten
 
-  def generateTwoOpEqs(): Seq[NerdleWord] = {
+  def generateTwoOpEqs(): Seq[NerdleEquation] = {
     def createExpression(operand1: Int, operator1: Char, operand2: Int, operator2: Char, operand3: Int): OperatorExpr = {
       if ((operator2 == Multiply || operator2 == Divide) && (operator1 == Add || operator1 == Subtract)) {
         OperatorExpr(IntExpr(operand1), operator1, OperatorExpr(IntExpr(operand2), operator2, IntExpr(operand3)))
@@ -50,10 +50,10 @@ trait NerdleGuessableGenerator {
     }
   }.flatten
 
-  private def generateEquation(expr: OperatorExpr, resultDigits: Int): Option[NerdleWord] = {
+  private def generateEquation(expr: OperatorExpr, resultDigits: Int): Option[NerdleEquation] = {
     if (!expr.isValid) None
     else if (!rangeFromNumDigits(resultDigits).contains(expr.value)) None
-    else Option(NerdleWord(expr))
+    else Option(NerdleEquation(expr))
   }
 
   private def rangeFromNumDigits(numDigits: Int): Seq[Int] = numDigits match {

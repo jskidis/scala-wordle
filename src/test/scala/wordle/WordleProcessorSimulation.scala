@@ -31,7 +31,7 @@ object WordleProcessorSimulation extends App with WordReader {
   val startTimestamp = System.currentTimeMillis()
 
   val results: List[List[(String, List[BlockColor])]] = Await.result(
-    Future.sequence(answers.map(answer => runWordle(answer.string))), 1.hour
+    Future.sequence(answers.map(answer => runWordle(answer.phrase))), 1.hour
   ).toList
   printResults(results)
 

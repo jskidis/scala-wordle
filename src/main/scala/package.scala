@@ -3,12 +3,12 @@ package com.skidis
 import com.skidis.wordle.BlockColor.BlockColor
 
 package object wordle {
-  trait XordleWord extends Ordered[XordleWord] {
-    def string: String
+  trait XordlePhrase extends Ordered[XordlePhrase] {
+    def phrase: String
   }
 
   type ColorPattern = List[BlockColor]
-  type WordSet = Set[_ <: XordleWord]
+  type WordSet = Set[_ <: XordlePhrase]
 
   object BlockColor extends Enumeration {
     type BlockColor = String

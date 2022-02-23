@@ -12,9 +12,9 @@ package object nerdle {
   }
   val operators = List(Add, Subtract, Multiply, Divide)
 
-  case class NerdleWord(expr: OperatorExpr) extends XordleWord {
-    override def string: String = s"${expr.toString}=${expr.value}"
-    override def compare(that: XordleWord): Int = expr.value
+  case class NerdleEquation(expr: OperatorExpr) extends XordlePhrase {
+    override def phrase: String = s"${expr.toString}=${expr.value}"
+    override def compare(that: XordlePhrase): Int = expr.value
   }
 
   trait NerdleResultValidator extends ResultValidator {
