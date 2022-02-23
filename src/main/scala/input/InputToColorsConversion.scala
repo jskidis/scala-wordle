@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package input
 
 import BlockColor.{Blank, Green, Yellow}
 

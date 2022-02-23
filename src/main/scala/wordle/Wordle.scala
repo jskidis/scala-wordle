@@ -1,6 +1,7 @@
 package com.skidis.wordle
 package wordle
 
+import input.{GuessInput, GuessValidator, ResultInput}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
 import scala.io.{Source, StdIn}

@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package input
 
 import BlockColor.{Blank, Green, Yellow}
 
@@ -11,7 +12,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
   val validInput:String = List(greenChar, yellowChar, blankChar, greenChar, yellowChar).mkString
   val validInputColors = List(Green, Yellow, Blank, Green, Yellow)
 
-  class TestResultInput(inputs: List[String]) extends ResultInput {
+  class TestBasicResultInput(inputs: List[String]) extends ResultInput {
     var linesRead = 0
     var lineWritten = new ListBuffer[String]()
 
@@ -20,16 +21,20 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       inputs(linesRead -1)
     }
 
-    override def resultLength: Int = 5
-    override def validationErrorMsg: String = "Invalid Result"
     override def writeLine(s: String): Unit = lineWritten.addOne(s)
     override def writeString(s: String): Unit = lineWritten.addOne(s)
-    override def validateResult(input: String): Boolean = input == validInput
+
+    def errorMsg = "Input invalid"
+    override def validateResult(input: String): Option[String] = {
+      if (input == validInput) None
+      else Some(errorMsg)
+    }
+
   }
 
   describe("Gather Results") {
     it("returns results from reader when valid result is entered on first try") {
-      val resultInput = new TestResultInput(List(validInput))
+      val resultInput = new TestBasicResultInput(List(validInput))
       val result = resultInput.generatePattern()
 
       // It should return a result and that result should be equal to "validResult" value
@@ -41,7 +46,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("re-asks for results if not valid") {
-      val resultInput = new TestResultInput(List("x", validInput))
+      val resultInput = new TestBasicResultInput(List("x", validInput))
       val result = resultInput.generatePattern()
 
       // It should return a result and that result should be equal to "validResult" value, it should have c
@@ -53,11 +58,11 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
       // It should have written the prompt text twice, and written the error message once
       resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 2
-      resultInput.lineWritten.count(_ == resultInput.validationErrorMsg) mustBe 1
+      resultInput.lineWritten.count(_ == resultInput.errorMsg) mustBe 1
     }
 
     it("returns None if input is blank") {
-      val resultInput = new TestResultInput(List("g", "b", "", validInput)) // ignores last line (validResult) because empty line stopped it
+      val resultInput = new TestBasicResultInput(List("g", "b", "", validInput)) // ignores last line (validResult) because empty line stopped it
       val result = resultInput.generatePattern()
 
       // The result should be empty because it encountered an empty line before a valid value
@@ -68,7 +73,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
       // It should have written the prompt text 3 times, and written the error message twice
       resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 3
-      resultInput.lineWritten.count(_ == resultInput.validationErrorMsg) mustBe 2
+      resultInput.lineWritten.count(_ == resultInput.errorMsg) mustBe 2
     }
   }
 }

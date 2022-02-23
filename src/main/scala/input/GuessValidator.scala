@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package input
 
 trait GuessValidator {
   def validateGuess(input: String): Boolean = {

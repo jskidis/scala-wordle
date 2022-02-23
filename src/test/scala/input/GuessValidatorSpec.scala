@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package input
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers

@@ -1,5 +1,6 @@
 package com.skidis.wordle
 
+import input.BasicResultValidator
 import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
 
 package object nerdle {
@@ -17,10 +18,9 @@ package object nerdle {
     override def compare(that: XordlePhrase): Int = expr.value
   }
 
-  trait NerdleResultValidator extends ResultValidator {
-    def resultLength: Int = 8
-    def validationErrorMsg: String =
-      s"Invalid results, results must be 8 characters and only contain (${validBlockChars.mkString(", ")})"
+  trait NerdleResultValidator extends BasicResultValidator {
+    override def resultLength: Int = 8
+    override def validChars: List[Char] = validBlockChars
   }
   object NerdleResultValidator extends NerdleResultValidator
 

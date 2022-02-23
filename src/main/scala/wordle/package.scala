@@ -1,10 +1,11 @@
 package com.skidis.wordle
 
+import input.BasicResultValidator
+
 package object wordle {
-  trait WordleResulValidator extends ResultValidator {
-    def resultLength: Int = 5
-    def validationErrorMsg: String =
-      s"Invalid results, results must be 5 characters and only contain (${validBlockChars.mkString(", ")})"
+  trait WordleResulValidator extends BasicResultValidator {
+    override def resultLength: Int = 5
+    override def validChars: List[Char] = validBlockChars
   }
   object WordleResulValidator extends WordleResulValidator
 }
