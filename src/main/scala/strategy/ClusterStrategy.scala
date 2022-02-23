@@ -2,7 +2,6 @@ package com.skidis.wordle
 package strategy
 
 import BlockColor.BlockColor
-import wordle.WordleWordFrequencies
 
 trait ClusterStrategy extends SolveStrategy with WordColorPatternGenerator with WordPatternMatcher {
   case class WordClusterCount(word: XordlePhrase, clusterCount: Int)
@@ -30,11 +29,8 @@ trait ClusterStrategy extends SolveStrategy with WordColorPatternGenerator with 
   }
 
 
-  def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = (wc1.word, wc2.word) match {
-    case (wwf1:WordleWordFrequencies, wwf2:WordleWordFrequencies) =>
-      wc1.clusterCount + Math.log10(wwf1.frequency)*2 > wc2.clusterCount + Math.log10(wwf2.frequency)*2
-    case (ww1: XordlePhrase, ww2: XordlePhrase) =>
-      if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount > wc2.clusterCount else ww1 > ww2
+  def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = {
+    if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount > wc2.clusterCount else wc1.word > wc2.word
   }
 }
 
