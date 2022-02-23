@@ -1,7 +1,6 @@
 package com.skidis.wordle
 
 import BlockColor.Green
-import strategy.SolveStrategy
 
 import scala.annotation.tailrec
 

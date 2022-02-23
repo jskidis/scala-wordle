@@ -28,6 +28,11 @@ package object wordle {
     def retrieveColorPattern(guess: String): ColorPattern
   }
 
+  trait SolveStrategy {
+    def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: ColorPattern): WordSet
+    def generateNextGuess(remainingWords: WordSet): (String, String)
+  }
+
   trait LineReader {
     def readLine(): String
   }
