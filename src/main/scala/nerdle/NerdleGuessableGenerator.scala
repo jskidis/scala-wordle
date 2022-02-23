@@ -58,9 +58,9 @@ trait NerdleGuessableGenerator {
 
   private def rangeFromNumDigits(numDigits: Int): Seq[Int] = numDigits match {
     case n if n==1 => 0 to 9
-    case n if n==2 => (10 to 99) ++ (-9 to -1)
-    case n if n==3 => (100 to 999) ++ (-99 to -10)
-    case _ => (1000 to 9999) ++ (-999 to -100)
+    case n if n==2 => 10 to 99 // ++ (-9 to -1)
+    case n if n==3 => 100 to 999 // ++ (-99 to -10)
+    case _ => 1000 to 9999 // ++ (-999 to -100)
   }
 }
 
