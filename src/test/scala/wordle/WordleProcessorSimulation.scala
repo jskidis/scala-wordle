@@ -56,7 +56,7 @@ object WordleProcessorSimulation extends App with WordReader {
     }
   }
 
-  abstract class SimulationWordleProcessor(answer: String) extends WordleProcessor with CachingWordColorPatternGenerator {
+  abstract class SimulationWordleProcessor(answer: String) extends XordleProcessor with CachingWordColorPatternGenerator {
     override def retrieveColorPattern(guess: String): ColorPattern = generateStringColorPattern(answer, guess)
 
     override def retrieveGuess(suggestion: String): String = suggestion

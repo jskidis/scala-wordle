@@ -4,7 +4,7 @@ package wordle
 import scala.io.{Source, StdIn}
 
 object Wordle extends App with WordReader {
-  case class Parameters(startWord: String, wordSet: WordSet, wordleProcessor: WordleProcessor)
+  case class Parameters(startWord: String, wordSet: WordSet, wordleProcessor: XordleProcessor)
 
   val parameters = (if (args.length > 0) args(0) else "") match {
     case s if s == "answer-only" => Parameters("SLATE",
@@ -36,7 +36,7 @@ object Wordle extends App with WordReader {
     println()
   }
 
-  trait InteractiveWordleProcessor extends WordleProcessor
+  trait InteractiveWordleProcessor extends XordleProcessor
     with GuessInput with ResultInput with GuessValidator with WordleResulValidator {
 
     override def readLine(): String = StdIn.readLine()

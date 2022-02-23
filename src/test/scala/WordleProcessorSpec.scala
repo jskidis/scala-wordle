@@ -10,7 +10,7 @@ import scala.collection.immutable.ListSet
 
 class WordleProcessorSpec extends AnyFunSpec with Matchers {
 
-  class TestWordleProcessor(colorPatterns: List[ColorPattern]) extends WordleProcessor {
+  class TestXordleProcessor(colorPatterns: List[ColorPattern]) extends XordleProcessor {
     var cycles = 0
 
     // SolveStrategy
@@ -47,7 +47,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
 
       val expectedResult = List( (word1.phrase, allYellow), (word2.phrase, allGreen) )
 
-      val processor = new TestWordleProcessor(colorPatterns)
+      val processor = new TestXordleProcessor(colorPatterns)
       val result = processor.process(words, word1.phrase)
 
       result mustBe expectedResult
@@ -56,7 +56,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
     it("returns an empty list if the color pattern returned is empty") {
       val colorPatterns: List[ColorPattern] = List(allYellow, emptyPattern)
 
-      val processor = new TestWordleProcessor(colorPatterns)
+      val processor = new TestXordleProcessor(colorPatterns)
       val result = processor.process(words, word1.phrase)
 
       result mustBe empty
@@ -67,7 +67,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
 
       val expectedResult = List( (word1.phrase, allGreen) )
 
-      val processor = new TestWordleProcessor(colorPatterns)
+      val processor = new TestXordleProcessor(colorPatterns)
       val result = processor.process(List(word1).toSet, word1.phrase)
 
       result mustBe expectedResult
@@ -84,7 +84,7 @@ class WordleProcessorSpec extends AnyFunSpec with Matchers {
         ("", Nil)
       )
 
-      val processor = new TestWordleProcessor(colorPatterns)
+      val processor = new TestXordleProcessor(colorPatterns)
       val result = processor.process(words, words.head.phrase)
 
       result mustBe expectedResult
