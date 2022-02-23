@@ -7,8 +7,8 @@ object OutputQueue extends App with WordReader {
   val cachedGenerator = new CachingWordColorPatternGenerator {}
   val wordSet = readWords(Source.fromResource("answers.txt")).take(10)
 
-  val wordClusters = wordSet.toList.map { potentialAnswer: WordleWord =>
-    wordSet.map { word: WordleWord => cachedGenerator.generateWordColorPattern(potentialAnswer, word) }.size
+  val wordClusters = wordSet.toList.map { potentialAnswer: XordleWord =>
+    wordSet.map { word: XordleWord => cachedGenerator.generateWordColorPattern(potentialAnswer, word) }.size
   }
 
   cachedGenerator.patternCache.foreach {

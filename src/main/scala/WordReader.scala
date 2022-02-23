@@ -1,5 +1,7 @@
 package com.skidis.wordle
 
+import wordle.{SimpleWordleWord, WordleWordFrequencies}
+
 import scala.io.BufferedSource
 
 trait WordReader {

@@ -1,5 +1,7 @@
 package com.skidis.wordle
 
+import wordle.{SimpleWordleWord, WordleWordFrequencies}
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
 

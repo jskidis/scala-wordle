@@ -4,7 +4,7 @@ import BlockColor.{Blank, BlockColor, Green, Yellow}
 
 trait WordColorPatternGenerator {
 
-  def generateWordColorPattern(answer: WordleWord, word: WordleWord): ColorPattern = {
+  def generateWordColorPattern(answer: XordleWord, word: XordleWord): ColorPattern = {
     generateStringColorPattern(answer.string, word.string)
   }
 

@@ -1,6 +1,7 @@
 package com.skidis.wordle
 
 import BlockColor.{Blank, Green, Yellow}
+import wordle.SimpleWordleWord
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
