@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 
 import scala.collection.immutable.ListSet
 
-class WordleProcessorSpec extends AnyFunSpec with Matchers {
+class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
   class TestXordleProcessor(colorPatterns: List[ColorPattern]) extends XordleProcessor {
     var cycles = 0
