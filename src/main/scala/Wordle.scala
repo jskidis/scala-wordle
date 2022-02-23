@@ -1,5 +1,7 @@
 package com.skidis.wordle
 
+import wordle.WordleResulValidator
+
 import scala.io.{Source, StdIn}
 
 object Wordle extends App with WordReader {
@@ -36,7 +38,7 @@ object Wordle extends App with WordReader {
   }
 
   trait InteractiveWordleProcessor extends WordleProcessor
-    with GuessInput with ResultInput with GuessValidator with ResultValidator {
+    with GuessInput with ResultInput with GuessValidator with WordleResulValidator {
 
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)

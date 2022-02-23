@@ -20,6 +20,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       inputs(linesRead -1)
     }
 
+    override def resultLength: Int = 5
+    override def validationErrorMsg: String = "Invalid Result"
     override def writeLine(s: String): Unit = lineWritten.addOne(s)
     override def writeString(s: String): Unit = lineWritten.addOne(s)
     override def validateResult(input: String): Boolean = input == validInput
@@ -51,7 +53,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
       // It should have written the prompt text twice, and written the error message once
       resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 2
-      resultInput.lineWritten.count(_ == resultInput.resultErrorMsg) mustBe 1
+      resultInput.lineWritten.count(_ == resultInput.validationErrorMsg) mustBe 1
     }
 
     it("returns None if input is blank") {
@@ -66,7 +68,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
       // It should have written the prompt text 3 times, and written the error message twice
       resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 3
-      resultInput.lineWritten.count(_ == resultInput.resultErrorMsg) mustBe 2
+      resultInput.lineWritten.count(_ == resultInput.validationErrorMsg) mustBe 2
     }
   }
 }
