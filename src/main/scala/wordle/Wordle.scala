@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package wordle
 
+import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
+
 import scala.io.{Source, StdIn}
 
 object Wordle extends App with WordReader {
@@ -9,7 +11,7 @@ object Wordle extends App with WordReader {
   val parameters = (if (args.length > 0) args(0) else "") match {
     case s if s == "answer-only" => Parameters("SLATE",
       readWords(Source.fromResource("answers.txt")),
-      new InteractiveWordleProcessor with ClusterStrategy
+      new InteractiveWordleProcessor with ClusterAndFreqStrategy
     )
     case s if s == "reverse" => Parameters("JAZZY",
       readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")),
@@ -17,7 +19,7 @@ object Wordle extends App with WordReader {
     )
     case _ => Parameters("SLATE",
       readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")),
-      new InteractiveWordleProcessor with ClusterStrategy
+      new InteractiveWordleProcessor with ClusterAndFreqStrategy
     )
   }
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"

@@ -1,8 +1,9 @@
 package com.skidis.wordle
+package strategy
 
 trait ReverseClusterStrategy extends ClusterStrategy {
   override def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = {
-    if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount < wc2.clusterCount else wc1.word < wc2.word
+    !super.sortWordCluster(wc1, wc2)
   }
 
   override def generateNextGuess(remainingWords: WordSet): (String, String) = {

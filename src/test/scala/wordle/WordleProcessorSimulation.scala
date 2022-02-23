@@ -3,6 +3,7 @@ package wordle
 
 import BlockColor.BlockColor
 import frequency.CachingWordColorPatternGenerator
+import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
@@ -15,7 +16,7 @@ object WordleProcessorSimulation extends App with WordReader {
   val parameters = (if (args.length > 0) args(0) else "") match {
     case s if s == "answer-only" => Parameters("SLATE",
       readWords(Source.fromResource("answers.txt")),
-      (answer: String) => new SimulationWordleProcessor(answer) with ClusterStrategy
+      (answer: String) => new SimulationWordleProcessor(answer) with ClusterAndFreqStrategy
     )
     case s if s == "reverse" => Parameters("JAZZY",
       readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")),
@@ -23,7 +24,7 @@ object WordleProcessorSimulation extends App with WordReader {
     )
     case _ => Parameters("SLATE",
       readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")),
-      (answer: String) => new SimulationWordleProcessor(answer) with ClusterStrategy
+      (answer: String) => new SimulationWordleProcessor(answer) with ClusterAndFreqStrategy
     )
   }
 

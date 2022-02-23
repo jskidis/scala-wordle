@@ -9,4 +9,3 @@ trait ResultValidator {
     else input.filter{ch => validBlockChars.contains(ch.toUpper)} == input
   }
 }
-

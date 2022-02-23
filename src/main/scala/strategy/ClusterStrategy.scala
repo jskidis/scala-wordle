@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package strategy
 
 import BlockColor.BlockColor
 import wordle.WordleWordFrequencies
