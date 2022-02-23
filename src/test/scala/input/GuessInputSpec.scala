@@ -10,7 +10,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
   val suggestion: String = "guess"
   val validInput:String = "abcde"
 
-  class TestGuessInput(inputs: List[String]) extends GuessInput {
+  class TestWordleGuessInput(inputs: List[String]) extends GuessInput {
     var linesRead = 0
     var linesWritten = new ListBuffer[String]()
 
@@ -21,13 +21,18 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
 
     override def writeLine(s: String): Unit = linesWritten.addOne(s)
     override def writeString(s: String): Unit = linesWritten.addOne(s)
-    override def validateGuess(s: String): Boolean = s == validInput.toUpperCase()
+
+    val validationMsg = "Some validation failed"
+    override def validateGuess(s: String): Option[String] = {
+      if (s == validInput.toUpperCase()) None
+      else Some(validationMsg)
+    }
   }
 
 
   describe("Gather Guess") {
     it("returns the suggested word if the input is empty") {
-      val guessInput = new TestGuessInput(List(""))
+      val guessInput = new TestWordleGuessInput(List(""))
       val result = guessInput.getGuessFromInput(suggestion)
 
       // It should return a guess and that result should be equal to "validResult" value
@@ -38,7 +43,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("returns the suggested word if the trim of input is empty") {
-      val guessInput = new TestGuessInput(List("  "))
+      val guessInput = new TestWordleGuessInput(List("  "))
       val result = guessInput.getGuessFromInput(suggestion)
 
       // It should return a guess and that result should be equal to "validResult" value
@@ -49,7 +54,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("returns results from reader when valid result is entered on first try") {
-      val guessInput = new TestGuessInput(List(validInput))
+      val guessInput = new TestWordleGuessInput(List(validInput))
       val result = guessInput.getGuessFromInput(suggestion)
 
       // It should return a result and that result should be equal to "validResult" value
@@ -60,7 +65,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("re-asks for results if not valid") {
-      val guessInput = new TestGuessInput(List("12345", validInput))
+      val guessInput = new TestWordleGuessInput(List("12345", validInput))
       val result = guessInput.getGuessFromInput(suggestion)
 
       // It should return a result and that result should be equal to "validResult" value, it should have c
@@ -71,7 +76,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
 
       // It should have written the prompt text twice, and written the error message once
       guessInput.linesWritten.count(_ == guessInput.guessPromptMsg(suggestion)) mustBe 2
-      guessInput.linesWritten.count(_ == guessInput.guessErrorMsg) mustBe 1
+      guessInput.linesWritten.count(_ == guessInput.validationMsg) mustBe 1
     }
   }
 }

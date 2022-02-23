@@ -1,9 +1,12 @@
 package com.skidis.wordle
 
-import input.BasicResultValidator
 import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
 
 package object nerdle {
+  val inputLength: Int = 8
+  val validResultChars: Seq[Char] = validBlockChars
+  val valueGuessChars: Seq[Char] = ('a' to 'z') ++ ('A' to 'Z')
+
   object NerdleOperator extends Enumeration {
     type NerdleOperator = Char
     val Add = '+'
@@ -18,10 +21,5 @@ package object nerdle {
     override def compare(that: XordlePhrase): Int = expr.value
   }
 
-  trait NerdleResultValidator extends BasicResultValidator {
-    override def resultLength: Int = 8
-    override def validChars: List[Char] = validBlockChars
-  }
-  object NerdleResultValidator extends NerdleResultValidator
 
 }

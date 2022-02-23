@@ -1,11 +1,7 @@
 package com.skidis.wordle
 
-import input.BasicResultValidator
-
 package object wordle {
-  trait WordleResulValidator extends BasicResultValidator {
-    override def resultLength: Int = 5
-    override def validChars: List[Char] = validBlockChars
-  }
-  object WordleResulValidator extends WordleResulValidator
+  val inputLength: Int = 5
+  val validResultChars: Seq[Char] = validBlockChars
+  val valueGuessChars: Seq[Char] = ('a' to 'z') ++ ('A' to 'Z')
 }

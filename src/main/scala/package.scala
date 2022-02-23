@@ -18,10 +18,15 @@ package object wordle {
   }
 
   val (greenChar, yellowChar, blankChar) = ('G', 'Y', 'B')
-  val validBlockChars = List(greenChar, yellowChar, blankChar)
+  val validBlockChars = List(greenChar, yellowChar, blankChar,
+    greenChar.toLower, yellowChar.toLower, blankChar.toLower)
 
   trait ResultValidator {
     def validateResult(input: String): Option[String]
+  }
+
+  trait GuessValidator {
+    def validateGuess(input: String): Option[String]
   }
 
   trait GuessRetriever {
