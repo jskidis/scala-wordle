@@ -40,17 +40,9 @@ object Wordle extends App with WordReader {
     with GuessInput with ResultInput with GuessValidator with WordleResulValidator {
 
     override def readLine(): String = StdIn.readLine()
-
     override def writeLine(s: String): Unit = Console.println(s)
-
     override def writeString(s: String): Unit = Console.print(s)
-
-    override def retrieveGuess(suggestion: String): String = {
-      getGuessFromInput(suggestion)
-    }
-
-    override def retrieveColorPattern(guess: String): ColorPattern = {
-      generatePattern()
-    }
+    override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
+    override def retrieveColorPattern(guess: String): ColorPattern = generatePattern()
   }
 }
