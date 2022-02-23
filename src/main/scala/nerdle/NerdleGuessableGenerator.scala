@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package nerdle
 
+import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
+
 trait NerdleGuessableGenerator {
   def generatateEquations(): Set[NerdleWord] = {
     (generateOneOpEqs() ++ generateTwoOpEqs()).toSet
@@ -28,7 +30,7 @@ trait NerdleGuessableGenerator {
 
   def generateTwoOpEqs(): Seq[NerdleWord] = {
     def createExpression(operand1: Int, operator1: Char, operand2: Int, operator2: Char, operand3: Int): OperatorExpr = {
-      if ((operator2 == '*' || operator2 == '/') && (operator1 == '+' || operator1 == '-')) {
+      if ((operator2 == Multiply || operator2 == Divide) && (operator1 == Add || operator1 == Subtract)) {
         OperatorExpr(IntExpr(operand1), operator1, OperatorExpr(IntExpr(operand2), operator2, IntExpr(operand3)))
       }
       else OperatorExpr(OperatorExpr(IntExpr(operand1), operator1, IntExpr(operand2)), operator2, IntExpr(operand3) )
