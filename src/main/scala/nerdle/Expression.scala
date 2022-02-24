@@ -8,7 +8,7 @@ trait IntExpression {
   def isValid: Boolean
 }
 
-case class IntExpr(operand: Int) extends IntExpression {
+case class IntValueExpr(operand: Int) extends IntExpression {
   def value: Int = operand
   def isValid: Boolean = true
   override def toString: String = operand.toString

@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
+import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract}
 
 trait NerdleGuessableGenerator {
   def generatateEquations(): Set[NerdleEquation] = {
@@ -9,8 +9,8 @@ trait NerdleGuessableGenerator {
   }
 
   def generateOneOpEqs(): Seq[NerdleEquation] = {
-    def createExpression(operand1: Int, operator: Char, operand2: Int): OperatorExpr = {
-      OperatorExpr(IntExpr(operand1), operator, IntExpr(operand2))
+    def createExpression(operand1: Int, operator: NerdleOperator, operand2: Int): OperatorExpr = {
+      OperatorExpr(IntValueExpr(operand1), operator, IntValueExpr(operand2))
     }
 
     for {
@@ -29,11 +29,11 @@ trait NerdleGuessableGenerator {
   }.flatten
 
   def generateTwoOpEqs(): Seq[NerdleEquation] = {
-    def createExpression(operand1: Int, operator1: Char, operand2: Int, operator2: Char, operand3: Int): OperatorExpr = {
+    def createExpression(operand1: Int, operator1: NerdleOperator, operand2: Int, operator2: Char, operand3: Int): OperatorExpr = {
       if ((operator2 == Multiply || operator2 == Divide) && (operator1 == Add || operator1 == Subtract)) {
-        OperatorExpr(IntExpr(operand1), operator1, OperatorExpr(IntExpr(operand2), operator2, IntExpr(operand3)))
+        OperatorExpr(IntValueExpr(operand1), operator1, OperatorExpr(IntValueExpr(operand2), operator2, IntValueExpr(operand3)))
       }
-      else OperatorExpr(OperatorExpr(IntExpr(operand1), operator1, IntExpr(operand2)), operator2, IntExpr(operand3) )
+      else OperatorExpr(OperatorExpr(IntValueExpr(operand1), operator1, IntValueExpr(operand2)), operator2, IntValueExpr(operand3) )
     }
 
     val digitRanges = List((1, 1, 1, 2), (1, 1, 2, 1), (1, 2, 1, 1), (2, 1, 1, 1))

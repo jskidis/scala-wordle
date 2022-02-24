@@ -3,10 +3,6 @@ package com.skidis.wordle
 import nerdle.NerdleOperator.{Add, Divide, Multiply, Subtract}
 
 package object nerdle {
-  val inputLength: Int = 8
-  val validResultChars: Seq[Char] = validBlockChars
-  val valueGuessChars: Seq[Char] = ('a' to 'z') ++ ('A' to 'Z')
-
   object NerdleOperator extends Enumeration {
     type NerdleOperator = Char
     val Add = '+'
@@ -15,6 +11,10 @@ package object nerdle {
     val Divide = '/'
   }
   val operators = List(Add, Subtract, Multiply, Divide)
+
+  val inputLength: Int = 8
+  val validResultChars: Seq[Char] = validBlockChars
+  val validGuessChars: Seq[Char] = ('0' to '9') ++ operators + "="
 
   case class NerdleEquation(expr: OperatorExpr) extends XordlePhrase {
     override def phrase: String = s"${expr.toString}=${expr.value}"
