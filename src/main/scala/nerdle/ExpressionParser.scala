@@ -1,11 +1,18 @@
 package com.skidis.wordle
 package nerdle
 
+import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract}
+
 import scala.annotation.tailrec
 
 // I could have built a more generic version, but since nerdle expressions are limited to
 // 1 or 2 operators, no parenthesis, and =-*/, get built a simple one based on those constraints
 trait ExpressionParser {
+  trait ExpressionToken
+  case class OperatorToken(operator: NerdleOperator) extends ExpressionToken
+  case class NumberToken(value: Int) extends ExpressionToken
+  case class InvalidToken(reason: String) extends ExpressionToken
+
   val invalidCharMsg = "Equations may only contain digits and operators"
   val malformedExprMsg = "The expression was not formed as expected"
   val tooManyOpsMsg = "The expression can only contain one or two operators"
@@ -13,63 +20,94 @@ trait ExpressionParser {
   val leadingZeroMsg = "Expression can not have leading zeros"
 
   def parseExpression(text: String): Either[String, IntExpression] = {
+    def getValueTokens(tokens: List[ExpressionToken]): List[NumberToken] = tokens.flatMap {
+      case nt: NumberToken => Option(nt)
+      case _ => None
+    }
+    def getOperatorTokens(tokens: List[ExpressionToken]): List[OperatorToken] = tokens.flatMap {
+      case ot: OperatorToken => Option(ot)
+      case _ => None
+    }
+
     val tokens = tokenize(text)
     validateTokens(tokens) match {
       case Some(msg) => Left(msg)
       case None =>
-        val expr = createExprFromTokens(tokens)
+        val expr = createExprFromTokens(getValueTokens(tokens), getOperatorTokens(tokens))
         if (!expr.isValid) Left(notIntExprMsg) else Right(expr)
     }
   }
 
-  private def tokenize(text: String): List[String] = {
+  private def tokenize(text: String): List[ExpressionToken] = {
     @tailrec
-    def recurse(chars: String, currToken: String, tokenAcc: List[String]): List[String] = {
+    def recurse(chars: String, currToken: String, tokenAcc: List[ExpressionToken]): List[ExpressionToken] = {
       if (chars.isEmpty) {
         if (currToken.isEmpty) tokenAcc
-        else tokenAcc :+ currToken
+        else tokenAcc :+ generateNumberToken(currToken)
       }
       else if (operators.contains(chars.head)) {
-        if(currToken.isEmpty) recurse(chars.tail, currToken = "", tokenAcc :+ chars.head.toString)
-        else recurse(chars.tail, currToken = "", tokenAcc :+ currToken :+ chars.head.toString)
+        if(currToken.isEmpty) recurse(chars.tail, currToken = "", tokenAcc :+ OperatorToken(chars.head))
+        else recurse(chars.tail, currToken = "", tokenAcc :+ generateNumberToken(currToken) :+ OperatorToken(chars.head))
       }
       else recurse(chars.tail, currToken + chars.head, tokenAcc)
     }
+
+    def generateNumberToken(token: String): ExpressionToken = {
+      token.toIntOption match {
+        case None => InvalidToken(invalidCharMsg)
+        case Some(value) =>
+          if(token.length > 1 && token.head == '0') InvalidToken(leadingZeroMsg)
+          else NumberToken(value)
+      }
+    }
+
     recurse(text, currToken = "", tokenAcc = Nil)
   }
 
-  private def validateTokens(tokens: List[String]): Option[String] = {
-    def isTokenF(indexes: List[Int], pred: String => Boolean): Boolean = {
-      indexes.exists(idx => tokens.size > idx && pred(tokens(idx)))
+  private def validateTokens(tokens: List[ExpressionToken]): Option[String] = {
+    def tokensCorrectByPosition(): Boolean = tokens.zipWithIndex.forall {
+      case (_: NumberToken, idx) if idx % 2 == 0 => true
+      case (_:OperatorToken, idx) if idx % 2 == 1 => true
+      case _ => false
     }
 
-    if(!tokens.forall { t => t.forall { ch => validGuessChars.contains(ch) } }) Option(invalidCharMsg)
-    else if (isTokenF(List(1, 3), { s: String => s.head.isDigit })) Option (malformedExprMsg)
-    else if (isTokenF(List(0, 2, 4), { s: String => s.toIntOption.isEmpty})) Option(malformedExprMsg)
+    val badTokenReasons = tokens.flatMap {
+      case it: InvalidToken => Option(it.reason)
+      case _ => None
+    }
+
+    if (badTokenReasons.nonEmpty) Option(badTokenReasons.mkString("\n"))
+    else if (!tokensCorrectByPosition()) Option (malformedExprMsg)
     else if (tokens.size != 3 && tokens.size != 5) Option(tooManyOpsMsg)
-    else if (isTokenF(List(0, 2, 4), { s: String => s.length > 1 && s.head == '0'})) Option(leadingZeroMsg)
     else None
   }
 
-  private def createExprFromTokens(tokens: List[String]): OperatorExpr = {
-    def createOneOpExpr(val1: Int, op: Char, val2: Int) = {
-      OperatorExpr(IntValueExpr(val1), op, IntValueExpr(val2))
+  private def createExprFromTokens(valTokens: List[NumberToken], opTokens: List[OperatorToken]): OperatorExpr = {
+    def createOneOpExpr(val1: NumberToken, op: OperatorToken, val2: NumberToken) = {
+      OperatorExpr(IntValueExpr(val1.value), op.operator, IntValueExpr(val2.value))
     }
-    def createLeftExpr(val1: Int, op1: Char, val2: Int, op2: Char, val3: Int) = {
-      OperatorExpr(OperatorExpr(IntValueExpr(val1), op1, IntValueExpr(val2)), op2, IntValueExpr(val3))
+    def createLeftExpr(val1: NumberToken, op1: OperatorToken, val2: NumberToken, op2: OperatorToken, val3: NumberToken) = {
+      OperatorExpr(
+        OperatorExpr(IntValueExpr(val1.value), op1.operator, IntValueExpr(val2.value)),
+        op2.operator,
+        IntValueExpr(val3.value))
     }
-    def createRightExpr(val1: Int, op1: Char, val2: Int, op2: Char, val3: Int) = {
-      OperatorExpr(IntValueExpr(val1), op1, OperatorExpr(IntValueExpr(val2), op2, IntValueExpr(val3)))
+    def createRightExpr(val1: NumberToken, op1: OperatorToken, val2: NumberToken, op2: OperatorToken, val3: NumberToken) = {
+      OperatorExpr(
+        IntValueExpr(val1.value),
+        op1.operator,
+        OperatorExpr(IntValueExpr(val2.value), op2.operator, IntValueExpr(val3.value)))
     }
 
-    if (tokens.size == 3) {
-      createOneOpExpr(tokens.head.toInt, tokens(1).head, tokens(2).toInt)
+    if (opTokens.size == 1) {
+      createOneOpExpr(valTokens(0), opTokens(0), valTokens(1))
     }
-    else if (tokens(1).head == '*' || tokens(1).head == '/' || tokens(3).head == '+' || tokens(3).head == '-') {
-      createLeftExpr(tokens.head.toInt, tokens(1).head, tokens(2).toInt, tokens(3).head, tokens(4).toInt)
+    else if (opTokens(0).operator == Multiply || opTokens(0).operator == Divide ||
+      opTokens(1).operator == Add || opTokens(1).operator == Subtract) {
+      createLeftExpr(valTokens(0), opTokens(0), valTokens(1), opTokens(1), valTokens(2))
     }
     else {
-      createRightExpr(tokens.head.toInt, tokens(1).head, tokens(2).toInt, tokens(3).head, tokens(4).toInt)
+      createRightExpr(valTokens(0), opTokens(0), valTokens(1), opTokens(1), valTokens(2))
     }
   }
 }
