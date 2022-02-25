@@ -19,7 +19,7 @@ trait ExpressionParser {
   val notIntExprMsg = "The expression is not a valid integer expression"
   val leadingZeroMsg = "Expression can not have leading zeros"
 
-  def parseExpression(text: String): Either[String, IntExpression] = {
+  def parseExpression(text: String): Either[String, OperatorExpr] = {
     def getValueTokens(tokens: List[ExpressionToken]): List[NumberToken] = tokens.flatMap {
       case nt: NumberToken => Option(nt)
       case _ => None
