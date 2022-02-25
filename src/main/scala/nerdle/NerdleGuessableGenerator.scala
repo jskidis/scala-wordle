@@ -52,12 +52,12 @@ trait NerdleGuessableGenerator {
 
   private def generateEquation(expr: OperatorExpr, resultDigits: Int): Option[NerdleEquation] = {
     if (!expr.isValid) None
-    else if (!rangeFromNumDigits(resultDigits).contains(expr.value)) None
+    else if (!rangeFromNumDigits(resultDigits, allowZero = true).contains(expr.value)) None
     else Option(NerdleEquation(expr))
   }
 
-  private def rangeFromNumDigits(numDigits: Int): Seq[Int] = numDigits match {
-    case n if n==1 => 0 to 9
+  private def rangeFromNumDigits(numDigits: Int, allowZero: Boolean = false): Seq[Int] = numDigits match {
+    case n if n==1 => if(allowZero) 0 to 9 else 1 to 9
     case n if n==2 => 10 to 99 // ++ (-9 to -1)
     case n if n==3 => 100 to 999 // ++ (-99 to -10)
     case _ => 1000 to 9999 // ++ (-999 to -100)

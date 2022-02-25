@@ -1,11 +1,9 @@
 package com.skidis.wordle
 
-import BlockColor.Green
-
 import scala.annotation.tailrec
 
 trait XordleProcessor extends SolveStrategy with GuessRetriever with ColorPatternRetriever with Writer {
-  val winningColorPattern = List(Green, Green, Green, Green, Green)
+  def winningColorPattern: ColorPattern
 
   def process(wordSet: WordSet, suggestion: String): List[(String, ColorPattern)] = {
     processRecurse(wordSet, suggestion)

@@ -1,6 +1,7 @@
 package com.skidis.wordle
 package wordle
 
+import BlockColor.Green
 import input.{GuessInput, ResultInput}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
@@ -33,7 +34,7 @@ object Wordle extends App with WordReader {
   def printWordleBlock(result: List[(String, ColorPattern)]): Unit = {
     println(List.fill(40)('*').mkString)
     println()
-    println(s"Wordle $wordleNumber ${if (result.size <= 6) result.size else "X"}/6")
+    println(s"Wordle $wordleNumber ${if (result.size <= 6) result.size else "X"}/6*")
     println()
     result.foreach { case (_, colorPattern) => println(colorPattern.mkString) }
     println()
@@ -42,6 +43,7 @@ object Wordle extends App with WordReader {
   trait InteractiveWordleProcessor extends XordleProcessor
     with GuessInput with ResultInput with WordleGuessValidator with WordleResulValidator {
 
+    override def winningColorPattern: ColorPattern = List.fill(5)(Green)
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
     override def writeString(s: String): Unit = Console.print(s)

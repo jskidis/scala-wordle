@@ -1,8 +1,7 @@
 package com.skidis.wordle
-package wordle
+package simulation
 
-import BlockColor.BlockColor
-import frequency.CachingWordColorPatternGenerator
+import BlockColor.{BlockColor, Green}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -10,7 +9,7 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 import scala.io.Source
 
-object WordleProcessorSimulation extends App with WordReader {
+object WordleSimulation extends App with WordReader with SimResultsPrinter {
   case class Parameters(startWord: String, wordSet: WordSet, processorFactory: String => SimulationWordleProcessor)
 
   val parameters = (if (args.length > 0) args(0) else "") match {
@@ -46,24 +45,7 @@ object WordleProcessorSimulation extends App with WordReader {
     result
   }
 
-  def printResults(results: List[List[(String, List[BlockColor])]]): Unit = {
-    val groupedByGuesses = results.groupBy {
-      case Nil => -1
-      case result => result.size
-    }.toList.sortWith(_._1 < _._1)
-
-    groupedByGuesses.foreach {
-      case (numGuesses, results) => println(s"$numGuesses Guesses: ${results.size}")
-    }
-  }
-
-  abstract class SimulationWordleProcessor(answer: String) extends XordleProcessor with CachingWordColorPatternGenerator {
-    override def retrieveColorPattern(guess: String): ColorPattern = generateStringColorPattern(answer, guess)
-
-    override def retrieveGuess(suggestion: String): String = suggestion
-
-    override def writeLine(line: String): Unit = {}
-
-    override def writeString(s: String): Unit = {}
+  abstract class SimulationWordleProcessor(answer: String) extends SimulationProcessor(answer) {
+    override def winningColorPattern: ColorPattern = List.fill(5)(Green)
   }
 }

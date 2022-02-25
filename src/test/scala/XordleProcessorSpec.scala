@@ -27,6 +27,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     // Writer
     override def writeLine(s: String): Unit = {}
     override def writeString(s: String): Unit = {}
+    override def winningColorPattern: ColorPattern = List.fill(5)(Green)
   }
 
   val (word1, word2, word3, word4, word5, word6, word7, word8) = (
