@@ -11,10 +11,10 @@ import scala.concurrent.{Await, Future}
 import scala.util.Random
 
 object NerdleSimulation extends App with SimResultsPrinter {
-  val startEquation = "3+9-2=10"
+  val startEquation = "58-42=16"
   val equations = NerdleGuessableGenerator.generatateEquations()
+  val answers = Random.shuffle(equations)
 
-  val answers = Random.shuffle(equations).take(2309)
   val startTimestamp = System.currentTimeMillis()
 
   val results: List[List[(String, List[BlockColor])]] = Await.result(
