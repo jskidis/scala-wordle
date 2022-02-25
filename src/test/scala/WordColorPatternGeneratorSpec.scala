@@ -45,5 +45,10 @@ class WordColorPatternGeneratorSpec extends AnyFunSpec with Matchers {
       // The second A should be black, since the first A is already yellow and there's only one A in TRACE
       WordColorPatternGenerator.generateStringColorPattern("TARAN", "AAALN") mustBe List(Yellow, Green, Blank, Blank, Green)
     }
+
+    it("handles the situation found from a rare use case found in the wild") {
+      val pattern = WordColorPatternGenerator.generateStringColorPattern("67*7=469", "49-7*6=7")
+      pattern mustBe List(Yellow, Yellow, Blank, Green, Yellow, Yellow, Yellow, Yellow)
+    }
   }
 }

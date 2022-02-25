@@ -15,9 +15,9 @@ trait WordColorPatternGenerator {
     // If the letter is yellow the letter at that position is returned in the tuple
     //    otherwise it is substituted with * so they can be ignore in the next pass
     val firstPass = word.zipWithIndex.map {
-      case (letter, index) if letter == answer(index) => (Green, index, '*')
+      case (letter, index) if letter == answer(index) => (Green, index, '#')
       case (letter, index) if answer.contains(letter) => (Yellow, index, letter)
-      case (_, index) => (Blank, index, '*')
+      case (_, index) => (Blank, index, '#')
     }.toList
 
     // Generate version of word that only includes letters that were initially marked as yellow
@@ -26,7 +26,7 @@ trait WordColorPatternGenerator {
     // Generate a version of the answer that only include letters that were marked as yellow in the word but
     // excluding any letter at the positions that were marked as green in the word
     val yellowOnlyAnswer = answer.zipWithIndex.map { case (letter, index) =>
-      if (yellowOnlyWord.contains(letter) && firstPass(index)._1 != Green) letter else '*'
+      if (yellowOnlyWord.contains(letter) && firstPass(index)._1 != Green) letter else '#'
     }.mkString
 
     // loop through first pass results, if the first pass marked the letter as green or blank just return the color
