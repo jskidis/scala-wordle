@@ -19,5 +19,6 @@ trait TestHintProps extends HintProps {
   override def inPosHint: InPosHint = AInPosHint
   override def inWordHint: InWordHint = AInWordHint
   override def missHint: MissHint = AMissHint
+  override def wordSize: Int = 5
 }
 object TestHintProps extends TestHintProps

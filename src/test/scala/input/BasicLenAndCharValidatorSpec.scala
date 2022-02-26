@@ -31,5 +31,3 @@ class BasicLenAndCharValidatorSpec extends AnyFunSpec with Matchers  {
     }
   }
 }
-
-

@@ -35,7 +35,7 @@ object Wordle extends App with WordReader {
     println()
     println(s"Wordle $wordleNumber ${if (result.size <= 6) result.size else "X"}/6*")
     println()
-    result.foreach { case (_, colorPattern) => println(colorPattern.mkString) }
+    result.foreach { case (_, wordHints) => println(wordHints.mkString) }
     println()
   }
 
@@ -43,11 +43,10 @@ object Wordle extends App with WordReader {
     with GuessInput with ResultInput with WordleGuessValidator with WordleResulValidator {
 
     override def hintProps: HintProps = WordleHintProps
-    override def winningColorPattern: WordHints = List.fill(5)(hintProps.inPosHint)
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
     override def writeString(s: String): Unit = Console.print(s)
     override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
-    override def retrieveColorPattern(guess: String): WordHints = generatePattern(hintProps)
+    override def retrieveWordHints(guess: String): WordHints = generatePattern(hintProps)
   }
 }

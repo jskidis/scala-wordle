@@ -13,7 +13,6 @@ package object nerdle {
   val operators = List(Add, Subtract, Multiply, Divide)
 
   val inputLength: Int = 8
-  val validResultChars: Seq[Char] = NerdleHintProps.inputChars
   val validGuessChars: Seq[Char] = ('0' to '9') ++ operators + "="
 
   case class NerdleEquation(expr: OperatorExpr) extends XordlePhrase {
@@ -40,7 +39,7 @@ package object nerdle {
     override def inPosHint: InPosHint = NerdleInPosHint
     override def inWordHint: InWordHint = NerdleInWordHint
     override def missHint: MissHint = NerdleMissHint
+    override val wordSize: Int = inputLength
   }
   object NerdleHintProps extends NerdleHintProps
-
 }

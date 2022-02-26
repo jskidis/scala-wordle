@@ -1,13 +1,13 @@
 package com.skidis.wordle
 package simulation
 
-import frequency.CachingWordColorPatternGenerator
+import frequency.CachingWordHintsGenerator
 
-abstract class SimulationProcessor(answer: String) extends XordleProcessor
-  with CachingWordColorPatternGenerator
+abstract class SimulationProcessor(answer: String, hintPropsVal: HintProps) extends XordleProcessor
+  with CachingWordHintsGenerator
 {
-  override def hintProps: HintProps = TestHintProps
-  override def retrieveColorPattern(guess: String): WordHints = generateStringColorPattern(answer, guess, hintProps)
+  override def hintProps: HintProps = hintPropsVal
+  override def retrieveWordHints(guess: String): WordHints = generateWordWordHints(answer, guess, hintProps)
   override def retrieveGuess(suggestion: String): String = suggestion
   override def writeLine(line: String): Unit = {}
   override def writeString(s: String): Unit = {}

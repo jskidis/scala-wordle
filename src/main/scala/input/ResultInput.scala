@@ -3,7 +3,7 @@ package input
 
 import scala.annotation.tailrec
 
-trait ResultInput extends LineReader with Writer with ResultValidator with InputToColorsConversion {
+trait ResultInput extends LineReader with Writer with ResultValidator with InputToHintConversion {
   def resultPrompt: String = "Enter Results: "
 
   @tailrec
@@ -13,7 +13,7 @@ trait ResultInput extends LineReader with Writer with ResultValidator with Input
 
     if (input.isEmpty) Nil
     else validateResult(input) match {
-      case None => convertInputToColors(input, hintProps)
+      case None => convertInputToHints(input, hintProps)
       case Some(error) =>
         writeLine(error)
         generatePattern(hintProps)

@@ -4,9 +4,9 @@ trait WordPatternMatcher {
   // Proactively not doing case insensitive here for performance reasons, may revisit
   def doesWordMatch(word: String, wordPattern: List[(Char, HintBlock)]): Boolean = {
 
-    // If a the word pattern contains a Blank letter doesn't mean that the word is excluded if it contains that letter
-    // Since the word pattern could still contain a Green or Yellow (or both or multiple) for that letter
-    // As long as the word doesn't have more of the letter than the number of Green or Yellow of that letter, it's good
+    // If a the word hints contain a miss letter doesn't mean that the word is excluded if it contains that letter
+    // since the word pattern could still contain a in-position or in-word (or both or multiple) for that letter
+    // As long as the word doesn't have more of the letter than the number of in-position or in-wordF of that letter, it's good
     def letterSurpassMaxCount(letter: Char): Boolean = {
       val letterCount = word.count { l => l == letter }
       val maxCount = wordPattern.count {

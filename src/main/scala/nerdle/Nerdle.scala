@@ -22,7 +22,7 @@ object Nerdle extends App {
     println()
     println(s"nerdlegame $wordleNumber ${if (result.size <= 6) result.size else "X"}/6")
     println()
-    result.foreach { case (_, colorPattern) => println(colorPattern.mkString) }
+    result.foreach { case (_, wordHints) => println(wordHints.mkString) }
     println()
   }
 
@@ -30,11 +30,10 @@ object Nerdle extends App {
     with GuessInput with ResultInput with NerdleGuessValidator with NerdleResultValidator {
 
     override def hintProps: HintProps = NerdleHintProps
-    override def winningColorPattern: WordHints = List.fill(8)(hintProps.inPosHint)
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
     override def writeString(s: String): Unit = Console.print(s)
     override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
-    override def retrieveColorPattern(guess: String): WordHints = generatePattern(hintProps)
+    override def retrieveWordHints(guess: String): WordHints = generatePattern(hintProps)
   }
 }

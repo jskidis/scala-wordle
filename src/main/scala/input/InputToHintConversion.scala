@@ -1,8 +1,8 @@
 package com.skidis.wordle
 package input
 
-trait InputToColorsConversion {
-  def convertInputToColors(input: String, hintProps: HintProps): WordHints = {
+trait InputToHintConversion {
+  def convertInputToHints(input: String, hintProps: HintProps): WordHints = {
     input.map { ch =>
       if (ch.toUpper == hintProps.inPosHint.inputChar.toUpper) hintProps.inPosHint
       else if (ch.toUpper == hintProps.inWordHint.inputChar.toUpper) hintProps.inWordHint
@@ -11,4 +11,4 @@ trait InputToColorsConversion {
   }
 }
 
-object InputToColorsConversion extends InputToColorsConversion
+object InputToHintConversion extends InputToHintConversion

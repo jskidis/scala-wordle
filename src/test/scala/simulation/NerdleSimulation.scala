@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package simulation
 
-import nerdle.{NerdleGuessableGenerator, NerdleHintProps, NerdleInPosHint, inputLength}
+import nerdle.{NerdleGuessableGenerator, NerdleHintProps}
 import strategy.ClusterStrategy
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -25,13 +25,8 @@ object NerdleSimulation extends App with SimResultsPrinter {
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
 
   def runWordle(answer: String): Future[List[(String, WordHints)]] = Future {
-    val processor = new SimulationNerdleProcessor(answer) with ClusterStrategy
+    val processor = new SimulationProcessor(answer, NerdleHintProps) with ClusterStrategy
     val result = processor.process(equations, startEquation)
     result
-  }
-
-  abstract class SimulationNerdleProcessor(answer: String) extends SimulationProcessor(answer) {
-    override def hintProps: HintProps = NerdleHintProps
-    override def winningColorPattern: WordHints = List.fill(inputLength)(NerdleInPosHint)
   }
 }

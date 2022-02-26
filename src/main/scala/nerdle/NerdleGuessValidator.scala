@@ -7,7 +7,7 @@ trait NerdleGuessValidator extends BasicLenAndCharValidator with GuessValidator 
   override def invalidCharMsg(validChars: Seq[Char]) = s"Input may only contain letters"
 
   override def validateGuess(input: String): Option[String] = {
-    validateGuess(input, inputLength, validGuessChars, validResultChars) match {
+    validateGuess(input, inputLength, validGuessChars, NerdleHintProps.inputChars) match {
       case Some(error) => Some(error)
       case None => parseEquation(input) match {
         case Left(error) => Some(error)

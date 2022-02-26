@@ -12,13 +12,15 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
   class TestXordleProcessor(wordHints: List[WordHints]) extends XordleProcessor {
     var cycles = 0
 
+    val hintProps: HintProps = TestHintProps
+
     // SolveStrategy
-    override def reduceWordSet(wordSet: WordSet, currentGuess: String, WordHints: WordHints): WordSet = wordSet.tail
+    override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
     override def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String) = (remainingWords.head.phrase, "")
 
     // GuessRetriever and WordHintsRetriever
     override def retrieveGuess(suggestion: String): String = suggestion
-    override def retrieveColorPattern(guess: String): WordHints = {
+    override def retrieveWordHints(guess: String): WordHints = {
       cycles += 1
       wordHints(cycles -1)
     }
@@ -26,9 +28,6 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     // Writer
     override def writeLine(s: String): Unit = {}
     override def writeString(s: String): Unit = {}
-
-    override def hintProps: HintProps = TestHintProps
-    override def winningColorPattern: WordHints = List.fill(5)(AInPosHint)
   }
 
   val (word1, word2, word3, word4, word5, word6, word7, word8) = (

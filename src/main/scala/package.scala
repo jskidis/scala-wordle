@@ -20,12 +20,12 @@ package object wordle {
     def retrieveGuess(suggestion: String): String
   }
 
-  trait ColorPatternRetriever {
-    def retrieveColorPattern(guess: String): WordHints
+  trait WordHintsRetriever {
+    def retrieveWordHints(guess: String): WordHints
   }
 
   trait SolveStrategy {
-    def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: WordHints): WordSet
+    def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
     def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String)
   }
 

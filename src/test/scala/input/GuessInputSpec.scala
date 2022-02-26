@@ -80,4 +80,3 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
     }
   }
 }
-
