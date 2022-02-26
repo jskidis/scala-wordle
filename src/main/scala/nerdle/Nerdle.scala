@@ -1,7 +1,6 @@
 package com.skidis.wordle
 package nerdle
 
-import BlockColor.Green
 import input.{GuessInput, ResultInput}
 import strategy.ClusterStrategy
 
@@ -18,7 +17,7 @@ object Nerdle extends App {
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
 
-  def printWordleBlock(result: List[(String, ColorPattern)]): Unit = {
+  def printWordleBlock(result: List[(String, WordHints)]): Unit = {
     println(List.fill(40)('*').mkString)
     println()
     println(s"nerdlegame $wordleNumber ${if (result.size <= 6) result.size else "X"}/6")
@@ -30,11 +29,12 @@ object Nerdle extends App {
   trait InteractiveNerdleProcessor extends XordleProcessor
     with GuessInput with ResultInput with NerdleGuessValidator with NerdleResultValidator {
 
-    override def winningColorPattern: ColorPattern = List.fill(8)(Green)
+    override def hintProps: HintProps = NerdleHintProps
+    override def winningColorPattern: WordHints = List.fill(8)(hintProps.inPosHint)
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
     override def writeString(s: String): Unit = Console.print(s)
     override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
-    override def retrieveColorPattern(guess: String): ColorPattern = generatePattern()
+    override def retrieveColorPattern(guess: String): WordHints = generatePattern(hintProps)
   }
 }

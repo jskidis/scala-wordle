@@ -1,16 +1,12 @@
 package com.skidis.wordle
 package input
 
-import BlockColor.{Blank, Green, Yellow}
-
 trait InputToColorsConversion {
-  def convertInputToColors(input: String): ColorPattern = {
+  def convertInputToColors(input: String, hintProps: HintProps): WordHints = {
     input.map { ch =>
-      ch.toUpper match {
-        case `greenChar` => Green
-        case `yellowChar` => Yellow
-        case _ => Blank
-      }
+      if (ch.toUpper == hintProps.inPosHint.inputChar.toUpper) hintProps.inPosHint
+      else if (ch.toUpper == hintProps.inWordHint.inputChar.toUpper) hintProps.inWordHint
+      else hintProps.missHint
     }.toList
   }
 }

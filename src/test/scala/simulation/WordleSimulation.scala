@@ -1,8 +1,8 @@
 package com.skidis.wordle
 package simulation
 
-import BlockColor.{BlockColor, Green}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
+import wordle.{WordleHintProps, WordleInPosHint}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
@@ -30,7 +30,7 @@ object WordleSimulation extends App with WordReader with SimResultsPrinter {
   val answers = readWords(Source.fromResource("answers.txt"))
   val startTimestamp = System.currentTimeMillis()
 
-  val results: List[List[(String, List[BlockColor])]] = Await.result(
+  val results: List[List[(String, WordHints)]] = Await.result(
     Future.sequence(answers.map(answer => runWordle(answer.phrase))), 1.hour
   ).toList
   printResults(results)
@@ -38,7 +38,7 @@ object WordleSimulation extends App with WordReader with SimResultsPrinter {
   val endTimestamp = System.currentTimeMillis()
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
 
-  def runWordle(answer: String): Future[List[(String, List[BlockColor])]] = Future {
+  def runWordle(answer: String): Future[List[(String, WordHints)]] = Future {
     val processor = parameters.processorFactory(answer)
     val result = processor.process(parameters.wordSet, parameters.startWord)
     //    println("Processed")
@@ -46,6 +46,7 @@ object WordleSimulation extends App with WordReader with SimResultsPrinter {
   }
 
   abstract class SimulationWordleProcessor(answer: String) extends SimulationProcessor(answer) {
-    override def winningColorPattern: ColorPattern = List.fill(5)(Green)
+    override def hintProps: HintProps = WordleHintProps
+    override def winningColorPattern: WordHints = List.fill(5)(WordleInPosHint)
   }
 }

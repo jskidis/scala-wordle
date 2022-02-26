@@ -1,10 +1,8 @@
 package com.skidis.wordle
 package simulation
 
-import BlockColor.BlockColor
-
 trait SimResultsPrinter {
-  def printResults(results: List[List[(String, List[BlockColor])]]): Unit = {
+  def printResults(results: List[List[(String, WordHints)]]): Unit = {
     val groupedByGuesses = results.groupBy {
       case Nil => -1
       case result => result.size

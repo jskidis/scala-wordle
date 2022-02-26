@@ -4,10 +4,10 @@ package frequency
 import scala.collection.mutable
 
 trait CachingWordColorPatternGenerator extends WordColorPatternGenerator {
-  val patternCache: mutable.Map[(XordlePhrase, XordlePhrase), ColorPattern] =
-    collection.mutable.Map[(XordlePhrase, XordlePhrase), ColorPattern]()
+  val patternCache: mutable.Map[(XordlePhrase, XordlePhrase), WordHints] =
+    collection.mutable.Map[(XordlePhrase, XordlePhrase), WordHints]()
 
-  override def generateWordColorPattern(answer: XordlePhrase, word: XordlePhrase): ColorPattern = {
-    patternCache.getOrElseUpdate((answer, word), super.generateWordColorPattern(answer, word))
+  override def generateWordColorPattern(answer: XordlePhrase, word: XordlePhrase, hintProps: HintProps): WordHints = {
+    patternCache.getOrElseUpdate((answer, word), super.generateWordColorPattern(answer, word, hintProps))
   }
 }

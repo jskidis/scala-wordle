@@ -1,25 +1,12 @@
 package com.skidis
 
-import com.skidis.wordle.BlockColor.BlockColor
-
 package object wordle {
   trait XordlePhrase extends Ordered[XordlePhrase] {
     def phrase: String
   }
 
-  type ColorPattern = List[BlockColor]
+  type WordHints = List[HintBlock]
   type WordSet = Set[_ <: XordlePhrase]
-
-  object BlockColor extends Enumeration {
-    type BlockColor = String
-    val Green = "\uD83D\uDFE9"
-    val Yellow = "\uD83D\uDFE8"
-    val Blank = "\u2B1C"
-  }
-
-  val (greenChar, yellowChar, blankChar) = ('G', 'Y', 'B')
-  val validBlockChars = List(greenChar, yellowChar, blankChar,
-    greenChar.toLower, yellowChar.toLower, blankChar.toLower)
 
   trait ResultValidator {
     def validateResult(input: String): Option[String]
@@ -34,12 +21,12 @@ package object wordle {
   }
 
   trait ColorPatternRetriever {
-    def retrieveColorPattern(guess: String): ColorPattern
+    def retrieveColorPattern(guess: String): WordHints
   }
 
   trait SolveStrategy {
-    def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: ColorPattern): WordSet
-    def generateNextGuess(remainingWords: WordSet): (String, String)
+    def reduceWordSet(wordSet: WordSet, currentGuess: String, colorPattern: WordHints): WordSet
+    def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String)
   }
 
   trait LineReader {

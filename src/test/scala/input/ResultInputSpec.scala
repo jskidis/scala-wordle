@@ -1,16 +1,18 @@
 package com.skidis.wordle
 package input
 
-import BlockColor.{Blank, Green, Yellow}
-
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
 
 import scala.collection.mutable.ListBuffer
 
 class ResultInputSpec extends AnyFunSpec with Matchers {
-  val validInput:String = List(greenChar, yellowChar, blankChar, greenChar, yellowChar).mkString
-  val validInputColors = List(Green, Yellow, Blank, Green, Yellow)
+  val inPosChar: Char = AInPosHint.inputChar
+  val inWordChar: Char = AInWordHint.inputChar
+  val missChar: Char = AMissHint.inputChar
+
+  val validInput:String = List(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
+  val validInputColors = List(AInPosHint, AInWordHint, AMissHint, AInPosHint, AInWordHint)
 
   class TestBasicResultInput(inputs: List[String]) extends ResultInput {
     var linesRead = 0
@@ -35,7 +37,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
   describe("Gather Results") {
     it("returns results from reader when valid result is entered on first try") {
       val resultInput = new TestBasicResultInput(List(validInput))
-      val result = resultInput.generatePattern()
+      val result = resultInput.generatePattern(TestHintProps)
 
       // It should return a result and that result should be equal to "validResult" value
       result must not be empty
@@ -47,7 +49,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
     it("re-asks for results if not valid") {
       val resultInput = new TestBasicResultInput(List("x", validInput))
-      val result = resultInput.generatePattern()
+      val result = resultInput.generatePattern(TestHintProps)
 
       // It should return a result and that result should be equal to "validResult" value, it should have c
       result must not be empty
@@ -63,7 +65,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
     it("returns None if input is blank") {
       val resultInput = new TestBasicResultInput(List("g", "b", "", validInput)) // ignores last line (validResult) because empty line stopped it
-      val result = resultInput.generatePattern()
+      val result = resultInput.generatePattern(TestHintProps)
 
       // The result should be empty because it encountered an empty line before a valid value
       result mustBe empty

@@ -3,19 +3,21 @@ package com.skidis.wordle
 import scala.annotation.tailrec
 
 trait XordleProcessor extends SolveStrategy with GuessRetriever with ColorPatternRetriever with Writer {
-  def winningColorPattern: ColorPattern
 
-  def process(wordSet: WordSet, suggestion: String): List[(String, ColorPattern)] = {
+  def hintProps: HintProps
+  def winningColorPattern: WordHints
+
+  def process(wordSet: WordSet, suggestion: String): List[(String, WordHints)] = {
     processRecurse(wordSet, suggestion)
   }
 
   @tailrec
-  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: List[(String, ColorPattern)] = Nil)
-  : List[(String, ColorPattern)] = {
+  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: List[(String, WordHints)] = Nil)
+  : List[(String, WordHints)] = {
 
     writeLine(s"${List.fill(40)('*').mkString}")
 
-    val (currentGuess, colorPattern) =
+    val (currentGuess, colorPattern: WordHints) =
       if (wordSet.size == 1) (suggestion, winningColorPattern)
       else {
         val guess = retrieveGuess(suggestion)
@@ -38,7 +40,7 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with ColorPatter
       writeLine(s"Remaining Words: ${remainingWords.size}")
 
       // Determine next guess and start next iteration
-      val (nextGuess, info) = generateNextGuess(remainingWords)
+      val (nextGuess, info) = generateNextGuess(remainingWords, hintProps)
       writeLine(info)
       processRecurse(remainingWords, nextGuess, updatedGuesses)
     }

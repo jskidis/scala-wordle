@@ -1,7 +1,6 @@
 package com.skidis.wordle
 package wordle
 
-import BlockColor.Green
 import input.{GuessInput, ResultInput}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
@@ -31,7 +30,7 @@ object Wordle extends App with WordReader {
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
 
-  def printWordleBlock(result: List[(String, ColorPattern)]): Unit = {
+  def printWordleBlock(result: List[(String, WordHints)]): Unit = {
     println(List.fill(40)('*').mkString)
     println()
     println(s"Wordle $wordleNumber ${if (result.size <= 6) result.size else "X"}/6*")
@@ -43,11 +42,12 @@ object Wordle extends App with WordReader {
   trait InteractiveWordleProcessor extends XordleProcessor
     with GuessInput with ResultInput with WordleGuessValidator with WordleResulValidator {
 
-    override def winningColorPattern: ColorPattern = List.fill(5)(Green)
+    override def hintProps: HintProps = WordleHintProps
+    override def winningColorPattern: WordHints = List.fill(5)(hintProps.inPosHint)
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
     override def writeString(s: String): Unit = Console.print(s)
     override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
-    override def retrieveColorPattern(guess: String): ColorPattern = generatePattern()
+    override def retrieveColorPattern(guess: String): WordHints = generatePattern(hintProps)
   }
 }

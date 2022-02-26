@@ -6,36 +6,40 @@ import org.scalatest.matchers.must.Matchers
 
 class WordleResultValidatorSpec extends AnyFunSpec with Matchers {
   describe("Wordle Result Validator") {
+    val inPosChar: Char = AInPosHint.inputChar
+    val inWordChar: Char = AInWordHint.inputChar
+    val missChar: Char = AMissHint.inputChar
+
     it("returns an error if input is not ${resultLength} chars in length") {
-      WordleResulValidator.validateResult(List.fill(1)(greenChar).mkString) must not be empty
-      WordleResulValidator.validateResult(List.fill(8)(greenChar).mkString) must not be empty
-      WordleResulValidator.validateResult(List.fill(5)(greenChar).mkString) mustBe empty
+      WordleResulValidator.validateResult(List.fill(1)(inPosChar).mkString) must not be empty
+      WordleResulValidator.validateResult(List.fill(8)(inPosChar).mkString) must not be empty
+      WordleResulValidator.validateResult(List.fill(5)(inPosChar).mkString) mustBe empty
     }
 
     it("returns an error if any of characters in the string are 'g', 'y', or 'b'") {
       WordleResulValidator.validateResult(
-        List(greenChar, yellowChar, blankChar, '.', ',').mkString
+        List(inPosChar, inWordChar, missChar, '.', ',').mkString
       ) must not be empty
       WordleResulValidator.validateResult(
-        List('.', ',', greenChar, yellowChar, blankChar).mkString
+        List('.', ',', inPosChar, inWordChar, missChar).mkString
       ) must not be empty
       WordleResulValidator.validateResult(
-        List(greenChar, '.', yellowChar, ',', blankChar).mkString
+        List(inPosChar, '.', inWordChar, ',', missChar).mkString
       ) must not be empty
       WordleResulValidator.validateResult(
-        List(greenChar, yellowChar, blankChar, greenChar, yellowChar).mkString
+        List(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
       ) mustBe empty
     }
 
     it("ignores case for matching chars") {
       WordleResulValidator.validateResult(
-        List(greenChar.toUpper, yellowChar.toUpper, blankChar.toUpper, greenChar.toUpper, yellowChar.toUpper).mkString
+        List(inPosChar.toUpper, inWordChar.toUpper, missChar.toUpper, inPosChar.toUpper, inWordChar.toUpper).mkString
       ) mustBe empty
       WordleResulValidator.validateResult(
-        List(greenChar.toLower, yellowChar.toLower, blankChar.toLower, greenChar.toLower, yellowChar.toLower).mkString
+        List(inPosChar.toLower, inWordChar.toLower, missChar.toLower, inPosChar.toLower, inWordChar.toLower).mkString
       ) mustBe empty
       WordleResulValidator.validateResult(
-        List(greenChar.toUpper, yellowChar.toLower, blankChar.toUpper, greenChar.toLower, yellowChar.toUpper).mkString
+        List(inPosChar.toUpper, inWordChar.toLower, missChar.toUpper, inPosChar.toLower, inWordChar.toUpper).mkString
       ) mustBe empty
     }
   }
