@@ -7,7 +7,7 @@ trait InputToHintConversion {
       if (ch.toUpper == hintProps.inPosHint.inputChar.toUpper) hintProps.inPosHint
       else if (ch.toUpper == hintProps.inWordHint.inputChar.toUpper) hintProps.inWordHint
       else hintProps.missHint
-    }.toList
+    }
   }
 }
 

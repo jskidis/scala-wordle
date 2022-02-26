@@ -11,10 +11,10 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
   val inWordChar: Char = AInWordHint.inputChar
   val missChar: Char = AMissHint.inputChar
 
-  val validInput:String = List(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
-  val validInputColors = List(AInPosHint, AInWordHint, AMissHint, AInPosHint, AInWordHint)
+  val validInput: String = Seq(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
+  val validInputColors = Seq(AInPosHint, AInWordHint, AMissHint, AInPosHint, AInWordHint)
 
-  class TestBasicResultInput(inputs: List[String]) extends ResultInput {
+  class TestBasicResultInput(inputs: Vector[String]) extends ResultInput {
     var linesRead = 0
     var lineWritten = new ListBuffer[String]()
 
@@ -36,7 +36,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
 
   describe("Gather Results") {
     it("returns results from reader when valid result is entered on first try") {
-      val resultInput = new TestBasicResultInput(List(validInput))
+      val resultInput = new TestBasicResultInput(Vector(validInput))
       val result = resultInput.generatePattern(TestHintProps)
 
       // It should return a result and that result should be equal to "validResult" value
@@ -48,7 +48,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("re-asks for results if not valid") {
-      val resultInput = new TestBasicResultInput(List("x", validInput))
+      val resultInput = new TestBasicResultInput(Vector("x", validInput))
       val result = resultInput.generatePattern(TestHintProps)
 
       // It should return a result and that result should be equal to "validResult" value, it should have c
@@ -64,7 +64,7 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
     }
 
     it("returns None if input is blank") {
-      val resultInput = new TestBasicResultInput(List("g", "b", "", validInput)) // ignores last line (validResult) because empty line stopped it
+      val resultInput = new TestBasicResultInput(Vector("g", "b", "", validInput)) // ignores last line (validResult) because empty line stopped it
       val result = resultInput.generatePattern(TestHintProps)
 
       // The result should be empty because it encountered an empty line before a valid value

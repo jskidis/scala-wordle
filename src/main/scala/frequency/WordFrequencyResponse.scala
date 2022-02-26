@@ -18,12 +18,12 @@ object WordFrequencyResponse extends NgramProtocol {
 
   def retrieve(words: Seq[String])
     (implicit system: ActorSystem, materializer: Materializer, executionContext: ExecutionContextExecutor)
-  : Future[List[WordFrequency]] = {
+  : Future[Seq[WordFrequency]] = {
 
     val uri = baseUri.withQuery(Query("content" -> words.mkString(",")))
     for {
       response <- Http().singleRequest(HttpRequest(uri = uri))
-      unmarshalled <- Unmarshal(response.entity).to[List[NgramResponse]]
+      unmarshalled <- Unmarshal(response.entity).to[Seq[NgramResponse]]
     } yield unmarshalled.map {
       ngramFrequency => WordFrequency(ngramFrequency.ngram, ngramFrequency.timeseries.sum)
     }

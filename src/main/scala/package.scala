@@ -5,7 +5,7 @@ package object wordle {
     def phrase: String
   }
 
-  type WordHints = List[HintBlock]
+  type WordHints = Seq[HintBlock]
   type WordSet = Set[_ <: XordlePhrase]
 
   trait ResultValidator {

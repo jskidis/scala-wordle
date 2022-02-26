@@ -10,7 +10,7 @@ package object nerdle {
     val Multiply = '*'
     val Divide = '/'
   }
-  val operators = List(Add, Subtract, Multiply, Divide)
+  val operators = Seq(Add, Subtract, Multiply, Divide)
 
   val inputLength: Int = 8
   val validGuessChars: Seq[Char] = ('0' to '9') ++ operators + "="

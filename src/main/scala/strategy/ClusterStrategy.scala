@@ -6,7 +6,7 @@ trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPat
 
   override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = {
     // Create list of tuple with each letter of the current word and the hint for that letter
-    val wordPattern: List[(Char, HintBlock)] = currentGuess.toList zip wordHints
+    val wordPattern: Seq[(Char, HintBlock)] = currentGuess.toSeq zip wordHints
 
     // Eliminate words from set that don't fit word hints for current answer
     wordSet.filter { w: XordlePhrase => doesWordMatch(w.phrase, wordPattern) && w.phrase != currentGuess }
@@ -19,9 +19,9 @@ trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPat
     (nextGuess.word.phrase, s"Most Unique Clusters: ${nextGuess.clusterCount}")
   }
 
-  def generateClusters(remainingWords: WordSet, hintProps: HintProps): List[WordClusterCount] = {
+  def generateClusters(remainingWords: WordSet, hintProps: HintProps): Vector[WordClusterCount] = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
-    remainingWords.toList.map { potentialAnswer: XordlePhrase =>
+    remainingWords.toVector.map { potentialAnswer: XordlePhrase =>
       val clusterCount = remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word, hintProps) }.size
       WordClusterCount tupled(potentialAnswer, clusterCount)
     }

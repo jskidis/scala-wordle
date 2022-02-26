@@ -12,10 +12,10 @@ object WordFrequencyGenerator extends App  {
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-  val answers = Source.fromResource("answers.txt").getLines.map(w => w.toUpperCase()).toList
+  val answers = Source.fromResource("answers.txt").getLines.map(w => w.toUpperCase()).toVector
 
-  val words = Source.fromResource("guessable-words.txt").getLines.map(w => w.toUpperCase()).toList
-  val wordChunks: List[List[String]] = words.grouped(500).toList
+  val words = Source.fromResource("guessable-words.txt").getLines.map(w => w.toUpperCase())
+  val wordChunks = words.grouped(500)
 //  val words: Iterator[String] = Source.fromResource("answers.txt").getLines.map(w => w.toUpperCase())
 //  val wordChunks = words.grouped(80)
 
@@ -24,7 +24,7 @@ object WordFrequencyGenerator extends App  {
   val chunkedResponses  = Future.sequence(
     wordChunks.map { wordChunk => WordFrequencyResponse.retrieve(wordChunk) }
   )
-  val frequencies: List[WordFrequency] = Await.result(chunkedResponses, 60.minute).flatten
+  val frequencies = Await.result(chunkedResponses, 60.minute).flatten
 
   val endTime = System.currentTimeMillis()
   println(s"${(endTime - startTime) / 1000.0} ")

@@ -9,7 +9,7 @@ import scala.collection.immutable.ListSet
 
 class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
-  class TestXordleProcessor(wordHints: List[WordHints]) extends XordleProcessor {
+  class TestXordleProcessor(wordHints: Seq[WordHints]) extends XordleProcessor {
     var cycles = 0
 
     val hintProps: HintProps = TestHintProps
@@ -37,16 +37,16 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
   )
   val words:WordSet = ListSet(word1, word2, word3, word4, word5, word6, word7, word8)
 
-  val allInPos: WordHints = List.fill(5)(AInPosHint)
-  val allInWord: WordHints = List.fill(5)(AInWordHint)
-  val allMiss: WordHints = List.fill(5)(AInWordHint)
-  val emptyHints: WordHints = List()
+  val allInPos: WordHints = Seq.fill(5)(AInPosHint)
+  val allInWord: WordHints = Seq.fill(5)(AInWordHint)
+  val allMiss: WordHints = Seq.fill(5)(AInWordHint)
+  val emptyHints: WordHints = Seq()
 
   describe("Wordle Processor") {
     it("returns the the guess/color pattern list when the color pattern is all green") {
-      val wordHints = List(allInWord, allInPos)
+      val wordHints = Seq(allInWord, allInPos)
 
-      val expectedResult = List( (word1.phrase, allInWord), (word2.phrase, allInPos) )
+      val expectedResult = Seq( (word1.phrase, allInWord), (word2.phrase, allInPos) )
 
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(words, word1.phrase)
@@ -55,7 +55,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     }
 
     it("returns an empty list if the color pattern returned is empty") {
-      val wordHints: List[WordHints] = List(allInWord, emptyHints)
+      val wordHints: Seq[WordHints] = Seq(allInWord, emptyHints)
 
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(words, word1.phrase)
@@ -64,22 +64,22 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     }
 
     it("if wordset is down to 1 word, it automatically selected that word as the winner") {
-      val wordHints: List[WordHints] = Nil // it should never check these, so if it does this will fail
+      val wordHints: Seq[WordHints] = Nil // it should never check these, so if it does this will fail
 
-      val expectedResult = List( (word1.phrase, allInPos) )
+      val expectedResult = Seq( (word1.phrase, allInPos) )
 
       val processor = new TestXordleProcessor(wordHints)
-      val result = processor.process(List(word1).toSet, word1.phrase)
+      val result = processor.process(Seq(word1).toSet, word1.phrase)
 
       result mustBe expectedResult
     }
 
     it("if 6 guesses has passed, the cycle stops") {
-      val wordHints: List[WordHints] = List(
+      val wordHints: Seq[WordHints] = Seq(
         allMiss, allMiss, allMiss, allInWord, allInWord, allInWord
       )
 
-      val expectedResult = List(
+      val expectedResult = Seq(
         (word1.phrase, allMiss), (word2.phrase, allMiss), (word3.phrase, allMiss),
         (word4.phrase, allInWord), (word5.phrase, allInWord), (word6.phrase, allInWord),
         ("", Nil)

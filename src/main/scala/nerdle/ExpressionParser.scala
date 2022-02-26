@@ -20,11 +20,11 @@ trait ExpressionParser {
   val leadingZeroMsg = "Expression can not have leading zeros"
 
   def parseExpression(text: String): Either[String, OperatorExpr] = {
-    def getValueTokens(tokens: List[ExpressionToken]): List[NumberToken] = tokens.flatMap {
+    def getValueTokens(tokens: Vector[ExpressionToken]): Vector[NumberToken] = tokens.flatMap {
       case nt: NumberToken => Option(nt)
       case _ => None
     }
-    def getOperatorTokens(tokens: List[ExpressionToken]): List[OperatorToken] = tokens.flatMap {
+    def getOperatorTokens(tokens: Vector[ExpressionToken]): Vector[OperatorToken] = tokens.flatMap {
       case ot: OperatorToken => Option(ot)
       case _ => None
     }
@@ -38,9 +38,9 @@ trait ExpressionParser {
     }
   }
 
-  private def tokenize(text: String): List[ExpressionToken] = {
+  private def tokenize(text: String): Vector[ExpressionToken] = {
     @tailrec
-    def recurse(chars: String, currToken: String, tokenAcc: List[ExpressionToken]): List[ExpressionToken] = {
+    def recurse(chars: String, currToken: String, tokenAcc: Vector[ExpressionToken]): Vector[ExpressionToken] = {
       if (chars.isEmpty) {
         if (currToken.isEmpty) tokenAcc
         else tokenAcc :+ generateNumberToken(currToken)
@@ -61,10 +61,10 @@ trait ExpressionParser {
       }
     }
 
-    recurse(text, currToken = "", tokenAcc = Nil)
+    recurse(text, currToken = "", tokenAcc = Vector())
   }
 
-  private def validateTokens(tokens: List[ExpressionToken]): Option[String] = {
+  private def validateTokens(tokens: Vector[ExpressionToken]): Option[String] = {
     def tokensCorrectByPosition(): Boolean = tokens.zipWithIndex.forall {
       case (_: NumberToken, idx) if idx % 2 == 0 => true
       case (_:OperatorToken, idx) if idx % 2 == 1 => true
@@ -82,7 +82,7 @@ trait ExpressionParser {
     else None
   }
 
-  private def createExprFromTokens(valTokens: List[NumberToken], opTokens: List[OperatorToken]): OperatorExpr = {
+  private def createExprFromTokens(valTokens: Seq[NumberToken], opTokens: Seq[OperatorToken]): OperatorExpr = {
     def createOneOpExpr(val1: NumberToken, op: OperatorToken, val2: NumberToken) = {
       OperatorExpr(IntValueExpr(val1.value), op.operator, IntValueExpr(val2.value))
     }

@@ -2,7 +2,7 @@ package com.skidis.wordle
 
 trait WordPatternMatcher {
   // Proactively not doing case insensitive here for performance reasons, may revisit
-  def doesWordMatch(word: String, wordPattern: List[(Char, HintBlock)]): Boolean = {
+  def doesWordMatch(word: String, wordPattern: Seq[(Char, HintBlock)]): Boolean = {
 
     // If a the word hints contain a miss letter doesn't mean that the word is excluded if it contains that letter
     // since the word pattern could still contain a in-position or in-word (or both or multiple) for that letter

@@ -15,7 +15,7 @@ trait WordHintsGenerator {
       case (letter, index) if letter == answer(index) => (hintSet.inPosHint, index, '#')
       case (letter, index) if answer.contains(letter) => (hintSet.inWordHint, index, letter)
       case (_, index) => (hintSet.missHint, index, '#')
-    }.toList
+    }
 
     // Generate version of word that only includes letters that were initially marked as in-word
     val inWordOnlyWord = firstPass.map { case (_, _, l) => l }.mkString

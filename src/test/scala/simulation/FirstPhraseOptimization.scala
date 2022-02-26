@@ -17,10 +17,10 @@ object FirstPhraseOptimization extends App with ClusterStrategy {
   val endTimestamp = System.currentTimeMillis()
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
 
-  override def generateClusters(remainingWords: WordSet, hintProps: HintProps): List[WordClusterCount] = {
+  override def generateClusters(remainingWords: WordSet, hintProps: HintProps): Vector[WordClusterCount] = {
     val batches = remainingWords.grouped(2500)
     val batchFutures = batches.map { batch => Future(super.generateClusters(batch, TestHintProps)) }
-    Await.result(Future.sequence(batchFutures), 1.hour).flatten.toList
+    Await.result(Future.sequence(batchFutures), 1.hour).flatten.toVector
   }
 
   override def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String) = {

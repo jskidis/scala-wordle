@@ -30,15 +30,15 @@ object WordleSimulation extends App with WordReader with SimResultsPrinter {
   val answers = readWords(Source.fromResource("answers.txt"))
   val startTimestamp = System.currentTimeMillis()
 
-  val results: List[List[(String, WordHints)]] = Await.result(
+  val results: Vector[Seq[(String, WordHints)]] = Await.result(
     Future.sequence(answers.map(answer => runWordle(answer.phrase))), 1.hour
-  ).toList
+  ).toVector
   printResults(results)
 
   val endTimestamp = System.currentTimeMillis()
   println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
 
-  def runWordle(answer: String): Future[List[(String, WordHints)]] = Future {
+  def runWordle(answer: String): Future[Seq[(String, WordHints)]] = Future {
     val processor = parameters.processorFactory(answer)
     val result = processor.process(parameters.wordSet, parameters.startWord)
     //    println("Processed")

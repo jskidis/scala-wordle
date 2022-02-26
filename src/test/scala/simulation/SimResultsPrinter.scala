@@ -2,11 +2,11 @@ package com.skidis.wordle
 package simulation
 
 trait SimResultsPrinter {
-  def printResults(results: List[List[(String, WordHints)]]): Unit = {
+  def printResults(results: Vector[Seq[(String, WordHints)]]): Unit = {
     val groupedByGuesses = results.groupBy {
       case Nil => -1
       case result => result.size
-    }.toList.sortWith(_._1 < _._1)
+    }.toVector.sortWith(_._1 < _._1)
 
     val grouped = groupedByGuesses
     grouped.foreach {

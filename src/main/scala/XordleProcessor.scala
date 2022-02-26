@@ -5,17 +5,17 @@ import scala.annotation.tailrec
 trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever with Writer {
 
   def hintProps: HintProps
-  lazy val winningWordHints: WordHints = List.fill(hintProps.wordSize)(hintProps.inPosHint)
+  lazy val winningWordHints: WordHints = Seq.fill(hintProps.wordSize)(hintProps.inPosHint)
 
-  def process(wordSet: WordSet, suggestion: String): List[(String, WordHints)] = {
+  def process(wordSet: WordSet, suggestion: String): Seq[(String, WordHints)] = {
     processRecurse(wordSet, suggestion)
   }
 
   @tailrec
-  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: List[(String, WordHints)] = Nil)
-  : List[(String, WordHints)] = {
+  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: Seq[(String, WordHints)] = Nil)
+  : Seq[(String, WordHints)] = {
 
-    writeLine(s"${List.fill(40)('*').mkString}")
+    writeLine(s"${Seq.fill(40)('*').mkString}")
 
     val (currentGuess, wordHints) =
       if (wordSet.size == 1) (suggestion, winningWordHints)

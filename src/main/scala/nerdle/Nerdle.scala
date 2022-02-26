@@ -17,8 +17,8 @@ object Nerdle extends App {
   if (result.isEmpty) println("Process Aborted By User")
   else printWordleBlock(result)
 
-  def printWordleBlock(result: List[(String, WordHints)]): Unit = {
-    println(List.fill(40)('*').mkString)
+  def printWordleBlock(result: Seq[(String, WordHints)]): Unit = {
+    println(Seq.fill(40)('*').mkString)
     println()
     println(s"nerdlegame $wordleNumber ${if (result.size <= 6) result.size else "X"}/6")
     println()

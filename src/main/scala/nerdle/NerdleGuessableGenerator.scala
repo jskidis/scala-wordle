@@ -36,7 +36,7 @@ trait NerdleGuessableGenerator {
       else OperatorExpr(OperatorExpr(IntValueExpr(operand1), operator1, IntValueExpr(operand2)), operator2, IntValueExpr(operand3) )
     }
 
-    val digitRanges = List((1, 1, 1, 2), (1, 1, 2, 1), (1, 2, 1, 1), (2, 1, 1, 1))
+    val digitRanges = Seq((1, 1, 1, 2), (1, 1, 2, 1), (1, 2, 1, 1), (2, 1, 1, 1))
     for {
       (op1Digits, op2Digits, op3Digits, resultDigits) <- digitRanges
       operator1 <- operators
