@@ -1,6 +1,18 @@
 package com.skidis.wordle
 
 package object wordle {
+  case class SimpleWordleWord(phrase: String) extends XordlePhrase {
+    override def compare(that: XordlePhrase): Int = that match {
+      case w2: SimpleWordleWord => -phrase.compareTo(w2.phrase)
+    }
+  }
+
+  case class WordleWordFrequencies(phrase: String, frequency: Double) extends XordlePhrase {
+    override def compare(that: XordlePhrase): Int = that match {
+      case w2: WordleWordFrequencies => frequency.compareTo(w2.frequency)
+    }
+  }
+
   object WordleInPosHint extends InPosHint {
     override def inputChar: Char = 'G'
     override def colorBlock: String = "\uD83D\uDFE9"
