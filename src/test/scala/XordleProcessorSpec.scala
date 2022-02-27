@@ -12,6 +12,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
   class TestXordleProcessor(wordHints: Seq[WordHints]) extends XordleProcessor with TestHintProps with TestGuessProps {
     var cycles = 0
+    override def maxGuesses = 6
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail

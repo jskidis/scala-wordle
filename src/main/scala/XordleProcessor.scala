@@ -5,6 +5,7 @@ import scala.annotation.tailrec
 trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever
   with GuessProps with HintProps with Writer {
 
+  def maxGuesses: Int
   lazy val winningWordHints: WordHints = Seq.fill(guessWordLength)(inPosHint)
 
   def process(wordSet: WordSet, suggestion: String): Seq[(String, WordHints)] = {
@@ -33,7 +34,7 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
 
     if (wordHints.isEmpty) Nil // User entered an empty string, so abort without finishing
     else if (wordHints == winningWordHints) updatedGuesses // word hints are all in-position, so word has been guessed
-    else if (updatedGuesses.size == 6) updatedGuesses :+ ("", Nil)
+    else if (updatedGuesses.size == maxGuesses) updatedGuesses :+ ("", Nil)
     else {
       // Eliminate words from set based on current guess and word hints
       val remainingWords = reduceWordSet(wordSet, currentGuess, wordHints)

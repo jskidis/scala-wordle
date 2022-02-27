@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract}
+import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract, operators}
 
 import scala.annotation.tailrec
 

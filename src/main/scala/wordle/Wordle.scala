@@ -1,11 +1,6 @@
 package com.skidis.wordle
 package wordle
-
-import input.{BasicResultAndGuessValidator, GuessInput, ResultInput}
-import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
-
-import scala.io.{Source, StdIn}
-
+/*
 object Wordle extends App with WordReader {
   case class Parameters(startWord: String, wordSet: WordSet, wordleProcessor: XordleProcessor)
 
@@ -49,3 +44,4 @@ object Wordle extends App with WordReader {
     override def retrieveWordHints(guess: String): WordHints = generatePattern()
   }
 }
+*/

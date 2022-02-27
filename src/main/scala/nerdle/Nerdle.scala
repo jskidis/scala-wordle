@@ -1,11 +1,6 @@
 package com.skidis.wordle
 package nerdle
-
-import input.{GuessInput, ResultInput}
-import strategy.ClusterStrategy
-
-import scala.io.StdIn
-
+/*
 object Nerdle extends App {
   val wordleNumber = if (args.length > 1) args(1) else "Unknown"
 
@@ -36,3 +31,4 @@ object Nerdle extends App {
     override def retrieveWordHints(guess: String): WordHints = generatePattern()
   }
 }
+ */
