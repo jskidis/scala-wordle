@@ -7,8 +7,8 @@ import org.scalatest.matchers.must.Matchers
 class BasicLenAndCharValidatorSpec extends AnyFunSpec with Matchers  {
 
   val len: Int = 3
-  val chars: Seq[Char] = "ABCXYZ".toSeq
-  val resultChars: Seq[Char] = "XYZ"
+  val chars: Set[Char] = "ABCXYZ".toSet
+  val resultChars: Set[Char] = "XYZ".toSet
 
   describe("Input Validator") {
     it("returns an error if input is not ${resultLength} chars in length") {

@@ -2,7 +2,7 @@ package com.skidis.wordle
 package simulation
 
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
-import wordle.WordleHintProps
+import wordle.{WordleGuessProps, WordleHintProps}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
@@ -15,17 +15,17 @@ object WordleSimulation extends App with WordReader with SimResultsPrinter {
 
   val answerOnlyParams = Parameters("SLATE",
     readWords(Source.fromResource("answers.txt")),
-    (answer: String) => new SimulationProcessor(answer, WordleHintProps) with ClusterAndFreqStrategy
+    (answer: String) => new SimulationProcessor(answer) with ClusterAndFreqStrategy with WordleHintProps with WordleGuessProps
   )
 
   val reverseStratParam = Parameters("JAZZY",
     readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt")),
-    (answer: String) => new SimulationProcessor(answer, WordleHintProps) with ReverseClusterStrategy
+    (answer: String) => new SimulationProcessor(answer) with ReverseClusterStrategy with WordleHintProps with WordleGuessProps
   )
 
   val standardParams = Parameters("SLATE",
     readWordFrequencies(Source.fromResource("word-frequency-filtered.txt")),
-    (answer: String) => new SimulationProcessor(answer, WordleHintProps) with ClusterAndFreqStrategy
+    (answer: String) => new SimulationProcessor(answer) with ClusterAndFreqStrategy with WordleHintProps with WordleGuessProps
   )
 
   val numSimulations = if (args.length > 1) args(1).toInt else Int.MaxValue

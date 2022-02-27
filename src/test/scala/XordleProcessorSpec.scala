@@ -9,14 +9,12 @@ import scala.collection.immutable.ListSet
 
 class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
-  class TestXordleProcessor(wordHints: Seq[WordHints]) extends XordleProcessor {
+  class TestXordleProcessor(wordHints: Seq[WordHints]) extends XordleProcessor with TestHintProps with TestGuessProps {
     var cycles = 0
-
-    val hintProps: HintProps = TestHintProps
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
-    override def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String) = (remainingWords.head.phrase, "")
+    override def generateNextGuess(remainingWords: WordSet): (String, String) = (remainingWords.head.phrase, "")
 
     // GuessRetriever and WordHintsRetriever
     override def retrieveGuess(suggestion: String): String = suggestion
@@ -37,9 +35,9 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
   )
   val words:WordSet = ListSet(word1, word2, word3, word4, word5, word6, word7, word8)
 
-  val allInPos: WordHints = Seq.fill(5)(AInPosHint)
-  val allInWord: WordHints = Seq.fill(5)(AInWordHint)
-  val allMiss: WordHints = Seq.fill(5)(AInWordHint)
+  val allInPos: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInPosHint)
+  val allInWord: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInWordHint)
+  val allMiss: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInWordHint)
   val emptyHints: WordHints = Seq()
 
   describe("Wordle Processor") {

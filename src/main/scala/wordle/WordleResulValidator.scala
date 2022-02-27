@@ -3,9 +3,11 @@ package wordle
 
 import input.BasicLenAndCharValidator
 
-trait WordleResulValidator extends BasicLenAndCharValidator with ResultValidator {
+trait WordleResulValidator extends ResultValidator with BasicLenAndCharValidator
+  with WordleGuessProps with WordleHintProps {
+
   override def validateResult(input: String): Option[String] = {
-    validateInput(input, inputLength, WordleHintProps.inputChars)
+    validateInput(input, guessWordLength, validHintChars)
   }
 }
 object WordleResulValidator extends WordleResulValidator

@@ -3,11 +3,12 @@ package wordle
 
 import input.BasicLenAndCharValidator
 
-trait WordleGuessValidator extends BasicLenAndCharValidator with GuessValidator {
-  override def invalidCharMsg(validChars: Seq[Char]) = s"Input may only contain letters"
+trait WordleGuessValidator extends BasicLenAndCharValidator with GuessValidator
+  with WordleHintProps with WordleGuessProps {
+  override def invalidCharMsg(validChars: Set[Char]) = s"Input may only contain letters"
 
   override def validateGuess(input: String): Option[String] = {
-    validateGuess(input, inputLength, valueGuessChars, WordleHintProps.inputChars)
+    validateGuess(input, guessWordLength, validGuessChars, validHintChars)
   }
 }
 

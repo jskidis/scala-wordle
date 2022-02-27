@@ -2,10 +2,10 @@ package com.skidis.wordle
 
 import scala.annotation.tailrec
 
-trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever with Writer {
+trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever
+  with GuessProps with HintProps with Writer {
 
-  def hintProps: HintProps
-  lazy val winningWordHints: WordHints = Seq.fill(hintProps.wordSize)(hintProps.inPosHint)
+  lazy val winningWordHints: WordHints = Seq.fill(guessWordLength)(inPosHint)
 
   def process(wordSet: WordSet, suggestion: String): Seq[(String, WordHints)] = {
     processRecurse(wordSet, suggestion)
@@ -40,7 +40,7 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
       writeLine(s"Remaining Words: ${remainingWords.size}")
 
       // Determine next guess and start next iteration
-      val (nextGuess, info) = generateNextGuess(remainingWords, hintProps)
+      val (nextGuess, info) = generateNextGuess(remainingWords)
       writeLine(info)
       processRecurse(remainingWords, nextGuess, updatedGuesses)
     }

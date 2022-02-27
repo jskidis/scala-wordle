@@ -1,12 +1,38 @@
 package com.skidis
 
 package object wordle {
+  type WordHints = Seq[HintBlock]
+  type WordSet = Set[_ <: XordlePhrase]
+
   trait XordlePhrase extends Ordered[XordlePhrase] {
     def phrase: String
   }
 
-  type WordHints = Seq[HintBlock]
-  type WordSet = Set[_ <: XordlePhrase]
+  trait HintBlock {
+    def inputChar: Char
+    def colorBlock: String
+    override def toString: String = colorBlock
+  }
+
+  trait InPosHint extends HintBlock
+  trait InWordHint extends HintBlock
+  trait MissHint extends HintBlock
+
+  trait HintProps {
+    def inPosHint: InPosHint
+    def inWordHint: InWordHint
+    def missHint: MissHint
+
+    def validHintChars: Set[Char] = Set(
+      inPosHint.inputChar.toLower, inWordHint.inputChar.toLower, missHint.inputChar.toLower,
+      inPosHint.inputChar.toUpper, inWordHint.inputChar.toUpper, missHint.inputChar.toUpper
+    )
+  }
+
+  trait GuessProps {
+    def guessWordLength: Int
+    def validGuessChars: Set[Char]
+  }
 
   trait ResultValidator {
     def validateResult(input: String): Option[String]
@@ -16,17 +42,17 @@ package object wordle {
     def validateGuess(input: String): Option[String]
   }
 
+  trait WordHintsRetriever  {
+    def retrieveWordHints(guess: String): WordHints
+  }
+
   trait GuessRetriever {
     def retrieveGuess(suggestion: String): String
   }
 
-  trait WordHintsRetriever {
-    def retrieveWordHints(guess: String): WordHints
-  }
-
   trait SolveStrategy {
     def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
-    def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String)
+    def generateNextGuess(remainingWords: WordSet): (String, String)
   }
 
   trait LineReader {

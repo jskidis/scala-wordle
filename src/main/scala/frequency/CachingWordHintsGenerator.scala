@@ -7,7 +7,7 @@ trait CachingWordHintsGenerator extends WordHintsGenerator {
   val patternCache: mutable.Map[(XordlePhrase, XordlePhrase), WordHints] =
     collection.mutable.Map[(XordlePhrase, XordlePhrase), WordHints]()
 
-  override def generateWordHints(answer: XordlePhrase, word: XordlePhrase, hintProps: HintProps): WordHints = {
-    patternCache.getOrElseUpdate((answer, word), super.generateWordHints(answer, word, hintProps))
+  override def generateWordHints(answer: XordlePhrase, word: XordlePhrase): WordHints = {
+    patternCache.getOrElseUpdate((answer, word), super.generateWordHints(answer, word))
   }
 }

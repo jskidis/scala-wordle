@@ -1,14 +1,12 @@
 package com.skidis.wordle
 package input
 
-trait InputToHintConversion {
-  def convertInputToHints(input: String, hintProps: HintProps): WordHints = {
+trait InputToHintConversion extends HintProps {
+  def convertInputToHints(input: String): WordHints = {
     input.map { ch =>
-      if (ch.toUpper == hintProps.inPosHint.inputChar.toUpper) hintProps.inPosHint
-      else if (ch.toUpper == hintProps.inWordHint.inputChar.toUpper) hintProps.inWordHint
-      else hintProps.missHint
+      if (ch.toUpper == inPosHint.inputChar.toUpper) inPosHint
+      else if (ch.toUpper == inWordHint.inputChar.toUpper) inWordHint
+      else missHint
     }
   }
 }
-
-object InputToHintConversion extends InputToHintConversion

@@ -3,11 +3,12 @@ package nerdle
 
 import input.BasicLenAndCharValidator
 
-trait NerdleGuessValidator extends BasicLenAndCharValidator with GuessValidator with EquationParser {
-  override def invalidCharMsg(validChars: Seq[Char]) = s"Input may only contain letters"
+trait NerdleGuessValidator extends BasicLenAndCharValidator
+  with GuessValidator with EquationParser with HintProps with GuessProps {
+  override def invalidCharMsg(validChars: Set[Char]) = s"Input may only contain letters"
 
   override def validateGuess(input: String): Option[String] = {
-    validateGuess(input, inputLength, validGuessChars, NerdleHintProps.inputChars) match {
+    validateGuess(input, guessWordLength, validGuessChars, validHintChars) match {
       case Some(error) => Some(error)
       case None => parseEquation(input) match {
         case Left(error) => Some(error)
@@ -17,4 +18,4 @@ trait NerdleGuessValidator extends BasicLenAndCharValidator with GuessValidator 
   }
 }
 
-object NerdleGuessValidator extends NerdleGuessValidator
+

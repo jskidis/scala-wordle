@@ -12,17 +12,17 @@ trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPat
     wordSet.filter { w: XordlePhrase => doesWordMatch(w.phrase, wordPattern) && w.phrase != currentGuess }
   }
 
-  override def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String) = {
+  override def generateNextGuess(remainingWords: WordSet): (String, String) = {
     // Next Guess is based on word with most unique clusters, with ties resolved based on type
-    val sortedClustersByWord = generateClusters(remainingWords, hintProps).sortWith(sortWordCluster)
+    val sortedClustersByWord = generateClusters(remainingWords).sortWith(sortWordCluster)
     val nextGuess = sortedClustersByWord.head
     (nextGuess.word.phrase, s"Most Unique Clusters: ${nextGuess.clusterCount}")
   }
 
-  def generateClusters(remainingWords: WordSet, hintProps: HintProps): Vector[WordClusterCount] = {
+  def generateClusters(remainingWords: WordSet): Vector[WordClusterCount] = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
     remainingWords.toVector.map { potentialAnswer: XordlePhrase =>
-      val clusterCount = remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word, hintProps) }.size
+      val clusterCount = remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word) }.size
       WordClusterCount tupled(potentialAnswer, clusterCount)
     }
   }
@@ -31,5 +31,3 @@ trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPat
     if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount > wc2.clusterCount else wc1.word > wc2.word
   }
 }
-
-object ClusterStrategy extends ClusterStrategy

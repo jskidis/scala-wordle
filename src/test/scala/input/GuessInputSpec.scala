@@ -10,7 +10,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
   val suggestion: String = "guess"
   val validInput:String = "abcde"
 
-  class TestWordleGuessInput(inputs: Vector[String]) extends GuessInput {
+  class TestWordleGuessInput(inputs: Vector[String]) extends GuessInput with TestGuessProps with TestHintProps {
     var linesRead = 0
     var linesWritten = new ListBuffer[String]()
 

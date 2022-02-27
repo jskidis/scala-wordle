@@ -12,9 +12,6 @@ package object nerdle {
   }
   val operators = Seq(Add, Subtract, Multiply, Divide)
 
-  val inputLength: Int = 8
-  val validGuessChars: Seq[Char] = ('0' to '9') ++ operators + "="
-
   case class NerdleEquation(expr: OperatorExpr) extends XordlePhrase {
     override def phrase: String = s"${expr.toString}=${expr.value}"
     override def compare(that: XordlePhrase): Int = toString.compareTo(that.toString)
@@ -39,7 +36,11 @@ package object nerdle {
     override def inPosHint: InPosHint = NerdleInPosHint
     override def inWordHint: InWordHint = NerdleInWordHint
     override def missHint: MissHint = NerdleMissHint
-    override val wordSize: Int = inputLength
   }
   object NerdleHintProps extends NerdleHintProps
+
+  trait NerdleGuessProps extends GuessProps {
+    override def guessWordLength: Int = 8
+    override def validGuessChars: Set[Char] = (('0' to '9') ++ operators + "=").toSet
+  }
 }

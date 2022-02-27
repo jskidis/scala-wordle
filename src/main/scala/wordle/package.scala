@@ -1,9 +1,6 @@
 package com.skidis.wordle
 
 package object wordle {
-  val inputLength: Int = 5
-  val valueGuessChars: Seq[Char] = ('a' to 'z') ++ ('A' to 'Z')
-
   object WordleInPosHint extends InPosHint {
     override def inputChar: Char = 'G'
     override def colorBlock: String = "\uD83D\uDFE9"
@@ -23,7 +20,11 @@ package object wordle {
     override def inPosHint: InPosHint = WordleInPosHint
     override def inWordHint: InWordHint = WordleInWordHint
     override def missHint: MissHint = WordleMissHint
-    override val wordSize: Int = inputLength
   }
   object WordleHintProps extends WordleHintProps
+
+  trait WordleGuessProps {
+    def guessWordLength: Int = 5
+    def validGuessChars: Set[Char] = (('a' to 'z') ++ ('A' to 'Z')).toSet
+  }
 }

@@ -19,6 +19,11 @@ trait TestHintProps extends HintProps {
   override def inPosHint: InPosHint = AInPosHint
   override def inWordHint: InWordHint = AInWordHint
   override def missHint: MissHint = AMissHint
-  override def wordSize: Int = 5
 }
 object TestHintProps extends TestHintProps
+
+trait TestGuessProps extends GuessProps {
+  def guessWordLength: Int = 5
+  def validGuessChars: Set[Char] = (('a' to 'z') ++ ('A' to 'Z')).toSet
+}
+object TestGuessProps extends TestGuessProps

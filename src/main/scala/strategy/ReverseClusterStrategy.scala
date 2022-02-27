@@ -6,10 +6,8 @@ trait ReverseClusterStrategy extends ClusterStrategy {
     !super.sortWordCluster(wc1, wc2)
   }
 
-  override def generateNextGuess(remainingWords: WordSet, hintProps: HintProps): (String, String) = {
-    val (nextGuess, info) = super.generateNextGuess(remainingWords, hintProps)
+  override def generateNextGuess(remainingWords: WordSet): (String, String) = {
+    val (nextGuess, info) = super.generateNextGuess(remainingWords)
     (nextGuess, info.replace("Most", "Fewest"))
   }
 }
-
-object ReverseClusterStrategy extends ReverseClusterStrategy

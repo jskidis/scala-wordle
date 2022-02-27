@@ -3,10 +3,10 @@ package nerdle
 
 import input.BasicLenAndCharValidator
 
-trait NerdleResultValidator extends BasicLenAndCharValidator with ResultValidator {
+trait NerdleResultValidator extends ResultValidator with BasicLenAndCharValidator
+  with HintProps with GuessProps {
+
   override def validateResult(input: String): Option[String] = {
-    validateInput(input, inputLength, NerdleHintProps.inputChars)
+    validateInput(input, guessWordLength, validHintChars)
   }
 }
-
-object NerdleResultValidator extends NerdleResultValidator

@@ -1,20 +1,20 @@
 package com.skidis.wordle
 
-trait WordHintsGenerator {
+trait WordHintsGenerator extends HintProps {
 
-  def generateWordHints(answer: XordlePhrase, word: XordlePhrase, hintProps: HintProps): WordHints = {
-    generateWordWordHints(answer.phrase, word.phrase, hintProps)
+  def generateWordHints(answer: XordlePhrase, word: XordlePhrase): WordHints = {
+    generateWordWordHints(answer.phrase, word.phrase)
   }
 
-  def generateWordWordHints(answer: String, word: String, hintSet: HintProps): WordHints = {
+  def generateWordWordHints(answer: String, word: String): WordHints = {
     // The first pass creates a tuple with a hint, index, and letter
     // The hint for in-position and miss are the correct final result
     // If the letter is in-word the letter at that position is returned in the tuple
     //    otherwise it is substituted with * so they can be ignore in the next pass
     val firstPass = word.zipWithIndex.map {
-      case (letter, index) if letter == answer(index) => (hintSet.inPosHint, index, '#')
-      case (letter, index) if answer.contains(letter) => (hintSet.inWordHint, index, letter)
-      case (_, index) => (hintSet.missHint, index, '#')
+      case (letter, index) if letter == answer(index) => (inPosHint, index, '#')
+      case (letter, index) if answer.contains(letter) => (inWordHint, index, letter)
+      case (_, index) => (missHint, index, '#')
     }
 
     // Generate version of word that only includes letters that were initially marked as in-word
@@ -23,7 +23,7 @@ trait WordHintsGenerator {
     // Generate a version of the answer that only include letters that were marked as in-word in the word but
     // excluding any letter at the positions that were marked as in-position in the word
     val inWordOnlyAnswer = answer.zipWithIndex.map { case (letter, index) =>
-      if (inWordOnlyWord.contains(letter) && firstPass(index)._1 != hintSet.inPosHint) letter else '#'
+      if (inWordOnlyWord.contains(letter) && firstPass(index)._1 != inPosHint) letter else '#'
     }.mkString
 
     // loop through first pass results, if the first pass marked the letter as in-position or miss just return the hint
@@ -34,9 +34,7 @@ trait WordHintsGenerator {
       case (hint: MissHint, _, _) => hint // If hint is miss then already correct
       case (_: HintBlock, index, letter) =>
         if (inWordOnlyWord.substring(0, index + 1).count(_ == letter) >
-          inWordOnlyAnswer.count(_ == letter)) hintSet.missHint else hintSet.inWordHint
+          inWordOnlyAnswer.count(_ == letter)) missHint else inWordHint
     }
   }
 }
-
-object WordHintsGenerator extends WordHintsGenerator
