@@ -26,9 +26,8 @@ object Nerdle extends App {
     println()
   }
 
-  trait InteractiveNerdleProcessor extends XordleProcessor
-    with GuessInput with ResultInput with NerdleInputValidator
-    with NerdleGuessProps with NerdleHintProps {
+  trait InteractiveNerdleProcessor extends XordleProcessor with NerdleInputValidator
+    with GuessInput with ResultInput with NerdleGuessProps with NerdleHintProps {
 
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)
