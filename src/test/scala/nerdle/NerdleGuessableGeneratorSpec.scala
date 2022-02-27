@@ -52,4 +52,18 @@ class NerdleGuessableGeneratorSpec extends AnyFunSpec with Matchers {
       nonValidEqs mustBe empty
     }
   }
+
+  describe("Nerdle Guessable Generator, MiniNerdle Equations") {
+    val equations = NerdleGuessableGenerator.generateMiniEqs()
+
+    it("all should equations translate into 6 characters") {
+      val non8CharEqs = equations.filter(eq => eq.phrase.length != 6)
+      non8CharEqs mustBe empty
+    }
+
+    it("all expressions should be valid") {
+      val nonValidEqs = equations.filter(!_.expr.isValid)
+      nonValidEqs mustBe empty
+    }
+  }
 }

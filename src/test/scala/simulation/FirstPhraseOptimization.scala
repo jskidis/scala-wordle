@@ -10,7 +10,7 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 
 object FirstPhraseOptimization extends App with ClusterStrategy with WordleHintProps {
-  val wordSet = NerdleGuessableGenerator.generatateEquations()
+  val wordSet = NerdleGuessableGenerator.generate6CharEquations()
 
   val startTimestamp = System.currentTimeMillis()
   println(generateNextGuess(wordSet))

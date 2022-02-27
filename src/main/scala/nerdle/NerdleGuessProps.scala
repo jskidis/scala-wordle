@@ -9,3 +9,7 @@ trait NerdleGuessProps extends GuessProps {
   override def validGuessChars: Set[Char] = (('0' to '9') ++ operators + "=").toSet
   override def invalidGuessCharError: String = "Input may only contain numbers or operators"
 }
+
+trait MiniNerdleGuessProps extends NerdleGuessProps {
+  override def guessWordLength: Int = 6
+}

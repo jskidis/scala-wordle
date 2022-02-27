@@ -2,6 +2,10 @@ package com.skidis.wordle
 package nerdle
 
 trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
+trait MiniNerdleProcessor extends NerdleHintProps with MiniNerdleGuessProps
 
 trait NerdleInteractiveProcessor extends InteractiveProcessor
   with NerdleProcessor with NerdleInputValidator
+
+trait MiniNerdleInteractiveProcessor extends InteractiveProcessor
+  with MiniNerdleProcessor with NerdleInputValidator
