@@ -10,6 +10,7 @@ class BasicResultAndGuessValidatorSpec extends AnyFunSpec with Matchers {
 
   object ValidatorFixture extends BasicResultAndGuessValidator with TestHintProps {
     override def guessWordLength: Int = 3
+    override def maxGuesses: Int = 6
     override def validGuessChars: Set[Char] = "ABCXYZ".toSet
     override def invalidGuessCharError: String = "Invalid Chars"
     override def validHintChars: Set[Char] = "XYZ".toSet

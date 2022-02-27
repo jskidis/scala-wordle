@@ -29,6 +29,7 @@ object TestFixtures {
 
   trait TestGuessProps extends GuessProps {
     override def guessWordLength: Int = 5
+    override def maxGuesses: Int = 6
     override def validGuessChars: Set[Char] = (('a' to 'z') ++ ('A' to 'Z')).toSet
     override def invalidGuessCharError: String = "Invalid Characters"
   }

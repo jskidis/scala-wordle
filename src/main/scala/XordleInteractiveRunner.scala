@@ -5,8 +5,8 @@ import scala.io.StdIn
 trait XordleInteractiveRunner extends XordleRunner {
   def runInteractive(): Unit = {
     val wordleNumber = inputPuzzleNumber()
-    val processor = createStaticProcessor()
-    val result = processor.process(guessSet, startPhrase)
+    val processor = createInteractiveProcessor()
+    val result = processor.process(guessSet, startGuess)
 
     if (result.isEmpty) println("Process Aborted By User")
     else printWordleBlock(result, wordleNumber, processor.maxGuesses)

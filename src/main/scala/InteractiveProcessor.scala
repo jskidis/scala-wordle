@@ -4,7 +4,7 @@ import input.{GuessInput, ResultInput}
 
 import scala.io.StdIn
 
-trait XordleInteractiveProcessor extends XordleProcessor
+trait InteractiveProcessor extends XordleProcessor
   with GuessInput with ResultInput {
 
   override def readLine(): String = StdIn.readLine()

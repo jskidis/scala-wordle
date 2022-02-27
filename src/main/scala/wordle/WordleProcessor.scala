@@ -3,9 +3,7 @@ package wordle
 
 import input.BasicResultAndGuessValidator
 
-trait WordleProcessor extends WordleHintProps with WordleGuessProps {
-  def maxGuesses: Int = 6
-}
+trait WordleProcessor extends WordleHintProps with WordleGuessProps
 
-trait WordleInteractiveProcessor extends XordleInteractiveProcessor
+trait WordleInteractiveProcessor extends InteractiveProcessor
   with WordleProcessor with BasicResultAndGuessValidator

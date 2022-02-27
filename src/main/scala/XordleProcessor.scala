@@ -5,7 +5,6 @@ import scala.annotation.tailrec
 trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever
   with GuessProps with HintProps with Writer {
 
-  def maxGuesses: Int
   lazy val winningWordHints: WordHints = Seq.fill(guessWordLength)(inPosHint)
 
   def process(wordSet: WordSet, suggestion: String): Seq[(String, WordHints)] = {

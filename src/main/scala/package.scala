@@ -31,6 +31,7 @@ package object wordle {
 
   trait GuessProps {
     def guessWordLength: Int
+    def maxGuesses: Int
     def validGuessChars: Set[Char]
     def invalidGuessCharError: String
   }

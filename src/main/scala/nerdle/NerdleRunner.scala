@@ -8,12 +8,24 @@ trait NerdleRunner extends XordleRunner {
 }
 
 trait NerdleStandardRunner extends NerdleRunner with NerdleGuessableGenerator {
-  override def startPhrase: String = "58-42=16"
+  override def startGuess: String = "58-42=16"
   override lazy val guessSet: WordSet = generatateEquations()
-  override def createStaticProcessor(): XordleProcessor = new NerdleInteractiveProcessor with ClusterStrategy
+  override lazy val answerSet: WordSet = generatateEquations()
+
+  override def createInteractiveProcessor(): InteractiveProcessor = {
+    new NerdleInteractiveProcessor with ClusterStrategy
+  }
+  override def createSimulationProcessor(answer: String): SimulationProcessor = {
+    new SimulationProcessor(answer) with NerdleProcessor with ClusterStrategy
+  }
 }
 
-object NerdleStandardInteractiveRunner extends App
+object NerdleInteractiveStandardRunner extends App
   with XordleInteractiveRunner with NerdleStandardRunner {
   runInteractive()
+}
+
+object NerdleSimulationStandardRunner extends App
+  with XordleSimulationRunner with NerdleStandardRunner {
+  runSimulation()
 }

@@ -1,9 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps {
-  def maxGuesses: Int = 6
-}
+trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
 
-trait NerdleInteractiveProcessor extends XordleInteractiveProcessor
+trait NerdleInteractiveProcessor extends InteractiveProcessor
   with NerdleProcessor with NerdleInputValidator
