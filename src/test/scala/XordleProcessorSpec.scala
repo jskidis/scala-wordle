@@ -1,5 +1,6 @@
 package com.skidis.wordle
 
+import TestFixtures.{TInPosHint, TInWordHint, TestGuessProps, TestHintProps}
 import wordle.SimpleWordleWord
 
 import org.scalatest.funspec.AnyFunSpec
@@ -35,9 +36,9 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
   )
   val words:WordSet = ListSet(word1, word2, word3, word4, word5, word6, word7, word8)
 
-  val allInPos: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInPosHint)
-  val allInWord: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInWordHint)
-  val allMiss: WordHints = Seq.fill(TestGuessProps.guessWordLength)(AInWordHint)
+  val allInPos: WordHints = Seq.fill(TestGuessProps.guessWordLength)(TInPosHint)
+  val allInWord: WordHints = Seq.fill(TestGuessProps.guessWordLength)(TInWordHint)
+  val allMiss: WordHints = Seq.fill(TestGuessProps.guessWordLength)(TInWordHint)
   val emptyHints: WordHints = Seq()
 
   describe("Wordle Processor") {

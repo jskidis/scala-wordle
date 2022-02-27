@@ -11,7 +11,7 @@ object Nerdle extends App {
 
   val startEquation = "58-42=16"
   val equations = NerdleGuessableGenerator.generatateEquations()
-  val processor = new InteractiveNerdleProcessor with ClusterStrategy
+  val processor = new InteractiveNerdleProcessor with ClusterStrategy with NerdleInputValidator
   val result = processor.process(equations, startEquation)
 
   if (result.isEmpty) println("Process Aborted By User")
@@ -27,7 +27,7 @@ object Nerdle extends App {
   }
 
   trait InteractiveNerdleProcessor extends XordleProcessor
-    with GuessInput with ResultInput with NerdleGuessValidator with NerdleResultValidator
+    with GuessInput with ResultInput with NerdleInputValidator
     with NerdleGuessProps with NerdleHintProps {
 
     override def readLine(): String = StdIn.readLine()

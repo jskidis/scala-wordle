@@ -1,18 +1,16 @@
 package com.skidis.wordle
 package input
 
+import TestFixtures._
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
 
 import scala.collection.mutable.ListBuffer
 
 class ResultInputSpec extends AnyFunSpec with Matchers {
-  val inPosChar: Char = AInPosHint.inputChar
-  val inWordChar: Char = AInWordHint.inputChar
-  val missChar: Char = AMissHint.inputChar
-
   val validInput: String = Seq(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
-  val validInputColors = Seq(AInPosHint, AInWordHint, AMissHint, AInPosHint, AInWordHint)
+  val validInputColors = Seq(TInPosHint, TInWordHint, TMissHint, TInPosHint, TInWordHint)
 
   class TestBasicResultInput(inputs: Vector[String]) extends ResultInput with TestHintProps {
     var linesRead = 0

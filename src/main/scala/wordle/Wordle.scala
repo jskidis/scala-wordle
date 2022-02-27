@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package wordle
 
-import input.{GuessInput, ResultInput}
+import input.{BasicResultAndGuessValidator, GuessInput, ResultInput}
 import strategy.{ClusterAndFreqStrategy, ReverseClusterStrategy}
 
 import scala.io.{Source, StdIn}
@@ -39,8 +39,8 @@ object Wordle extends App with WordReader {
     println()
   }
 
-  trait InteractiveWordleProcessor extends XordleProcessor
-    with GuessInput with ResultInput with WordleGuessValidator with WordleResulValidator {
+  trait InteractiveWordleProcessor extends XordleProcessor with GuessInput with ResultInput
+    with BasicResultAndGuessValidator with WordleGuessProps with WordleHintProps {
 
     override def readLine(): String = StdIn.readLine()
     override def writeLine(s: String): Unit = Console.println(s)

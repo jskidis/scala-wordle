@@ -13,7 +13,7 @@ trait ExpressionParser {
   case class NumberToken(value: Int) extends ExpressionToken
   case class InvalidToken(reason: String) extends ExpressionToken
 
-  val invalidCharMsg = "Equations may only contain digits and operators"
+  val invalidExprMsg = "Equations may only contain digits and operators"
   val malformedExprMsg = "The expression was not formed as expected"
   val tooManyOpsMsg = "The expression can only contain one or two operators"
   val notIntExprMsg = "The expression is not a valid integer expression"
@@ -54,7 +54,7 @@ trait ExpressionParser {
 
     def generateNumberToken(token: String): ExpressionToken = {
       token.toIntOption match {
-        case None => InvalidToken(invalidCharMsg)
+        case None => InvalidToken(invalidExprMsg)
         case Some(value) =>
           if(token.length > 1 && token.head == '0') InvalidToken(leadingZeroMsg)
           else NumberToken(value)

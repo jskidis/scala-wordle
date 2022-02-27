@@ -42,5 +42,6 @@ package object nerdle {
   trait NerdleGuessProps extends GuessProps {
     override def guessWordLength: Int = 8
     override def validGuessChars: Set[Char] = (('0' to '9') ++ operators + "=").toSet
+    override def invalidGuessCharError: String = "Input may only contain numbers or operators"
   }
 }
