@@ -29,8 +29,8 @@ trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets {
 
 
 trait MiniNerdleWordSets extends GuessAndAnswerSets with NerdleGuessableGenerator {
-  override lazy val guessSet: WordSet = generate8CharEquations()
-  override lazy val answerSet: WordSet = generate8CharEquations()
+  override lazy val guessSet: WordSet = generate6CharEquations()
+  override lazy val answerSet: WordSet = generate6CharEquations()
 }
 
 trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
@@ -41,10 +41,10 @@ trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
     new MiniNerdleInteractiveProcessor with ClusterStrategy
   }
   override def createSimulationProcessor(answer: String): SimulationProcessor = {
-    new NerdleSimulationProcessor(answer) with ClusterStrategy
+    new MiniNerdleSimulationProcessor(answer) with ClusterStrategy
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
-    new NerdleFirstGuessOptimizer with ClusterStrategy with MiniNerdleWordSets
+    new MiniNerdleFirstGuessOptimizer with ClusterStrategy with MiniNerdleWordSets
   }
 }
 
@@ -73,11 +73,11 @@ object NerdleSimulationMiniRunner extends App
 
 
 object NerdleFirstGuessOptStandardRunner extends App
-  with XordleInteractiveRunner with NerdleStandardRunner {
-  runInteractive()
+  with FirstGuessRunner with NerdleStandardRunner {
+  runOptimizer(12)
 }
 
-object NerdleFirstGuessInteractiveMiniRunner extends App
-  with XordleInteractiveRunner with MiniNerdleRunner {
-  runInteractive()
+object NerdleFirOstGuessInteractiveMiniRunner extends App
+  with FirstGuessRunner with MiniNerdleRunner {
+  runOptimizer(12)
 }

@@ -103,16 +103,16 @@ object WordleSimulationReverseRunner extends App
 
 
 object WordleFirstGuessOptStandardRunner extends App
-  with XordleSimulationRunner with WordleStandardRunner {
-  runSimulation()
+  with FirstGuessRunner with WordleStandardRunner {
+  runOptimizer(12)
 }
 
 object WordleFirstGuessOptAnswerOnlyRunner extends App
-  with XordleSimulationRunner with WordleAnswerOnlyRunner {
-  runSimulation()
+  with FirstGuessRunner with WordleAnswerOnlyRunner {
+  runOptimizer(12)
 }
 
 object WordleFirstGuessOptReverseRunner extends App
-  with XordleSimulationRunner with WordleReverseRunner {
-  runSimulation()
+  with FirstGuessRunner  with WordleReverseRunner {
+  runOptimizer(12)
 }
