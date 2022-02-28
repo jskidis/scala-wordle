@@ -1,10 +1,25 @@
 package com.skidis.wordle
 
-trait XordleRunner {
-  def puzzleName: String
-  def startGuess: String
+
+trait GuessAndAnswerSets {
   val guessSet: WordSet
   val answerSet: WordSet
+}
+
+trait InteractiveProcessorFactory {
   def createInteractiveProcessor(): InteractiveProcessor
+}
+
+trait SimulationProcessFactory {
   def createSimulationProcessor(answer: String): SimulationProcessor
+}
+
+trait FirstGuessOptFactory {
+  def createFirstGuessOptimizer(): FirstGuessOptimizator
+}
+
+trait XordleRunner extends GuessAndAnswerSets
+  with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
+  def puzzleName: String
+  def startGuess: String
 }

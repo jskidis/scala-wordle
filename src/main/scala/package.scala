@@ -1,5 +1,7 @@
 package com.skidis
 
+import scala.io.StdIn
+
 package object wordle {
   type WordHints = Seq[HintBlock]
   type WordSet = Set[_ <: XordlePhrase]
@@ -54,15 +56,29 @@ package object wordle {
 
   trait SolveStrategy {
     def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
-    def generateNextGuess(remainingWords: WordSet): (String, String)
+    def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase]
   }
 
   trait LineReader {
     def readLine(): String
   }
 
+  trait StdInLineReader extends LineReader {
+    override def readLine(): String = StdIn.readLine()
+  }
+
   trait Writer {
     def writeLine(s: String): Unit
     def writeString(s: String): Unit
+  }
+
+  trait ConsoleWriter extends Writer {
+    override def writeLine(s: String): Unit = Console.println(s)
+    override def writeString(s: String): Unit = Console.print(s)
+  }
+
+  trait NullWriter extends Writer {
+    override def writeLine(line: String): Unit = {}
+    override def writeString(s: String): Unit = {}
   }
 }

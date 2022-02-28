@@ -16,7 +16,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
-    override def generateNextGuess(remainingWords: WordSet): (String, String) = (remainingWords.head.phrase, "")
+    override def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase] = remainingWords.take(number).toSeq
 
     // GuessRetriever and WordHintsRetriever
     override def retrieveGuess(suggestion: String): String = suggestion

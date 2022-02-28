@@ -1,43 +1,74 @@
 package com.skidis.wordle
 package wordle
 
-import strategy.{ClusterStrategy, ReverseClusterStrategy}
+import strategy.{ClusterAndFreqStrategy, ClusterStrategy, ReverseClusterStrategy}
 
 import scala.io.Source
 
-trait WordleRunner extends XordleRunner with WordReader {
+trait WordleRunner extends XordleRunner {
   override def puzzleName: String = "Wordle"
+}
+
+
+trait WordleStandardWordSets extends GuessAndAnswerSets with WordReader {
+  override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
   override lazy val answerSet: WordSet = readWords(Source.fromResource("answers.txt"))
 }
 
-trait WordleStandardRunner extends WordleRunner {
+trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets {
   override def startGuess: String = "SLATE"
-  override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
+
+  override def createInteractiveProcessor(): InteractiveProcessor = {
+    new WordleInteractiveProcessor with ClusterAndFreqStrategy
+  }
+  override def createSimulationProcessor(answer: String): SimulationProcessor  = {
+    new WordleSimulationProcessor(answer) with WordleProcessor with ClusterAndFreqStrategy
+  }
+  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+    new WordleFirstGuessOptimizer with ClusterAndFreqStrategy with WordleStandardWordSets
+  }
+}
+
+
+trait WordleAnswerOnlyWordSets extends GuessAndAnswerSets with WordReader {
+  override lazy val guessSet: WordSet = readWords(Source.fromResource("answers.txt"))
+  override lazy val answerSet: WordSet = readWords(Source.fromResource("answers.txt"))
+}
+
+trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets {
+  override def startGuess: String = "SLATE"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ClusterStrategy
   }
   override def createSimulationProcessor(answer: String): SimulationProcessor  = {
-    new SimulationProcessor(answer) with WordleProcessor with ClusterStrategy
+    new WordleSimulationProcessor(answer) with WordleProcessor with ClusterStrategy
+  }
+  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+    new WordleFirstGuessOptimizer with ClusterStrategy with WordleAnswerOnlyWordSets
   }
 }
 
-trait WordleAnswerOnlyRunner extends WordleStandardRunner {
-  override lazy val guessSet: WordSet = readWords(Source.fromResource("answers.txt"))
-}
 
-trait WordleReverseRunner extends WordleRunner with WordReader {
-  override def startGuess: String = "JAZZY"
+trait WordleReverseWordSets extends GuessAndAnswerSets with WordReader {
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
   override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(100)
+}
+
+trait WordleReverseRunner extends WordleRunner with WordleReverseWordSets {
+  override def startGuess: String = "JAZZY"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ReverseClusterStrategy
   }
   override def createSimulationProcessor(answer: String): SimulationProcessor  = {
-    new SimulationProcessor(answer) with WordleProcessor with ReverseClusterStrategy
+    new WordleSimulationProcessor(answer) with ReverseClusterStrategy
+  }
+  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+    new WordleFirstGuessOptimizer with ReverseClusterStrategy with WordleReverseWordSets
   }
 }
+
 
 object WordleInteractiveStandardRunner extends App
   with XordleInteractiveRunner with WordleStandardRunner {
@@ -54,6 +85,7 @@ object WordleInteractiveReverseRunner extends App
   runInteractive()
 }
 
+
 object WordleSimulationStandardRunner extends App
   with XordleSimulationRunner with WordleStandardRunner {
   runSimulation()
@@ -65,6 +97,22 @@ object WordleSimulationAnswerOnlyRunner extends App
 }
 
 object WordleSimulationReverseRunner extends App
+  with XordleSimulationRunner with WordleReverseRunner {
+  runSimulation()
+}
+
+
+object WordleFirstGuessOptStandardRunner extends App
+  with XordleSimulationRunner with WordleStandardRunner {
+  runSimulation()
+}
+
+object WordleFirstGuessOptAnswerOnlyRunner extends App
+  with XordleSimulationRunner with WordleAnswerOnlyRunner {
+  runSimulation()
+}
+
+object WordleFirstGuessOptReverseRunner extends App
   with XordleSimulationRunner with WordleReverseRunner {
   runSimulation()
 }

@@ -4,8 +4,21 @@ package nerdle
 trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
 trait MiniNerdleProcessor extends NerdleHintProps with MiniNerdleGuessProps
 
-trait NerdleInteractiveProcessor extends InteractiveProcessor
+abstract class NerdleInteractiveProcessor extends InteractiveProcessor
   with NerdleProcessor with NerdleInputValidator
 
-trait MiniNerdleInteractiveProcessor extends InteractiveProcessor
+abstract class NerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
+  with NerdleProcessor
+
+abstract class NerdleFirstGuessOptimizer extends FirstGuessOptimizator
+  with NerdleProcessor
+
+abstract class MiniNerdleInteractiveProcessor extends InteractiveProcessor
   with MiniNerdleProcessor with NerdleInputValidator
+
+abstract class MiniNerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
+  with MiniNerdleProcessor
+
+abstract class MiniNerdleFirstGuessOptimizer extends FirstGuessOptimizator
+  with MiniNerdleProcessor
+
