@@ -14,12 +14,10 @@ trait XordleInteractiveRunner extends XordleRunner {
 
   def printWordleBlock(result: Seq[(String, WordHints)], wordleNumber: String, maxGuesses: Int): Unit = {
     println(Seq.fill(40)('*').mkString)
-    println()
     println(s"$puzzleName $wordleNumber ${if (result.size <= maxGuesses) result.size else "X"}/6*")
-    println()
     result.foreach { case (_, wordHints) => println(wordHints.mkString) }
-    result.foreach { case (guess, _) => println(guess)}
     println()
+    result.foreach { case (guess, _) => println(guess)}
   }
 
   def inputPuzzleNumber(): String = {
