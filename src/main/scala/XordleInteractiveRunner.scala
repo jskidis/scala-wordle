@@ -8,7 +8,7 @@ trait XordleInteractiveRunner extends XordleRunner {
     val processor = createInteractiveProcessor()
     val result = processor.process(guessSet, startGuess)
 
-    if (result.isEmpty) println("Process Aborted By User")
+    if (result.isEmpty) println("Process aborted by user, or failure occurred")
     else printWordleBlock(result, wordleNumber, processor.maxGuesses)
   }
 
@@ -18,6 +18,7 @@ trait XordleInteractiveRunner extends XordleRunner {
     println(s"$puzzleName $wordleNumber ${if (result.size <= maxGuesses) result.size else "X"}/6*")
     println()
     result.foreach { case (_, wordHints) => println(wordHints.mkString) }
+    result.foreach { case (guess, _) => println(guess)}
     println()
   }
 

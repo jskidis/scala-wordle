@@ -40,8 +40,10 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
       writeLine(s"Remaining Words: ${remainingWords.size}")
 
       // Determine next guess and start next iteration
-      val nextGuess = generateNextGuesses(remainingWords, 1).head.phrase
-      processRecurse(remainingWords, nextGuess, updatedGuesses)
+      generateNextGuess(remainingWords) match {
+        case None => Nil
+        case Some(guess: XordlePhrase) => processRecurse(remainingWords, guess.phrase, updatedGuesses)
+      }
     }
   }
 }

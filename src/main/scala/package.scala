@@ -57,6 +57,9 @@ package object wordle {
   trait SolveStrategy {
     def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
     def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase]
+    def generateNextGuess(remainingWords: WordSet): Option[XordlePhrase] = {
+      generateNextGuesses(remainingWords, 1).headOption
+    }
   }
 
   trait LineReader {
