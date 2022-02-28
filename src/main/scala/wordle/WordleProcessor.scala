@@ -11,5 +11,5 @@ abstract class WordleInteractiveProcessor extends InteractiveProcessor
 abstract class WordleSimulationProcessor(answer: String ) extends SimulationProcessor(answer)
   with WordleProcessor
 
-abstract class WordleFirstGuessOptimizer extends FirstGuessOptimizator
+abstract class WordleFirstGuessOptimizer extends FirstGuessOptimizer
   with WordleProcessor

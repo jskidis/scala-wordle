@@ -15,7 +15,7 @@ trait SimulationProcessFactory {
 }
 
 trait FirstGuessOptFactory {
-  def createFirstGuessOptimizer(): FirstGuessOptimizator
+  def createFirstGuessOptimizer(): FirstGuessOptimizer
 }
 
 trait XordleRunner extends GuessAndAnswerSets

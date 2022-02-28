@@ -24,7 +24,7 @@ trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets {
   override def createSimulationProcessor(answer: String): SimulationProcessor  = {
     new WordleSimulationProcessor(answer) with WordleProcessor with ClusterAndFreqStrategy
   }
-  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+  override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterAndFreqStrategy with WordleStandardWordSets
   }
 }
@@ -44,7 +44,7 @@ trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets 
   override def createSimulationProcessor(answer: String): SimulationProcessor  = {
     new WordleSimulationProcessor(answer) with WordleProcessor with ClusterStrategy
   }
-  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+  override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterStrategy with WordleAnswerOnlyWordSets
   }
 }
@@ -64,7 +64,7 @@ trait WordleReverseRunner extends WordleRunner with WordleReverseWordSets {
   override def createSimulationProcessor(answer: String): SimulationProcessor  = {
     new WordleSimulationProcessor(answer) with ReverseClusterStrategy
   }
-  override def createFirstGuessOptimizer(): FirstGuessOptimizator = {
+  override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ReverseClusterStrategy with WordleReverseWordSets
   }
 }

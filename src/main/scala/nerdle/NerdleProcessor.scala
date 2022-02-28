@@ -10,7 +10,7 @@ abstract class NerdleInteractiveProcessor extends InteractiveProcessor
 abstract class NerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
   with NerdleProcessor
 
-abstract class NerdleFirstGuessOptimizer extends FirstGuessOptimizator
+abstract class NerdleFirstGuessOptimizer extends FirstGuessOptimizer
   with NerdleProcessor
 
 abstract class MiniNerdleInteractiveProcessor extends InteractiveProcessor
@@ -19,6 +19,6 @@ abstract class MiniNerdleInteractiveProcessor extends InteractiveProcessor
 abstract class MiniNerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
   with MiniNerdleProcessor
 
-abstract class MiniNerdleFirstGuessOptimizer extends FirstGuessOptimizator
+abstract class MiniNerdleFirstGuessOptimizer extends FirstGuessOptimizer
   with MiniNerdleProcessor
 
