@@ -14,7 +14,8 @@ trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPat
 
   override def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase] = {
     // Next Guess is based on word with most unique clusters, with ties resolved based on type
-    generateClusters(remainingWords).sortWith(sortWordCluster).take(number).map(_.word)
+    val sortedClusters = generateClusters(remainingWords).sortWith(sortWordCluster)
+    sortedClusters.take(number).map(_.word)
   }
 
   def generateClusters(remainingWords: WordSet): Vector[WordClusterCount] = {

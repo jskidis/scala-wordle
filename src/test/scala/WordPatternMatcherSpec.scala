@@ -83,5 +83,11 @@ class WordPatternMatcherSpec extends AnyFunSpec with Matchers {
       WordPatternMatcher.doesWordMatch("TAUVA", wordPattern1G1Y1B) mustBe true
       WordPatternMatcher.doesWordMatch("TAUAA", wordPattern1G1Y1B) mustBe false
     }
+
+    it("handle a bug scenario that was descivered") {
+      val wordPattern = Seq(('Q', TMissHint), ('U', TInPosHint), ('E', TInWordHint), ('U', TMissHint), ('E', TInPosHint))
+      WordPatternMatcher.doesWordMatch("OUPHE", wordPattern) mustBe false
+      WordPatternMatcher.doesWordMatch("RUPEE", wordPattern) mustBe true
+    }
   }
 }
