@@ -1,29 +1,19 @@
 package com.skidis.wordle
 package strategy
 
-trait ClusterStrategy extends SolveStrategy with WordHintsGenerator with WordPatternMatcher  {
+trait ClusterStrategy extends StandardWordElimStrategy with CachingWordHintsGenerator  {
   case class WordClusterCount(word: XordlePhrase, clusterCount: Int)
 
-  override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = {
-    // Create list of tuple with each letter of the current word and the hint for that letter
-    val wordPattern: Seq[(Char, HintBlock)] = currentGuess.toSeq zip wordHints
-
-    // Eliminate words from set that don't fit word hints for current answer
-    wordSet.filter { w: XordlePhrase => doesWordMatch(w.phrase, wordPattern) && w.phrase != currentGuess }
-  }
-
   override def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase] = {
-    // Next Guess is based on word with most unique clusters, with ties resolved based on type
-    val sortedClusters = generateClusters(remainingWords).sortWith(sortWordCluster)
-    sortedClusters.take(number).map(_.word)
-  }
-
-  def generateClusters(remainingWords: WordSet): Vector[WordClusterCount] = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
-    remainingWords.toVector.map { potentialAnswer: XordlePhrase =>
-      val clusterCount = remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word) }.size
-      WordClusterCount tupled(potentialAnswer, clusterCount)
+    val clusters = remainingWords.toVector.map { potentialAnswer: XordlePhrase =>
+      WordClusterCount(potentialAnswer,
+        remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word) }.size)
     }
+
+    // Next Guess is based on the words with most unique clusters, with ties resolved based on type
+    val sortedClusters = clusters.sortWith(sortWordCluster)
+    sortedClusters.take(number).map(_.word)
   }
 
   def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = {

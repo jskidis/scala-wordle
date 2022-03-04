@@ -20,7 +20,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // GuessRetriever and WordHintsRetriever
     override def retrieveGuess(suggestion: String): String = suggestion
-    override def retrieveWordHints(guess: String): WordHints = {
+    override def retrieveWordHints(guess: String, answer: Option[String]): WordHints = {
       cycles += 1
       wordHints(cycles -1)
     }

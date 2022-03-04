@@ -47,7 +47,7 @@ package object wordle {
   }
 
   trait WordHintsRetriever  {
-    def retrieveWordHints(guess: String): WordHints
+    def retrieveWordHints(guess: String, answer: Option[String]): WordHints
   }
 
   trait GuessRetriever {

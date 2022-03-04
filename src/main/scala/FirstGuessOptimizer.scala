@@ -17,7 +17,6 @@ trait FirstGuessOptimizer extends SolveStrategy with GuessAndAnswerSets with Hin
 trait FirstGuessRunner extends XordleRunner {
   def runOptimizer(numGuesses: Int): Unit = {
     val optimizer = createFirstGuessOptimizer()
-    val guesses = optimizer.generateTopGuess(numGuesses)
-    guesses.foreach(println)
+    optimizer.generateTopGuess(numGuesses)
   }
 }

@@ -3,10 +3,10 @@ package com.skidis.wordle
 trait WordHintsGenerator extends HintProps {
 
   def generateWordHints(answer: XordlePhrase, word: XordlePhrase): WordHints = {
-    generateWordWordHints(answer.phrase, word.phrase)
+    generateWordHints(answer.phrase, word.phrase)
   }
 
-  def generateWordWordHints(answer: String, word: String): WordHints = {
+  def generateWordHints(answer: String, word: String): WordHints = {
     // The first pass creates a tuple with a hint, index, and letter
     // The hint for in-position and miss are the correct final result
     // If the letter is in-word the letter at that position is returned in the tuple

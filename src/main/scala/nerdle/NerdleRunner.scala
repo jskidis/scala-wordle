@@ -19,8 +19,8 @@ trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets {
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new NerdleInteractiveProcessor with ClusterStrategy
   }
-  override def createSimulationProcessor(answer: String): SimulationProcessor = {
-    new NerdleSimulationProcessor(answer) with NerdleProcessor with ClusterStrategy
+  override def createSimulationProcessor(): SimulationProcessor = {
+    new NerdleSimulationProcessor with NerdleProcessor with ClusterStrategy
   }
   def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new NerdleFirstGuessOptimizer with ClusterStrategy with NerdleStandardWordSets
@@ -40,8 +40,8 @@ trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new MiniNerdleInteractiveProcessor with ClusterStrategy
   }
-  override def createSimulationProcessor(answer: String): SimulationProcessor = {
-    new MiniNerdleSimulationProcessor(answer) with ClusterStrategy
+  override def createSimulationProcessor(): SimulationProcessor = {
+    new MiniNerdleSimulationProcessor with ClusterStrategy
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new MiniNerdleFirstGuessOptimizer with ClusterStrategy with MiniNerdleWordSets

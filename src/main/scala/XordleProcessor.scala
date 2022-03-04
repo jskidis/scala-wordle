@@ -11,8 +11,12 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
     processRecurse(wordSet, suggestion)
   }
 
+  def process(wordSet: WordSet, suggestion: String, answer: String): Seq[(String, WordHints)] = {
+    processRecurse(wordSet, suggestion, Option(answer))
+  }
+
   @tailrec
-  private def processRecurse(wordSet: WordSet, suggestion: String, guesses: Seq[(String, WordHints)] = Nil)
+  private def processRecurse(wordSet: WordSet, suggestion: String, answer: Option[String] = None, guesses: Seq[(String, WordHints)] = Nil)
   : Seq[(String, WordHints)] = {
 
     writeLine(s"${Seq.fill(40)('*').mkString}")
@@ -21,7 +25,7 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
       if (wordSet.size == 1) (suggestion, winningWordHints)
       else {
         val guess = retrieveGuess(suggestion)
-        val pattern = retrieveWordHints(guess)
+        val pattern = retrieveWordHints(guess, answer)
         (guess, pattern)
       }
 
@@ -42,7 +46,7 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
       // Determine next guess and start next iteration
       generateNextGuess(remainingWords) match {
         case None => Nil
-        case Some(guess: XordlePhrase) => processRecurse(remainingWords, guess.phrase, updatedGuesses)
+        case Some(guess: XordlePhrase) => processRecurse(remainingWords, guess.phrase, answer, updatedGuesses)
       }
     }
   }

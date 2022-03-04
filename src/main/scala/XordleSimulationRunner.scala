@@ -8,26 +8,29 @@ trait XordleSimulationRunner extends XordleRunner {
   def runSimulation(): Unit = {
     val startTimestamp = System.currentTimeMillis()
 
-    val results: Vector[Seq[(String, WordHints)]] = Await.result(
-      Future.sequence(
-        answerSet.map {answer:XordlePhrase => runWordle(answer.phrase)}), 1.hour
-    ).toVector
+    val answers = answerSet.toSeq.map(_.phrase)
+    val processor = createSimulationProcessor()
+
+    val results = for {
+      result <- Await.result(Future.sequence(
+        answers.map{ answer => runWordle(processor, answer) }
+      ), 1.hour)
+    } yield result
     printResults(results)
 
     val endTimestamp = System.currentTimeMillis()
     println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
   }
 
-  def runWordle(answer: String): Future[Seq[(String, WordHints)]] = Future {
-    val processor = createSimulationProcessor(answer)
-    val result = processor.process(guessSet, startGuess)
-    //    println("Processed")
+  def runWordle(processor: SimulationProcessor, answer: String): Future[Seq[(String, WordHints)]] = Future {
+    val result = processor.process(guessSet, startGuess, answer)
+//    println(s"Processes: $answer - ${result.size} Guesses")
     result
   }
 
-  def printResults(results: Vector[Seq[(String, WordHints)]]): Unit = {
+  def printResults(results: Seq[Seq[(String, WordHints)]]): Unit = {
     val groupedByGuesses = results.groupBy {
-      case Nil => -1
+      case Nil => 0
       case result => result.size
     }.toVector.sortWith(_._1 < _._1)
 

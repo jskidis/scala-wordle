@@ -9,7 +9,6 @@ trait WordleRunner extends XordleRunner {
   override def puzzleName: String = "Wordle"
 }
 
-
 trait WordleStandardWordSets extends GuessAndAnswerSets with WordReader {
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
   override lazy val answerSet: WordSet = readWords(Source.fromResource("answers.txt"))
@@ -21,8 +20,8 @@ trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets {
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ClusterAndFreqStrategy
   }
-  override def createSimulationProcessor(answer: String): SimulationProcessor  = {
-    new WordleSimulationProcessor(answer) with WordleProcessor with ClusterAndFreqStrategy
+  override def createSimulationProcessor(): SimulationProcessor  = {
+    new WordleSimulationProcessor with WordleProcessor with ClusterAndFreqStrategy
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterAndFreqStrategy with WordleStandardWordSets
@@ -36,13 +35,13 @@ trait WordleAnswerOnlyWordSets extends GuessAndAnswerSets with WordReader {
 }
 
 trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets {
-  override def startGuess: String = "SLATE"
+  override def startGuess: String = "SALET"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ClusterStrategy
   }
-  override def createSimulationProcessor(answer: String): SimulationProcessor  = {
-    new WordleSimulationProcessor(answer) with WordleProcessor with ClusterStrategy
+  override def createSimulationProcessor(): SimulationProcessor  = {
+    new WordleSimulationProcessor with WordleProcessor with ClusterStrategy
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterStrategy with WordleAnswerOnlyWordSets
@@ -52,7 +51,7 @@ trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets 
 
 trait WordleReverseWordSets extends GuessAndAnswerSets with WordReader {
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("words-filtered-by-frequency.txt"))
-  override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(100)
+  override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(50)
 }
 
 trait WordleReverseRunner extends WordleRunner with WordleReverseWordSets {
@@ -61,8 +60,8 @@ trait WordleReverseRunner extends WordleRunner with WordleReverseWordSets {
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ReverseClusterStrategy
   }
-  override def createSimulationProcessor(answer: String): SimulationProcessor  = {
-    new WordleSimulationProcessor(answer) with ReverseClusterStrategy
+  override def createSimulationProcessor(): SimulationProcessor  = {
+    new WordleSimulationProcessor with ReverseClusterStrategy
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ReverseClusterStrategy with WordleReverseWordSets

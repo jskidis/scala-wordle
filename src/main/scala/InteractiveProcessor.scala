@@ -6,7 +6,7 @@ trait InteractiveProcessor extends XordleProcessor with ConsoleWriter with StdIn
   with GuessInput with ResultInput {
 
   override def retrieveGuess(suggestion: String): String = getGuessFromInput(suggestion)
-  override def retrieveWordHints(guess: String): WordHints = generatePattern()
+  override def retrieveWordHints(guess: String, answer: Option[String]): WordHints = generatePattern()
 }
 
 

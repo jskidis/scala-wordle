@@ -11,7 +11,7 @@ trait InteractiveProcessorFactory {
 }
 
 trait SimulationProcessFactory {
-  def createSimulationProcessor(answer: String): SimulationProcessor
+  def createSimulationProcessor(): SimulationProcessor
 }
 
 trait FirstGuessOptFactory {
