@@ -7,7 +7,7 @@ trait MiniNerdleProcessor extends NerdleHintProps with MiniNerdleGuessProps
 abstract class NerdleInteractiveProcessor extends InteractiveProcessor
   with NerdleProcessor with NerdleInputValidator
 
-abstract class NerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
+abstract class NerdleSimulationProcessor extends SimulationProcessor
   with NerdleProcessor
 
 abstract class NerdleFirstGuessOptimizer extends FirstGuessOptimizer
@@ -16,7 +16,7 @@ abstract class NerdleFirstGuessOptimizer extends FirstGuessOptimizer
 abstract class MiniNerdleInteractiveProcessor extends InteractiveProcessor
   with MiniNerdleProcessor with NerdleInputValidator
 
-abstract class MiniNerdleSimulationProcessor(answer: String) extends SimulationProcessor(answer)
+abstract class MiniNerdleSimulationProcessor extends SimulationProcessor
   with MiniNerdleProcessor
 
 abstract class MiniNerdleFirstGuessOptimizer extends FirstGuessOptimizer
