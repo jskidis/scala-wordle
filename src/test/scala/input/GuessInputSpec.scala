@@ -9,7 +9,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.collection.mutable.ListBuffer
 
 class GuessInputSpec extends AnyFunSpec with Matchers {
-  val suggestion: String = "guess"
+  val suggestions: Vector[String] = Vector("guess", "xylyl")
   val validInput:String = "abcde"
 
   class GuessInputFixture(inputs: Vector[String]) extends GuessInput with TestGuessProps with TestHintProps {
@@ -35,40 +35,40 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
   describe("Gather Guess") {
     it("returns the suggested word if the input is empty") {
       val guessInput = new GuessInputFixture(Vector(""))
-      val result = guessInput.getGuessFromInput(suggestion)
+      val result = guessInput.getGuessFromInput(suggestions)
 
       // It should return a guess and that result should be equal to "validResult" value
-      result mustBe suggestion.toUpperCase
+      result mustBe suggestions.head.toUpperCase
 
       guessInput.linesWritten must have size 1
-      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestion)
+      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestions)
     }
 
     it("returns the suggested word if the trim of input is empty") {
       val guessInput = new GuessInputFixture(Vector("  "))
-      val result = guessInput.getGuessFromInput(suggestion)
+      val result = guessInput.getGuessFromInput(suggestions)
 
       // It should return a guess and that result should be equal to "validResult" value
-      result mustBe suggestion.toUpperCase
+      result mustBe suggestions.head.toUpperCase
 
       guessInput.linesWritten must have size 1
-      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestion)
+      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestions)
     }
 
     it("returns results from reader when valid result is entered on first try") {
       val guessInput = new GuessInputFixture(Vector(validInput))
-      val result = guessInput.getGuessFromInput(suggestion)
+      val result = guessInput.getGuessFromInput(suggestions)
 
       // It should return a result and that result should be equal to "validResult" value
       result mustBe validInput.toUpperCase
 
       guessInput.linesWritten must have size 1
-      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestion)
+      guessInput.linesWritten.head mustBe guessInput.guessPromptMsg(suggestions)
     }
 
     it("re-asks for results if not valid") {
       val guessInput = new GuessInputFixture(Vector("12345", validInput))
-      val result = guessInput.getGuessFromInput(suggestion)
+      val result = guessInput.getGuessFromInput(suggestions)
 
       // It should return a result and that result should be equal to "validResult" value, it should have c
       result mustBe validInput.toUpperCase
@@ -77,7 +77,7 @@ class GuessInputSpec extends AnyFunSpec with Matchers {
       guessInput.linesRead mustBe 2
 
       // It should have written the prompt text twice, and written the error message once
-      guessInput.linesWritten.count(_ == guessInput.guessPromptMsg(suggestion)) mustBe 2
+      guessInput.linesWritten.count(_ == guessInput.guessPromptMsg(suggestions)) mustBe 2
       guessInput.linesWritten.count(_ == guessInput.validationMsg) mustBe 1
     }
   }

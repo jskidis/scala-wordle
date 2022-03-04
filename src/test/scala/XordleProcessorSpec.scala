@@ -16,10 +16,10 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
-    override def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase] = remainingWords.take(number).toSeq
+    override def generateNextGuesses(suggestions: WordSet, number: Int): Vector[XordlePhrase] = suggestions.take(number).toVector
 
     // GuessRetriever and WordHintsRetriever
-    override def retrieveGuess(suggestion: String): String = suggestion
+    override def retrieveGuess(suggestions: Vector[String]): String = suggestions.headOption.getOrElse("")
     override def retrieveWordHints(guess: String, answer: Option[String]): WordHints = {
       cycles += 1
       wordHints(cycles -1)
@@ -51,16 +51,28 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(words, word1.phrase)
 
-      result mustBe expectedResult
+      result.isRight mustBe true
+      result.map {_ mustBe expectedResult }
     }
 
-    it("returns an empty list if the color pattern returned is empty") {
+    it("returns an error (left side value) if the color pattern returned is empty") {
+      val wordHints: Seq[WordHints] = Seq(allMiss, allInPos)
+
+      val processor = new TestXordleProcessor(wordHints) {
+        override def generateNextGuesses(suggestions: WordSet, number: Int): Vector[XordlePhrase] = Vector()
+      }
+      val result = processor.process(words, word1.phrase)
+
+      result.isLeft mustBe true
+    }
+
+    it("returns an error (left side value) if there are no guesses returned") {
       val wordHints: Seq[WordHints] = Seq(allInWord, emptyHints)
 
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(words, word1.phrase)
 
-      result mustBe empty
+      result.isLeft mustBe true
     }
 
     it("if wordset is down to 1 word, it automatically selected that word as the winner") {
@@ -71,7 +83,8 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(Seq(word1).toSet, word1.phrase)
 
-      result mustBe expectedResult
+      result.isRight mustBe true
+      result.map {_  mustBe expectedResult }
     }
 
     it("if 6 guesses has passed, the cycle stops") {
@@ -88,7 +101,8 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val processor = new TestXordleProcessor(wordHints)
       val result = processor.process(words, words.head.phrase)
 
-      result mustBe expectedResult
+      result.isRight mustBe true
+      result.map {_  mustBe expectedResult }
     }
   }
 }

@@ -4,7 +4,7 @@ package strategy
 trait ClusterStrategy extends StandardWordElimStrategy with CachingWordHintsGenerator  {
   case class WordClusterCount(word: XordlePhrase, clusterCount: Int)
 
-  override def generateNextGuesses(remainingWords: WordSet, number: Int): Seq[XordlePhrase] = {
+  override def generateNextGuesses(remainingWords: WordSet, number: Int): Vector[XordlePhrase] = {
     // Generate a set for each remaining word identifying the number unique clusters choosing that word would created
     val clusters = remainingWords.toVector.map { potentialAnswer: XordlePhrase =>
       WordClusterCount(potentialAnswer,

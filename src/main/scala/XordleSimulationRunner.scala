@@ -23,9 +23,12 @@ trait XordleSimulationRunner extends XordleRunner {
   }
 
   def runWordle(processor: SimulationProcessor, answer: String): Future[Seq[(String, WordHints)]] = Future {
-    val result = processor.process(guessSet, startGuess, answer)
-//    println(s"Processes: $answer - ${result.size} Guesses")
-    result
+    processor.process(guessSet, startGuess, answer) match {
+      case Left(_) => Nil
+      case Right(result) =>
+        //    println(s"Processes: $answer - ${result.size} Guesses")
+        result
+    }
   }
 
   def printResults(results: Seq[Seq[(String, WordHints)]]): Unit = {

@@ -6,10 +6,11 @@ trait XordleInteractiveRunner extends XordleRunner {
   def runInteractive(): Unit = {
     val wordleNumber = inputPuzzleNumber()
     val processor = createInteractiveProcessor()
-    val result = processor.process(guessSet, startGuess)
 
-    if (result.isEmpty) println("Process aborted by user, or failure occurred")
-    else printWordleBlock(result, wordleNumber, processor.maxGuesses)
+    processor.process(guessSet, startGuess) match {
+      case Left(message) => println(s"STOPPED: $message")
+      case Right(result) => printWordleBlock(result, wordleNumber, processor.maxGuesses)
+    }
   }
 
   def printWordleBlock(result: Seq[(String, WordHints)], wordleNumber: String, maxGuesses: Int): Unit = {
