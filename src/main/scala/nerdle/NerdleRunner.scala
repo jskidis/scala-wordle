@@ -14,7 +14,7 @@ trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGene
 }
 
 trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets {
-  override def startGuess: String = "58-42=16"
+  override def startGuess: String = "59-42=17"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new NerdleInteractiveProcessor with ClusterStrategy
@@ -35,7 +35,7 @@ trait MiniNerdleWordSets extends GuessAndAnswerSets with NerdleGuessableGenerato
 
 trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
   override def puzzleName: String = "mini nerdlegame"
-  override def startGuess: String = "4*7=28"
+  override def startGuess: String = "28/7=4"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new MiniNerdleInteractiveProcessor with ClusterStrategy
@@ -77,7 +77,7 @@ object NerdleFirstGuessOptStandardRunner extends App
   runOptimizer(12)
 }
 
-object NerdleFirOstGuessInteractiveMiniRunner extends App
+object NerdleFirstGuessOptMiniRunner extends App
   with FirstGuessRunner with MiniNerdleRunner {
   runOptimizer(12)
 }
