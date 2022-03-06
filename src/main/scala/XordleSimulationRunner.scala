@@ -22,29 +22,26 @@ trait XordleSimulationRunner extends XordleRunner {
     println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
   }
 
-  def runWordle(processor: SimulationProcessor, answer: String): Future[Seq[(String, WordHints)]] = Future {
+  def runWordle(processor: SimulationProcessor, answer: String): Future[Int] = Future {
     processor.process(guessSet, startGuess, answer) match {
-      case Left(_) => Nil
+      case Left(_) => -1
       case Right(result) =>
         //    println(s"Processes: $answer - ${result.size} Guesses")
-        result
+        result.size
     }
   }
 
-  def printResults(results: Seq[Seq[(String, WordHints)]]): Unit = {
-    val groupedByGuesses = results.groupBy {
-      case Nil => 0
-      case result => result.size
-    }.toVector.sortWith(_._1 < _._1)
+  def printResults(results: Seq[Int]): Unit = {
+    val grouped = results.groupBy(i=> i).map {
+      case (i: Int, seq: Seq[Int]) => (i, seq.size)
+    }.toVector.sortBy(_._1)
 
-    val grouped = groupedByGuesses
     grouped.foreach {
-      case (numGuesses, resultSet) =>
-        val numResults = resultSet.size
-        val percent = 100.0 * resultSet.size / results.size
-        println(f"$numGuesses Guesses: $numResults%5d ($percent%5.2f%%)")
+      case (numGuesses, count) =>
+        val percent = 100.0 * count / results.size
+        println(f"$numGuesses Guesses: $count%5d ($percent%5.2f%%)")
     }
-    val avgGuesses = grouped.map { case (nG, rs) => nG * rs.size }.sum * 1.0 / results.size
+    val avgGuesses = grouped.filter(_._1 > 0).map { case (numGuesses, count) => numGuesses * count }.sum * 1.0 / results.size
     println(f"Avg Guesses: $avgGuesses%1.3f")
   }
 }
