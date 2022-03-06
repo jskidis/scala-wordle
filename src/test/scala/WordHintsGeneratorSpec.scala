@@ -66,5 +66,22 @@ class WordHintsGeneratorSpec extends AnyFunSpec with Matchers {
       GeneratorFixture.generateWordHints("67*7=469", "49-7*6=7") mustBe
         Seq(TInWordHint, TInWordHint, TMissHint, TInPosHint, TInWordHint, TInWordHint, TInWordHint, TInWordHint)
     }
+/*
+    it("testing timing") {
+      val words = WordReader.readWords(Source.fromResource("answers.txt")).take(1000)
+
+      val generator = new WordHintsGenerator with WordleHintProps
+
+      val startTimestamp = System.currentTimeMillis()
+      for {
+        answer <- words
+        word <- words
+      } yield {
+        generator.generateWordHints(answer, word)
+      }
+      val endTimestamp = System.currentTimeMillis()
+      println(s"${endTimestamp - startTimestamp}")
+    }
+*/
   }
 }
