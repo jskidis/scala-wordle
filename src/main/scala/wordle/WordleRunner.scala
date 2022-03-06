@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package wordle
 
-import strategy.{ClusterAndFreqStrategy, ClusterStrategy, ReverseClusterStrategy}
+import strategy._
 
 import scala.io.Source
 
@@ -21,7 +21,7 @@ trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets {
     new WordleInteractiveProcessor with ClusterAndFreqStrategy
   }
   override def createSimulationProcessor(): SimulationProcessor  = {
-    new WordleSimulationProcessor with WordleProcessor with ClusterAndFreqStrategy
+    new WordleSimulationProcessor with WordleProcessor with ClusterAndFreqStrategyCaching
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterAndFreqStrategy with WordleStandardWordSets
@@ -41,7 +41,7 @@ trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets 
     new WordleInteractiveProcessor with ClusterStrategy
   }
   override def createSimulationProcessor(): SimulationProcessor  = {
-    new WordleSimulationProcessor with WordleProcessor with ClusterStrategy
+    new WordleSimulationProcessor with WordleProcessor with ClusterStrategyCaching
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ClusterStrategy with WordleAnswerOnlyWordSets
@@ -61,7 +61,7 @@ trait WordleReverseRunner extends WordleRunner with WordleReverseWordSets {
     new WordleInteractiveProcessor with ReverseClusterStrategy
   }
   override def createSimulationProcessor(): SimulationProcessor  = {
-    new WordleSimulationProcessor with ReverseClusterStrategy
+    new WordleSimulationProcessor with ReverseClusterStrategyCaching
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new WordleFirstGuessOptimizer with ReverseClusterStrategy with WordleReverseWordSets

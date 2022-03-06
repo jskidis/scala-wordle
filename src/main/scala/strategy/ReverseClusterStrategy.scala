@@ -6,3 +6,5 @@ trait ReverseClusterStrategy extends ClusterStrategy {
     !super.sortWordCluster(wc1, wc2)
   }
 }
+
+trait ReverseClusterStrategyCaching extends ReverseClusterStrategy with CachingWordHintsGenerator

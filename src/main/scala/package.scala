@@ -8,6 +8,15 @@ package object wordle {
 
   trait XordlePhrase extends Ordered[XordlePhrase] {
     def phrase: String
+    override def compare(that: XordlePhrase): Int = phrase.compare(that.phrase)
+  }
+
+  trait XordlePhaseFreq extends XordlePhrase {
+    def frequency: Double
+    override def compare(that: XordlePhrase): Int = that match {
+      case w2: XordlePhaseFreq => frequency.compare(w2.frequency)
+      case _ => super.compare(that)
+    }
   }
 
   trait HintBlock {

@@ -3,5 +3,9 @@ package nerdle
 
 case class NerdleEquation(expr: OperatorExpr) extends XordlePhrase {
   override def phrase: String = s"${expr.toString}=${expr.value}"
-  override def compare(that: XordlePhrase): Int = toString.compareTo(that.toString)
 }
+
+case class NerdleEquationWithFreq(expr: OperatorExpr, frequency: Double) extends XordlePhaseFreq {
+  override def phrase: String = s"${expr.toString}=${expr.value}"
+}
+

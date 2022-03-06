@@ -3,7 +3,7 @@ package nerdle
 
 import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract, operators}
 
-trait NerdleGuessableGenerator {
+trait NerdleGuessableGenerator extends NerdleGuessProps {
   def generate8CharEquations(): Set[NerdleEquation] = {
     (generateOneOpEqs() ++ generateTwoOpEqs()).toSet
   }
@@ -27,6 +27,21 @@ trait NerdleGuessableGenerator {
       }
     }.flatten
   }.flatten
+
+  def generateWithFrequencies(equations: Set[NerdleEquation]): Set[NerdleEquationWithFreq] = {
+    val equationsText = equations.map(_.phrase)
+    val numEqsAsDbl = equationsText.size.toDouble
+
+    val charFreqMap: Map[Char, Double] = validGuessChars.toSeq.map { ch =>
+      (ch, equationsText.count(_.contains(ch)) / numEqsAsDbl)
+    }.toMap
+
+    equations.map { eq =>
+      NerdleEquationWithFreq(eq.expr,
+        eq.phrase.foldLeft(1.0) { (acc: Double, ch:Char) => acc * charFreqMap(ch) }
+      )
+    }
+  }
 
   def generateOneOpEqs(): Seq[NerdleEquation] = {
     for {

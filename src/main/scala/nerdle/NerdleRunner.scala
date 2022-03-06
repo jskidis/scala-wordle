@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import strategy.ClusterStrategy
+import strategy._
 
 trait NerdleRunner extends XordleRunner {
   override def puzzleName: String = "nerdlegame"
@@ -9,28 +9,30 @@ trait NerdleRunner extends XordleRunner {
 
 
 trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGenerator {
-  override lazy val guessSet: WordSet = generate8CharEquations()
-  override lazy val answerSet: WordSet = generate8CharEquations()
+  val equations: Set[NerdleEquation] = generate8CharEquations()
+  override lazy val guessSet: WordSet = generateWithFrequencies(equations)
+  override lazy val answerSet: WordSet = equations
 }
 
 trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets {
   override def startGuess: String = "59-42=17"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
-    new NerdleInteractiveProcessor with ClusterStrategy
+    new NerdleInteractiveProcessor with ClusterAndFreqStrategy
   }
   override def createSimulationProcessor(): SimulationProcessor = {
-    new NerdleSimulationProcessor with NerdleProcessor with ClusterStrategy
+    new NerdleSimulationProcessor with NerdleProcessor with ClusterAndFreqStrategyCaching
   }
   def createFirstGuessOptimizer(): FirstGuessOptimizer = {
-    new NerdleFirstGuessOptimizer with ClusterStrategy with NerdleStandardWordSets
+    new NerdleFirstGuessOptimizer with ClusterAndFreqStrategy with NerdleStandardWordSets
   }
 }
 
 
 trait MiniNerdleWordSets extends GuessAndAnswerSets with NerdleGuessableGenerator {
-  override lazy val guessSet: WordSet = generate6CharEquations()
-  override lazy val answerSet: WordSet = generate6CharEquations()
+  val equations: Set[NerdleEquation] = generate6CharEquations()
+  override lazy val guessSet: WordSet = equations
+  override lazy val answerSet: WordSet = equations
 }
 
 trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
@@ -41,7 +43,7 @@ trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
     new MiniNerdleInteractiveProcessor with ClusterStrategy
   }
   override def createSimulationProcessor(): SimulationProcessor = {
-    new MiniNerdleSimulationProcessor with ClusterStrategy
+    new MiniNerdleSimulationProcessor with ClusterStrategyCaching
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
     new MiniNerdleFirstGuessOptimizer with ClusterStrategy with MiniNerdleWordSets
