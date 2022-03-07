@@ -55,7 +55,6 @@ trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
 
 trait NerdleRandomGuessRunner extends NerdleRunner with NerdleStandardWordSets {
   override def puzzleName: String = "nerdlegame"
-  override lazy val answerSet: WordSet = equations.take(1000)
 
 
   override def startGuess: String = {
