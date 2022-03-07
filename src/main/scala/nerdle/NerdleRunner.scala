@@ -3,6 +3,8 @@ package nerdle
 
 import strategy._
 
+import scala.util.Random
+
 trait NerdleRunner extends XordleRunner {
   override def puzzleName: String = "nerdlegame"
 }
@@ -15,7 +17,7 @@ trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGene
 }
 
 trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets {
-  override def startGuess: String = "59-42=17"
+  override def startGuess: String = "54-38=16"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new NerdleInteractiveProcessor with ClusterAndFreqStrategy
@@ -51,6 +53,27 @@ trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets {
 }
 
 
+trait NerdleRandomGuessRunner extends NerdleRunner with NerdleStandardWordSets {
+  override def puzzleName: String = "nerdlegame"
+  override lazy val answerSet: WordSet = equations.take(1000)
+
+
+  override def startGuess: String = {
+    Random.shuffle(guessSet.toVector).headOption.map(_.phrase).getOrElse("10+10=20")
+  }
+
+  override def createInteractiveProcessor(): InteractiveProcessor = {
+    new NerdleInteractiveProcessor with RandomGuessStrategy
+  }
+  override def createSimulationProcessor(): SimulationProcessor = {
+    new NerdleSimulationProcessor with NerdleProcessor with RandomGuessStrategy
+  }
+  def createFirstGuessOptimizer(): FirstGuessOptimizer = {
+    new NerdleFirstGuessOptimizer with RandomGuessStrategy with NerdleStandardWordSets
+  }
+}
+
+
 object NerdleInteractiveStandardRunner extends App
   with XordleInteractiveRunner with NerdleStandardRunner {
   runInteractive()
@@ -61,17 +84,27 @@ object NerdleInteractiveMiniRunner extends App
   runInteractive()
 }
 
+object NerdleInteractiveRandomRunner extends App
+  with XordleInteractiveRunner with NerdleRandomGuessRunner {
+  runInteractive()
+}
+
 
 object NerdleSimulationStandardRunner extends App
   with XordleSimulationRunner with NerdleStandardRunner {
   runSimulation()
 }
 
-
 object NerdleSimulationMiniRunner extends App
   with XordleSimulationRunner with MiniNerdleRunner {
   runSimulation()
 }
+
+object NerdleSimulationRandomRunner extends App
+  with XordleSimulationRunner with NerdleRandomGuessRunner {
+  runSimulation()
+}
+
 
 
 object NerdleFirstGuessOptStandardRunner extends App
