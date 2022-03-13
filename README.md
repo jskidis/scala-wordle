@@ -5,13 +5,14 @@ The basis for the algorithm came from the [538 (classic) Riddler](https://fiveth
 
 The outline of algorithm is as follows 
 * Read in the list of potential words
-* Pick a first guess (always TRACE, see Riddler answer for detail)
+* Pick a first guess (always SLATE)
 * Loop through the following
   * Determine (input) Color Pattern of guess
   * If all are green, return the guessed word
-  * First out list based on words that wouldn't match the existing color pattern (and the current guess)
+  * If 6 guesses, have been tried exit the loop
+  * Filter out words list based on words that wouldn't match the existing color pattern (and the current guess)
   * For each remaining word, determine how many Clusters are created by comparing the other words against this word
-  * The word with the greatest number of clusters is then selected as the next guess
+  * The word with the greatest number of unique clusters is then selected as the next guess
 
 Color Pattern
 : The combination of Green, Yellow, Black/Grey blocks generate when comparing a word to the answer
