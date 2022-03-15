@@ -60,15 +60,15 @@ package object wordle {
   }
 
   trait GuessRetriever {
-    def retrieveGuess(suggestions: Vector[String]): String
+    def retrieveGuess(suggestions: Seq[String]): String
   }
 
   trait SolveStrategy {
     def numSuggestions: Int = 6
     def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
-    def generateNextGuesses(remainingWords: WordSet, number: Int): Vector[XordlePhrase]
-    def generateNextGuess(remainingWords: WordSet): Option[XordlePhrase] = {
-      generateNextGuesses(remainingWords, 1).headOption
+    def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[String], numToReturn: Int): Seq[String]
+    def generateNextGuess(remainingWords: WordSet, previousGuesses: Seq[String]): Option[String] = {
+      generateNextGuesses(remainingWords, previousGuesses, 1).headOption
     }
   }
 

@@ -4,14 +4,14 @@ package input
 import scala.annotation.tailrec
 
 trait GuessInput extends LineReader with Writer with GuessValidator {
-  def topSuggestion(suggestions: Vector[String]): String =
+  def topSuggestion(suggestions: Seq[String]): String =
     suggestions.headOption.getOrElse("").toUpperCase
     
-  def guessPromptMsg(suggestions: Vector[String]) =
+  def guessPromptMsg(suggestions: Seq[String]) =
     s"Suggestions: ${suggestions.mkString(", ")}\nEnter Guess (or blank to use ${topSuggestion(suggestions)}): "
 
   @tailrec
-  final def getGuessFromInput(suggestions: Vector[String]): String = {
+  final def getGuessFromInput(suggestions: Seq[String]): String = {
     writeString(guessPromptMsg(suggestions))
     val input = readLine().toUpperCase
 

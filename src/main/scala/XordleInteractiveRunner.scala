@@ -2,12 +2,12 @@ package com.skidis.wordle
 
 import scala.io.StdIn
 
-trait XordleInteractiveRunner extends XordleRunner {
+trait XordleInteractiveRunner extends XordleRunner with InteractiveProcessorFactory {
   def runInteractive(): Unit = {
     val wordleNumber = inputPuzzleNumber()
     val processor = createInteractiveProcessor()
 
-    processor.process(guessSet, startGuess) match {
+    processor.process(guessSet) match {
       case Left(message) => println(s"STOPPED: $message")
       case Right(result) => printWordleBlock(result, wordleNumber, processor.maxGuesses)
     }

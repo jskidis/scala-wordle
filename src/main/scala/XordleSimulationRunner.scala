@@ -4,20 +4,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 
-trait XordleSimulationRunner extends XordleRunner {
-  def runSimulation(): Unit = runSimulation(None)
-
-  def runSimulation(suppliedStartGuess: Option[String]): Unit = {
+trait XordleSimulationRunner extends XordleRunner with SimulationProcessFactory {
+  def runSimulation(): Unit = {
     val startTimestamp = System.currentTimeMillis()
 
     val answers = answerSet.toSeq.map(_.phrase)
-    val theStartingGuess = suppliedStartGuess.getOrElse(startGuess)
     val processor = createSimulationProcessor()
 
-    println(s"Starting Word: $theStartingGuess")
     val results = for {
       result <- Await.result(Future.sequence(
-        answers.map{ answer => Future(runWordle(processor, answer, theStartingGuess)) }
+        answers.map{ answer => Future(runWordle(processor, answer)) }
       ), 1.hour)
     } yield result
     printResults(results)
@@ -26,8 +22,8 @@ trait XordleSimulationRunner extends XordleRunner {
     println(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
   }
 
-  def runWordle(processor: SimulationProcessor, answer: String, theStartingGuess: String): Int = {
-    processor.process(guessSet, theStartingGuess, answer) match {
+  def runWordle(processor: SimulationProcessor, answer: String): Int = {
+    processor.process(guessSet, answer) match {
       case Left(_) => -1
       case Right(result) => result.size
       //    println(s"Processes: $answer - ${result.size} Guesses")

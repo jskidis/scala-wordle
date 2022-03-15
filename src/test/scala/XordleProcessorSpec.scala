@@ -16,10 +16,11 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
-    override def generateNextGuesses(suggestions: WordSet, number: Int): Vector[XordlePhrase] = suggestions.take(number).toVector
+    override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[String], numToReturn: Int)
+    : Seq[String] = suggestions.map{w: XordlePhrase => w.phrase}.take(numToReturn).toVector
 
     // GuessRetriever and WordHintsRetriever
-    override def retrieveGuess(suggestions: Vector[String]): String = suggestions.headOption.getOrElse("")
+    override def retrieveGuess(suggestions: Seq[String]): String = suggestions.headOption.getOrElse("")
     override def retrieveWordHints(guess: String, answer: Option[String]): WordHints = {
       cycles += 1
       wordHints(cycles -1)
@@ -49,7 +50,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val expectedResult = Seq( (word1.phrase, allInWord), (word2.phrase, allInPos) )
 
       val processor = new TestXordleProcessor(wordHints)
-      val result = processor.process(words, word1.phrase)
+      val result = processor.process(words)
 
       result.isRight mustBe true
       result.map {_ mustBe expectedResult }
@@ -59,9 +60,10 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val wordHints: Seq[WordHints] = Seq(allMiss, allInPos)
 
       val processor = new TestXordleProcessor(wordHints) {
-        override def generateNextGuesses(suggestions: WordSet, number: Int): Vector[XordlePhrase] = Vector()
+        override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[String], numToReturn: Int)
+        : Seq[String] = Vector()
       }
-      val result = processor.process(words, word1.phrase)
+      val result = processor.process(words)
 
       result.isLeft mustBe true
     }
@@ -70,7 +72,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val wordHints: Seq[WordHints] = Seq(allInWord, emptyHints)
 
       val processor = new TestXordleProcessor(wordHints)
-      val result = processor.process(words, word1.phrase)
+      val result = processor.process(words)
 
       result.isLeft mustBe true
     }
@@ -81,7 +83,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val expectedResult = Seq( (word1.phrase, allInPos) )
 
       val processor = new TestXordleProcessor(wordHints)
-      val result = processor.process(Seq(word1).toSet, word1.phrase)
+      val result = processor.process(Seq(word1).toSet)
 
       result.isRight mustBe true
       result.map {_  mustBe expectedResult }
@@ -99,7 +101,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       )
 
       val processor = new TestXordleProcessor(wordHints)
-      val result = processor.process(words, words.head.phrase)
+      val result = processor.process(words)
 
       result.isRight mustBe true
       result.map {_  mustBe expectedResult }

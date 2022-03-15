@@ -18,8 +18,6 @@ trait FirstGuessOptFactory {
   def createFirstGuessOptimizer(): FirstGuessOptimizer
 }
 
-trait XordleRunner extends GuessAndAnswerSets
-  with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
+trait XordleRunner extends GuessAndAnswerSets {
   def puzzleName: String
-  def startGuess: String
 }

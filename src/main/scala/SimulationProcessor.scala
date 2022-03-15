@@ -6,5 +6,5 @@ trait SimulationProcessor extends XordleProcessor with NullWriter
   override def retrieveWordHints(guess: String, answer: Option[String]): WordHints =
     generateWordHints(answer.getOrElse(""), guess)
 
-  override def retrieveGuess(suggestions: Vector[String]): String = suggestions.headOption.getOrElse("")
+  override def retrieveGuess(suggestions: Seq[String]): String = suggestions.headOption.getOrElse("")
 }
