@@ -40,7 +40,12 @@ trait XordleSimulationRunner extends XordleRunner with SimulationProcessFactory 
         val percent = 100.0 * count / results.size
         println(f"$numGuesses Guesses: $count%5d ($percent%5.2f%%)")
     }
-    val avgGuesses = grouped.filter(_._1 > 0).map { case (numGuesses, count) => numGuesses * count }.sum * 1.0 / results.size
+
+    val successful = grouped.filter(t => t._1 > 0 && t._1 <= 6)
+    val avgGuesses = successful.map {
+      case (numGuesses, count) => numGuesses * count
+    }.sum * 1.0 / results.count(i => i > 0 && i <= 6)
+
     println(f"Avg Guesses: $avgGuesses%1.3f")
   }
 }

@@ -16,7 +16,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
-    override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[String], numToReturn: Int)
+    override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
     : Seq[String] = suggestions.map{w: XordlePhrase => w.phrase}.take(numToReturn).toVector
 
     // GuessRetriever and WordHintsRetriever
@@ -60,7 +60,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       val wordHints: Seq[WordHints] = Seq(allMiss, allInPos)
 
       val processor = new TestXordleProcessor(wordHints) {
-        override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[String], numToReturn: Int)
+        override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
         : Seq[String] = Vector()
       }
       val result = processor.process(words)

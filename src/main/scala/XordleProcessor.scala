@@ -24,13 +24,13 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
 
     writeLine(s"${Seq.fill(40)('*').mkString}")
 
-    val suggestions = generateNextGuesses(wordSet, guesses.map(_._1), numSuggestions)
-    if (suggestions.isEmpty) Left(exhaustedWordsMsg)
-    else if (wordSet.size == 1) {
+    lazy val suggestions = generateNextGuesses(wordSet, guesses, numSuggestions)
+    if (wordSet.size == 1) {
       writeLine("Only 1 choice left!!!")
       writeLine(s"Current Guess: ${wordSet.head.phrase}, Guess #:${guesses.size +1}")
       Right(guesses :+ (wordSet.head.phrase, winningWordHints))
     }
+    else if (suggestions.isEmpty) Left(exhaustedWordsMsg)
     else {
       val currentGuess = retrieveGuess(suggestions)
       val wordHints = retrieveWordHints(currentGuess, answer)

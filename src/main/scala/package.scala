@@ -66,8 +66,8 @@ package object wordle {
   trait SolveStrategy {
     def numSuggestions: Int = 6
     def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet
-    def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[String], numToReturn: Int): Seq[String]
-    def generateNextGuess(remainingWords: WordSet, previousGuesses: Seq[String]): Option[String] = {
+    def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int): Seq[String]
+    def generateNextGuess(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)]): Option[String] = {
       generateNextGuesses(remainingWords, previousGuesses, 1).headOption
     }
   }

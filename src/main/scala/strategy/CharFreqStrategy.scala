@@ -2,7 +2,8 @@ package com.skidis.wordle
 package strategy
 
 trait CharFreqStrategy extends StandardWordElimStrategy {
-  override def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[String], numToReturn: Int): Seq[String] = {
+  override def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
+  : Seq[String] = {
     val words = remainingWords.map{l: XordlePhrase => l.phrase}.toSeq
     val charFreqMap = createCharFreqMap(words)
     val charIdxFreqMap = createCharIndexFreqMap(words)
