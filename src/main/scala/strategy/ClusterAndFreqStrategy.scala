@@ -2,11 +2,12 @@ package com.skidis.wordle
 package strategy
 
 trait ClusterAndFreqStrategy extends ClusterStrategy {
-  override def sortWordCluster(wc1: WordClusterCount, wc2: WordClusterCount): Boolean = (wc1.word, wc2.word) match {
-    case (wwf1:XordlePhaseFreq, wwf2:XordlePhaseFreq) =>
-      wc1.clusterCount + Math.log10(wwf1.frequency)*2 > wc2.clusterCount + Math.log10(wwf2.frequency)*2
-    case (ww1: XordlePhrase, ww2: XordlePhrase) =>
-      if(wc1.clusterCount != wc2.clusterCount) wc1.clusterCount > wc2.clusterCount else ww1 > ww2
+
+  override def scoreWord(potentialAnswer: XordlePhrase, remainingWords: WordSet): Double = {
+    val clusterScore = super.scoreWord(potentialAnswer, remainingWords)
+    potentialAnswer match {
+      case wf: XordlePhaseFreq => clusterScore + Math.log10(wf.frequency)*2
+    }
   }
 }
 

@@ -6,7 +6,11 @@ trait FixedGuessesStrategy extends SolveStrategy {
 
   abstract override def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
   : Seq[String] = {
-    if(fixedGuesses.size > previousGuesses.size) Vector(fixedGuesses(previousGuesses.size))
-    else super.generateNextGuesses(remainingWords, previousGuesses, numToReturn)
+    if(fixedGuesses.size <= previousGuesses.size) super.generateNextGuesses(remainingWords, previousGuesses, numToReturn)
+    else {
+      val fixedWord = fixedGuesses(previousGuesses.size)
+      if (remainingWords.exists{ w: XordlePhrase => w.phrase == fixedWord }) Vector(fixedWord)
+      else super.generateNextGuesses(remainingWords, previousGuesses, numToReturn)
+    }
   }
 }

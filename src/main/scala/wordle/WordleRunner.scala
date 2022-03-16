@@ -18,7 +18,7 @@ trait WordleStandardWordSets extends WordleAnswerSet with GuessAndAnswerSets wit
 }
 
 trait WordleAnswerOnlyWordSets extends WordleAnswerSet with GuessAndAnswerSets with WordReader {
-  override lazy val guessSet: WordSet = readWords(Source.fromResource("answers.txt"))
+  override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-answers.txt"))
 }
 
 
@@ -69,12 +69,12 @@ trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
   val startingGuesses = Seq("SLATE", "CORNY")
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
-    new WordleInteractiveProcessor with CharFreqStrategy with FixedGuessesStrategy {
+    new WordleInteractiveProcessor with CharAndWordFreqStrategy with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = startingGuesses
     }
   }
   override def createSimulationProcessor(): SimulationProcessor  = {
-    new WordleSimulationProcessor with CharFreqStrategy with FixedGuessesStrategy {
+    new WordleSimulationProcessor with CharAndWordFreqStrategy with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = startingGuesses
     }
   }
