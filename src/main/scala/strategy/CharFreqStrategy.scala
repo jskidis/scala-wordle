@@ -20,9 +20,8 @@ trait CharFreqStrategy extends StandardWordElimStrategy with WordScoring {
       else charFreqMap.getOrElse(ch, 0) + 5 * charIdxFreqMap.getOrElse((ch, idx), 0)
     }.sum
     potentialAnswer match {
-      case wf: XordlePhaseFreq => Math.log10(letterScore) + Math.log10(wf.frequency)*2
+      case wf: XordlePhaseFreq => Math.log10(letterScore)*2 + Math.log10(wf.frequency)
     }
-
   }
 
   def repeatingChars(word: String): Seq[Char] = {
