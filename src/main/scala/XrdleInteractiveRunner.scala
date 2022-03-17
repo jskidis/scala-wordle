@@ -2,7 +2,7 @@ package com.skidis.wordle
 
 import scala.io.StdIn
 
-trait XordleInteractiveRunner extends XordleRunner with InteractiveProcessorFactory {
+trait XrdleInteractiveRunner extends XrdleRunner with InteractiveProcessorFactory {
   def runInteractive(): Unit = {
     val wordleNumber = inputPuzzleNumber()
     val processor = createInteractiveProcessor()

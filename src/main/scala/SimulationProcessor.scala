@@ -1,6 +1,6 @@
 package com.skidis.wordle
 
-trait SimulationProcessor extends XordleProcessor with NullWriter
+trait SimulationProcessor extends XrdleProcessor with NullWriter
   with WordHintsGenerator {
 
   override def retrieveWordHints(guess: String, answer: Option[String]): WordHints =

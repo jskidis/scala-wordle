@@ -18,6 +18,6 @@ trait FirstGuessOptFactory {
   def createFirstGuessOptimizer(): FirstGuessOptimizer
 }
 
-trait XordleRunner extends GuessAndAnswerSets {
+trait XrdleRunner extends GuessAndAnswerSets {
   def puzzleName: String
 }

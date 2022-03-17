@@ -10,9 +10,9 @@ trait GridValidator {
 
   def isGridValid(grid: WaffleWordGrid): Boolean = {
     if (grid().size != 6) false
-    else if (grid().exists{ row => row.phrase.length != 5 }) false
+    else if (grid().exists{ row => row.text.length != 5 }) false
     else if (intersectionCoordinates.exists { case ((downWordIdx, downCharIdx), (acrossWordIdx, acrossCharIdx)) =>
-      grid(downWordIdx).phrase(downCharIdx) != grid(acrossWordIdx).phrase(acrossCharIdx)
+      grid(downWordIdx).text(downCharIdx) != grid(acrossWordIdx).text(acrossCharIdx)
     }) false
     else true
   }

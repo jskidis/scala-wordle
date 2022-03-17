@@ -7,12 +7,12 @@ package object waffle {
 
   trait WaffleHintProps extends WordleHintProps
   trait WaffleGuessProps extends WordleGuessProps
-  case class WaffleWord(txt: String) extends XordlePhrase {
-    override def phrase: String = txt
+  case class WaffleWord(txt: String) extends XrdleWord {
+    override def text: String = txt
   }
 
-  case class WaffleWordDetail(word: XordlePhrase, hints:WordHints, wordSet: WordSet) {
-    def replaceWord(newWord: XordlePhrase): WaffleWordDetail = {
+  case class WaffleWordDetail(word: XrdleWord, hints:WordHints, wordSet: WordSet) {
+    def replaceWord(newWord: XrdleWord): WaffleWordDetail = {
       WaffleWordDetail(newWord, hints, wordSet)
     }
     def replaceWordSet(newWordSet: WordSet): WaffleWordDetail = {
@@ -36,14 +36,14 @@ package object waffle {
     })
   }
 
-  case class WaffleWordGrid(words: Seq[XordlePhrase]) {
-    def apply(): Seq[XordlePhrase] = words
-    def apply(number: Int): XordlePhrase = words(number)
+  case class WaffleWordGrid(words: Seq[XrdleWord]) {
+    def apply(): Seq[XrdleWord] = words
+    def apply(number: Int): XrdleWord = words(number)
     def gridLetters: Seq[Char] = {
-      words(0).phrase + words(1).phrase + words(2).phrase + Seq(
-        words(3).phrase(1), words(3).phrase(3),
-        words(4).phrase(1), words(4).phrase(3),
-        words(5).phrase(1), words(5).phrase(3)
+      words(0).text + words(1).text + words(2).text + Seq(
+        words(3).text(1), words(3).text(3),
+        words(4).text(1), words(4).text(3),
+        words(5).text(1), words(5).text(3)
       ).mkString("")
     }
   }

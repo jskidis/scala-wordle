@@ -3,7 +3,7 @@ package nerdle
 
 import strategy._
 
-trait NerdleRunner extends XordleRunner {
+trait NerdleRunner extends XrdleRunner {
   override def puzzleName: String = "nerdlegame"
 }
 
@@ -76,33 +76,33 @@ trait NerdleRandomGuessRunner extends NerdleRunner with NerdleStandardWordSets
 
 
 object NerdleInteractiveStandardRunner extends App
-  with XordleInteractiveRunner with NerdleStandardRunner {
+  with XrdleInteractiveRunner with NerdleStandardRunner {
   runInteractive()
 }
 
 object NerdleInteractiveMiniRunner extends App
-  with XordleInteractiveRunner with MiniNerdleRunner {
+  with XrdleInteractiveRunner with MiniNerdleRunner {
   runInteractive()
 }
 
 object NerdleInteractiveRandomRunner extends App
-  with XordleInteractiveRunner with NerdleRandomGuessRunner {
+  with XrdleInteractiveRunner with NerdleRandomGuessRunner {
   runInteractive()
 }
 
 
 object NerdleSimulationStandardRunner extends App
-  with XordleSimulationRunner with NerdleStandardRunner {
+  with XrdleSimulationRunner with NerdleStandardRunner {
   runSimulation()
 }
 
 object NerdleSimulationMiniRunner extends App
-  with XordleSimulationRunner with MiniNerdleRunner {
+  with XrdleSimulationRunner with MiniNerdleRunner {
   runSimulation()
 }
 
 object NerdleSimulationRandomRunner extends App
-  with XordleSimulationRunner with NerdleRandomGuessRunner {
+  with XrdleSimulationRunner with NerdleRandomGuessRunner {
   runSimulation()
 }
 

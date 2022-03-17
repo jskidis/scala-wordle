@@ -35,7 +35,7 @@ object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator w
     }
     else {
       finalFilterResult().foreach { ww =>
-        println(ww.wordSet.map { w: XordlePhrase => w.phrase }.mkString(", "))
+        println(ww.wordSet.map { w: XrdleWord => w.text }.mkString(", "))
       }
     }
   }

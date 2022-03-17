@@ -4,11 +4,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 
-trait XordleSimulationRunner extends XordleRunner with SimulationProcessFactory {
+trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory {
   def runSimulation(): Unit = {
     val startTimestamp = System.currentTimeMillis()
 
-    val answers = answerSet.toSeq.map(_.phrase)
+    val answers = answerSet.toSeq.map(_.text)
     val processor = createSimulationProcessor()
 
     val results = for {

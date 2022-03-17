@@ -4,17 +4,17 @@ import scala.io.StdIn
 
 package object wordle {
   type WordHints = Seq[HintBlock]
-  type WordSet = Set[_ <: XordlePhrase]
+  type WordSet = Set[_ <: XrdleWord]
 
-  trait XordlePhrase extends Ordered[XordlePhrase] {
-    def phrase: String
-    override def compare(that: XordlePhrase): Int = phrase.compare(that.phrase)
+  trait XrdleWord extends Ordered[XrdleWord] {
+    def text: String
+    override def compare(that: XrdleWord): Int = text.compare(that.text)
   }
 
-  trait XordlePhaseFreq extends XordlePhrase {
+  trait XrdleFreqWord extends XrdleWord {
     def frequency: Double
-    override def compare(that: XordlePhrase): Int = that match {
-      case w2: XordlePhaseFreq => frequency.compare(w2.frequency)
+    override def compare(that: XrdleWord): Int = that match {
+      case w2: XrdleFreqWord => frequency.compare(w2.frequency)
       case _ => super.compare(that)
     }
   }

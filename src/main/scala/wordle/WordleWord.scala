@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package wordle
 
-case class SimpleWordleWord(phrase: String) extends XordlePhrase
+case class SimpleWordleWord(text: String) extends XrdleWord
 
-case class WordleWordFrequencies(phrase: String, frequency: Double) extends XordlePhaseFreq
+case class WordleWordFrequencies(text: String, frequency: Double) extends XrdleFreqWord
 

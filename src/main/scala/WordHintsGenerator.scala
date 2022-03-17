@@ -5,8 +5,8 @@ import scala.collection.mutable
 trait WordHintsGenerator extends HintProps {
   val maskingChar: Char = '#'
 
-  def generateWordHints(answer: XordlePhrase, word: XordlePhrase): WordHints = {
-    generateWordHints(answer.phrase, word.phrase)
+  def generateWordHints(answer: XrdleWord, word: XrdleWord): WordHints = {
+    generateWordHints(answer.text, word.text)
   }
 
   def generateWordHints(answer: String, word: String): WordHints = {

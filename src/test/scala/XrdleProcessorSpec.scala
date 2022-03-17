@@ -8,16 +8,16 @@ import org.scalatest.matchers.must.Matchers
 
 import scala.collection.immutable.ListSet
 
-class XordleProcessorSpec extends AnyFunSpec with Matchers {
+class XrdleProcessorSpec extends AnyFunSpec with Matchers {
 
-  class TestXordleProcessor(wordHints: Seq[WordHints]) extends XordleProcessor with TestHintProps with TestGuessProps {
+  class TestXrdleProcessor(wordHints: Seq[WordHints]) extends XrdleProcessor with TestHintProps with TestGuessProps {
     var cycles = 0
     override def maxGuesses = 6
 
     // SolveStrategy
     override def reduceWordSet(wordSet: WordSet, currentGuess: String, wordHints: WordHints): WordSet = wordSet.tail
     override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
-    : Seq[String] = suggestions.map{w: XordlePhrase => w.phrase}.take(numToReturn).toVector
+    : Seq[String] = suggestions.map{w: XrdleWord => w.text}.take(numToReturn).toVector
 
     // GuessRetriever and WordHintsRetriever
     override def retrieveGuess(suggestions: Seq[String]): String = suggestions.headOption.getOrElse("")
@@ -47,9 +47,9 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     it("returns the the guess/color pattern list when the color pattern is all green") {
       val wordHints = Seq(allInWord, allInPos)
 
-      val expectedResult = Seq( (word1.phrase, allInWord), (word2.phrase, allInPos) )
+      val expectedResult = Seq( (word1.text, allInWord), (word2.text, allInPos) )
 
-      val processor = new TestXordleProcessor(wordHints)
+      val processor = new TestXrdleProcessor(wordHints)
       val result = processor.process(words)
 
       result.isRight mustBe true
@@ -59,7 +59,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     it("returns an error (left side value) if the color pattern returned is empty") {
       val wordHints: Seq[WordHints] = Seq(allMiss, allInPos)
 
-      val processor = new TestXordleProcessor(wordHints) {
+      val processor = new TestXrdleProcessor(wordHints) {
         override def generateNextGuesses(suggestions: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
         : Seq[String] = Vector()
       }
@@ -71,7 +71,7 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     it("returns an error (left side value) if there are no guesses returned") {
       val wordHints: Seq[WordHints] = Seq(allInWord, emptyHints)
 
-      val processor = new TestXordleProcessor(wordHints)
+      val processor = new TestXrdleProcessor(wordHints)
       val result = processor.process(words)
 
       result.isLeft mustBe true
@@ -80,9 +80,9 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
     it("if wordset is down to 1 word, it automatically selected that word as the winner") {
       val wordHints: Seq[WordHints] = Nil // it should never check these, so if it does this will fail
 
-      val expectedResult = Seq( (word1.phrase, allInPos) )
+      val expectedResult = Seq( (word1.text, allInPos) )
 
-      val processor = new TestXordleProcessor(wordHints)
+      val processor = new TestXrdleProcessor(wordHints)
       val result = processor.process(Seq(word1).toSet)
 
       result.isRight mustBe true
@@ -95,12 +95,12 @@ class XordleProcessorSpec extends AnyFunSpec with Matchers {
       )
 
       val expectedResult = Seq(
-        (word1.phrase, allMiss), (word2.phrase, allMiss), (word3.phrase, allMiss),
-        (word4.phrase, allInWord), (word5.phrase, allInWord), (word6.phrase, allInWord),
+        (word1.text, allMiss), (word2.text, allMiss), (word3.text, allMiss),
+        (word4.text, allInWord), (word5.text, allInWord), (word6.text, allInWord),
         ("", Nil)
       )
 
-      val processor = new TestXordleProcessor(wordHints)
+      val processor = new TestXrdleProcessor(wordHints)
       val result = processor.process(words)
 
       result.isRight mustBe true

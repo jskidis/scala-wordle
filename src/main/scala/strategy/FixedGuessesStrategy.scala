@@ -9,7 +9,7 @@ trait FixedGuessesStrategy extends SolveStrategy {
     if(fixedGuesses.size <= previousGuesses.size) super.generateNextGuesses(remainingWords, previousGuesses, numToReturn)
     else {
       val fixedWord = fixedGuesses(previousGuesses.size)
-      if (remainingWords.exists{ w: XordlePhrase => w.phrase == fixedWord }) Vector(fixedWord)
+      if (remainingWords.exists{ w: XrdleWord => w.text == fixedWord }) Vector(fixedWord)
       else super.generateNextGuesses(remainingWords, previousGuesses, numToReturn)
     }
   }

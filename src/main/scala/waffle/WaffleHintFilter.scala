@@ -6,11 +6,11 @@ import scala.annotation.tailrec
 trait WaffleHintFilter extends WaffleHintProps with WaffleGuessProps {
   def filterOnHints(grid: WaffleDetailGrid): WaffleDetailGrid = {
     WaffleDetailGrid(grid().map { wwd: WaffleWordDetail =>
-      if (wwd.word.phrase.length == guessWordLength && wwd.hints.length == guessWordLength) {
+      if (wwd.word.text.length == guessWordLength && wwd.hints.length == guessWordLength) {
         val hintSets = hintVariants(Seq(wwd.hints))
-        val wordPatterns = hintSets.map { hints => wwd.word.phrase.zip(hints) }
-        val remainingWords = wwd.wordSet.filter { rw: XordlePhrase =>
-          wordPatterns.exists { wp => WordPatternMatcher.doesWordMatch(rw.phrase, wp) }
+        val wordPatterns = hintSets.map { hints => wwd.word.text.zip(hints) }
+        val remainingWords = wwd.wordSet.filter { rw: XrdleWord =>
+          wordPatterns.exists { wp => WordPatternMatcher.doesWordMatch(rw.text, wp) }
         }
         wwd.replaceWordSet(remainingWords)
       }

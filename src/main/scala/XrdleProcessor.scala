@@ -2,7 +2,7 @@ package com.skidis.wordle
 
 import scala.annotation.tailrec
 
-trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever
+trait XrdleProcessor extends SolveStrategy with GuessRetriever with WordHintsRetriever
   with GuessProps with HintProps with Writer {
 
   val userAbortMsg = "User aborted"
@@ -27,8 +27,8 @@ trait XordleProcessor extends SolveStrategy with GuessRetriever with WordHintsRe
     lazy val suggestions = generateNextGuesses(wordSet, guesses, numSuggestions)
     if (wordSet.size == 1) {
       writeLine("Only 1 choice left!!!")
-      writeLine(s"Current Guess: ${wordSet.head.phrase}, Guess #:${guesses.size +1}")
-      Right(guesses :+ (wordSet.head.phrase, winningWordHints))
+      writeLine(s"Current Guess: ${wordSet.head.text}, Guess #:${guesses.size +1}")
+      Right(guesses :+ (wordSet.head.text, winningWordHints))
     }
     else if (suggestions.isEmpty) Left(exhaustedWordsMsg)
     else {

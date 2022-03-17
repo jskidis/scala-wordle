@@ -7,7 +7,7 @@ trait HardModeWordElimStrategy extends SolveStrategy with WordPatternMatcher {
     val wordPattern: Seq[(Char, HintBlock)] = currentGuess.toSeq zip wordHints
 
     // Eliminate words from set that don't fit word hints for current answer
-    wordSet.filter { w: XordlePhrase => doesWordMatch(w.phrase, wordPattern) && w.phrase != currentGuess }
+    wordSet.filter { w: XrdleWord => doesWordMatch(w.text, wordPattern) && w.text != currentGuess }
   }
 }
 

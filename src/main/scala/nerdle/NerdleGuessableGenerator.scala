@@ -29,7 +29,7 @@ trait NerdleGuessableGenerator extends NerdleGuessProps {
   }.flatten
 
   def generateWithFrequencies(equations: Set[NerdleEquation]): Set[NerdleEquationWithFreq] = {
-    val equationsText = equations.map(_.phrase)
+    val equationsText = equations.map(_.text)
     val numEqsAsDbl = equationsText.size.toDouble
 
     val charFreqMap: Map[Char, Double] = validGuessChars.toSeq.map { ch =>
@@ -38,7 +38,7 @@ trait NerdleGuessableGenerator extends NerdleGuessProps {
 
     equations.map { eq =>
       NerdleEquationWithFreq(eq.expr,
-        eq.phrase.foldLeft(1.0) { (acc: Double, ch:Char) => acc * charFreqMap(ch) }
+        eq.text.foldLeft(1.0) { (acc: Double, ch:Char) => acc * charFreqMap(ch) }
       )
     }
   }

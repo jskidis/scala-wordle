@@ -3,18 +3,18 @@ package strategy
 
 trait CharFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy {
 
-  override def scoreWordFunction(remainingWords: WordSet): XordlePhrase => Double = {
-    val words = remainingWords.map{l: XordlePhrase => l.phrase}.toSeq
+  override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {
+    val words = remainingWords.map{l: XrdleWord => l.text}.toSeq
     val charFreqMap = createCharFreqMap(words)
     val charIdxFreqMap = createCharIndexFreqMap(words)
     scoreWord(charFreqMap, charIdxFreqMap, remainingWords)
   }
 
   def scoreWord(charFreqMap: Map[Char, Int], charIdxFreqMap: Map[(Char, Int), Int], remainingWords: WordSet)
-    (potentialAnswer: XordlePhrase): Double = {
+    (potentialAnswer: XrdleWord): Double = {
 
-    val rc = repeatingChars(potentialAnswer.phrase)
-    val letterScore = potentialAnswer.phrase.zipWithIndex.map{ case (ch: Char, idx: Int) =>
+    val rc = repeatingChars(potentialAnswer.text)
+    val letterScore = potentialAnswer.text.zipWithIndex.map{ case (ch: Char, idx: Int) =>
       if (rc.contains(ch)) 0
       else charFreqMap.getOrElse(ch, 0) + charIdxFreqMap.getOrElse((ch, idx), 0) * 5
     }.sum.toDouble

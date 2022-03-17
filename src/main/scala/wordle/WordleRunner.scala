@@ -5,7 +5,7 @@ import strategy._
 
 import scala.io.Source
 
-trait WordleRunner extends XordleRunner {
+trait WordleRunner extends XrdleRunner {
   override def puzzleName: String = "Wordle"
   val numFirstGuessSuggestions = 12
 }
@@ -120,53 +120,53 @@ trait WordleRandomGuessRunner extends WordleRunner with WordleStandardWordSets
 
 
 object WordleInteractiveStandardRunner extends App
-  with XordleInteractiveRunner with WordleStandardRunner {
+  with XrdleInteractiveRunner with WordleStandardRunner {
   runInteractive()
 }
 
 object WordleInteractiveAnswerOnlyRunner extends App
-  with XordleInteractiveRunner with WordleAnswerOnlyRunner {
+  with XrdleInteractiveRunner with WordleAnswerOnlyRunner {
   runInteractive()
 }
 
 object WordleInteractiveCharFreqRunner extends App
-  with XordleInteractiveRunner with WordleCharFreqRunner {
+  with XrdleInteractiveRunner with WordleCharFreqRunner {
   runInteractive()
 }
 
 object WordleInteractiveReverseRunner extends App
-  with XordleInteractiveRunner with WordleReverseRunner {
+  with XrdleInteractiveRunner with WordleReverseRunner {
   runInteractive()
 }
 
 object WordleInteractiveRandomRunner extends App
-  with XordleInteractiveRunner with WordleRandomGuessRunner {
+  with XrdleInteractiveRunner with WordleRandomGuessRunner {
   runInteractive()
 }
 
 
 object WordleSimulationStandardRunner extends App
-  with XordleSimulationRunner with WordleStandardRunner {
+  with XrdleSimulationRunner with WordleStandardRunner {
   runSimulation()
 }
 
 object WordleSimulationAnswerOnlyRunner extends App
-  with XordleSimulationRunner with WordleAnswerOnlyRunner {
+  with XrdleSimulationRunner with WordleAnswerOnlyRunner {
   runSimulation()
 }
 
 object WordleSimulationCharFreqRunner extends App
-  with XordleSimulationRunner with WordleCharFreqRunner {
+  with XrdleSimulationRunner with WordleCharFreqRunner {
   runSimulation()
 }
 
 object WordleSimulationReverseRunner extends App
-  with XordleSimulationRunner with WordleReverseRunner {
+  with XrdleSimulationRunner with WordleReverseRunner {
   runSimulation()
 }
 
 object WordleSimulationRandomRunner extends App
-  with XordleSimulationRunner with WordleRandomGuessRunner {
+  with XrdleSimulationRunner with WordleRandomGuessRunner {
   runSimulation()
 }
 

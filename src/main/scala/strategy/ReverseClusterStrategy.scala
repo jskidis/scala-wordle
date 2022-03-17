@@ -3,7 +3,7 @@ package strategy
 
 trait ReverseClusterStrategy extends ClusterStrategy {
 
-  override def scoreWord(remainingWords: WordSet)(potentialAnswer: XordlePhrase): Double = {
+  override def scoreWord(remainingWords: WordSet)(potentialAnswer: XrdleWord): Double = {
     -super.scoreWord(remainingWords)(potentialAnswer)
   }
 }

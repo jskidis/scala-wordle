@@ -3,11 +3,11 @@ package waffle
 
 trait WaffleWriter extends Writer {
   def writeWordGrid(wordGrid: WaffleWordGrid): Unit = {
-    writeLine(wordGrid(0).phrase.mkString(" "))
-    writeLine(s"${wordGrid(3).phrase(1)}   ${wordGrid(4).phrase(1)}   ${wordGrid(5).phrase(1)}")
-    writeLine(wordGrid(1).phrase.mkString(" "))
-    writeLine(s"${wordGrid(3).phrase(3)}   ${wordGrid(4).phrase(3)}   ${wordGrid(5).phrase(3)}")
-    writeLine(wordGrid(2).phrase.mkString(" "))
+    writeLine(wordGrid(0).text.mkString(" "))
+    writeLine(s"${wordGrid(3).text(1)}   ${wordGrid(4).text(1)}   ${wordGrid(5).text(1)}")
+    writeLine(wordGrid(1).text.mkString(" "))
+    writeLine(s"${wordGrid(3).text(3)}   ${wordGrid(4).text(3)}   ${wordGrid(5).text(3)}")
+    writeLine(wordGrid(2).text.mkString(" "))
     writeLine("")
   }
 
