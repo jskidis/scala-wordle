@@ -3,11 +3,9 @@ package strategy
 
 trait ClusterAndFreqStrategy extends ClusterStrategy {
 
-  override def scoreWord(potentialAnswer: XordlePhrase, remainingWords: WordSet): Double = {
-    val clusterScore = super.scoreWord(potentialAnswer, remainingWords)
-    potentialAnswer match {
-      case wf: XordlePhaseFreq => clusterScore + Math.log10(wf.frequency)*2
-    }
+  override def scoreWord(remainingWords: WordSet)(potentialAnswer: XordlePhrase): Double = {
+    super.scoreWord(remainingWords)(potentialAnswer) +
+      Math.log10(WordFreqStrategy.scoreWord(remainingWords)(potentialAnswer)) *2
   }
 }
 

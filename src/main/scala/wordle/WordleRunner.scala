@@ -7,6 +7,7 @@ import scala.io.Source
 
 trait WordleRunner extends XordleRunner {
   override def puzzleName: String = "Wordle"
+  val numFirstGuessSuggestions = 12
 }
 
 trait WordleAnswerSet extends WordReader {
@@ -64,7 +65,7 @@ trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets
 
 
 trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
-  with InteractiveProcessorFactory with SimulationProcessFactory {
+  with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
   val startingGuesses = Seq("SLATE", "CORNY")
 
@@ -77,6 +78,9 @@ trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
     new WordleSimulationProcessor with CharAndWordFreqStrategy with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = startingGuesses
     }
+  }
+  override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
+    new WordleFirstGuessOptimizer with CharAndWordFreqStrategy with WordleAnswerOnlyWordSets
   }
 }
 
@@ -169,15 +173,20 @@ object WordleSimulationRandomRunner extends App
 
 object WordleFirstGuessOptStandardRunner extends App
   with FirstGuessRunner with WordleStandardRunner {
-  runOptimizer(12)
+  runOptimizer(numFirstGuessSuggestions)
 }
 
 object WordleFirstGuessOptAnswerOnlyRunner extends App
   with FirstGuessRunner with WordleAnswerOnlyRunner {
-  runOptimizer(12)
+  runOptimizer(numFirstGuessSuggestions)
+}
+
+object WordleFirstGuessOptCharFreqRunner extends App
+  with FirstGuessRunner with WordleCharFreqRunner {
+  runOptimizer(numFirstGuessSuggestions)
 }
 
 object WordleFirstGuessOptReverseRunner extends App
   with FirstGuessRunner  with WordleReverseRunner {
-  runOptimizer(12)
+  runOptimizer(numFirstGuessSuggestions)
 }

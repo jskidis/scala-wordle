@@ -1,12 +1,13 @@
 package com.skidis.wordle
 package strategy
 
-trait ClusterStrategy extends StandardWordElimStrategy with WordHintsGenerator with WordScoring {
+trait ClusterStrategy extends WordScoringStrategy with HardModeWordElimStrategy with WordHintsGenerator  {
 
-  override def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
-  : Seq[String] = scoreAndSortWords(scoreWord)(remainingWords).take(numToReturn)
+  override def scoreWordFunction(remainingWords: WordSet): XordlePhrase => Double = {
+    scoreWord(remainingWords)
+  }
 
-  def scoreWord(potentialAnswer: XordlePhrase, remainingWords: WordSet): Double = {
+  def scoreWord(remainingWords: WordSet)(potentialAnswer: XordlePhrase): Double = {
     remainingWords.map { word: XordlePhrase => generateWordHints(potentialAnswer, word) }.size
   }
 }
