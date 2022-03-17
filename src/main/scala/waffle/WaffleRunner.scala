@@ -7,11 +7,11 @@ object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator w
   with WaffleHintFilter with IntersectionBasedFilter with ValidWordGridGenerator with WordSetsFromGridsGenerator
   with WaffleWriter with ConsoleWriter {
 
-  val words = WordReader.readWords(Source.fromResource("word-frequency-filtered.txt"))
+  val words = WordReader.readWords(Source.fromResource("guessable-words.txt"))
 
   val inputGrid = WaffleReader.readWaffle(
-    Seq("apltt", "d e e", "eeodd", "s g e", "rrsny"),
-    Seq("gybbg", "b y g", "ybgbb", "b b b", "gbbbg"),
+    Seq("iarac", "i h l", "cmete", "p e d", "ylsrs"),
+    Seq("gbbgg", "b b b", "gygbg", "b b b", "gybbg"),
     words
   )
 
@@ -40,19 +40,3 @@ object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator w
     }
   }
 }
-
-//Seq("ldral", "y s o", "aorea", "t w a", "tsloy"),
-//Seq("gbbgg", "b y g", "gygbb", "b b b", "gybbg"),
-
-//Seq("miimc", "e l o", "uegre", "r o a", "raawy"),
-//Seq("ggyyg", "y y b", "bygyb", "b y y", "gybbg"),
-
-//Seq("ranrh", "g r u", "oobae", "r e e", "mlamy"),
-//Seq("gbybg", "b g b", "bbgyy", "b b b", "gbybg"),
-
-//Seq("guahm", "p l d", "nrtea", "r e o", "tueam"),
-//Seq("gbybg", "b b y", "bbggy", "y g b", "gyybg"),
-
-//Seq("apltt", "d e e", "eeodd", "s g e", "rrsny"),
-//Seq("gybbg", "b y g", "ybgbb", "b b b", "gbbbg"),
-
