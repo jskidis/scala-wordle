@@ -10,8 +10,8 @@ object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator w
   val words = WordReader.readWords(Source.fromResource("guessable-words.txt"))
 
   val inputGrid = WaffleReader.readWaffle(
-    Seq("iarac", "i h l", "cmete", "p e d", "ylsrs"),
-    Seq("gbbgg", "b b b", "gygbg", "b b b", "gybbg"),
+    Seq("deler", "r i u", "yaone", "u c a", "lrder"),
+    Seq("gbbgg", "b y g", "bbgby", "b b b", "gbbgg"),
     words
   )
 
@@ -28,7 +28,7 @@ object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator w
     val gridFilteredOnHints = filterOnHints(gridFilteredByCharFreq)
     val gridFilteredByIntersections = filterUponIntersection(gridFilteredOnHints)
     val validWordGrids = generateValidGrids(gridFilteredByIntersections, gridCharFreq)
-    val finalFilterResult = genWordSetsFromGrids(gridFilteredByIntersections, validWordGrids)
+    val finalFilterResult = filterUponIntersection(genWordSetsFromGrids(gridFilteredByIntersections, validWordGrids))
 
     if(finalFilterResult.hasSolution) {
       writeWordGrid(finalFilterResult.convertToSolution().wordGrid)
