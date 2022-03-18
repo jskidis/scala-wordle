@@ -10,3 +10,5 @@ trait CharAndWordFreqStrategy extends CharFreqStrategy {
       Math.log10(WordFreqStrategy.scoreWord(remainingWords)(potentialAnswer))*10
   }
 }
+
+object CharAndWordFreqStrategy extends CharAndWordFreqStrategy

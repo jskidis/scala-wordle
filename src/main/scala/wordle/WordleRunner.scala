@@ -22,19 +22,21 @@ trait WordleAnswerOnlyWordSets extends WordleAnswerSet with GuessAndAnswerSets w
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-answers.txt"))
 }
 
-
 trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
-  val startGuess = "SLATE"
+
+  val firstGuess = "SLATE"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ClusterAndFreqStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor  = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with WordleProcessor with ClusterAndFreqStrategyCaching with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
@@ -46,16 +48,18 @@ trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets
 trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  val startGuess = "SLATE"
+  val firstGuess = "SLATE"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ClusterStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor  = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with WordleProcessor with ClusterStrategyCaching with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
@@ -67,20 +71,44 @@ trait WordleAnswerOnlyRunner extends WordleRunner with WordleAnswerOnlyWordSets
 trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  val startingGuesses = Seq("SLATE", "CORNY")
+  val firstTwoGuesses = Seq("SLATE", "CORNY")
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with CharAndWordFreqStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = startingGuesses
+      override def fixedGuesses: Seq[String] = firstTwoGuesses
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor  = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with CharAndWordFreqStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = startingGuesses
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) firstTwoGuesses else startGuesses
+      }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
-    new WordleFirstGuessOptimizer with CharAndWordFreqStrategy with WordleAnswerOnlyWordSets
+    new WordleFirstGuessOptimizer with CharAndWordFreqStrategy with WordleStandardWordSets
+  }
+}
+
+trait WordleWordFreqRunner extends WordleRunner with WordleAnswerOnlyWordSets
+  with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
+
+  val firstGuess = "LEARN"
+
+  override def createInteractiveProcessor(): InteractiveProcessor = {
+    new WordleInteractiveProcessor with WordFreqStrategy with FixedGuessesStrategy {
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
+    }
+  }
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
+    new WordleSimulationProcessor with WordFreqStrategy with FixedGuessesStrategy {
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
+    }
+  }
+  override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
+    new WordleFirstGuessOptimizer with WordFreqStrategy with WordleStandardWordSets
   }
 }
 
@@ -88,17 +116,19 @@ trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
 trait WordleReverseRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  val startGuess = "JAZZY"
+  val firstGuess = "JAZZY"
   override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(100)
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ReverseClusterStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor  = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with ReverseClusterStrategyCaching with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
@@ -113,7 +143,7 @@ trait WordleRandomGuessRunner extends WordleRunner with WordleStandardWordSets
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with RandomGuessStrategy
   }
-  override def createSimulationProcessor(): SimulationProcessor  = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with RandomGuessStrategy
   }
 }
@@ -134,6 +164,11 @@ object WordleInteractiveCharFreqRunner extends App
   runInteractive()
 }
 
+object WordleInteractiveWordFreqRunner extends App
+  with XrdleInteractiveRunner with WordleWordFreqRunner {
+  runInteractive()
+}
+
 object WordleInteractiveReverseRunner extends App
   with XrdleInteractiveRunner with WordleReverseRunner {
   runInteractive()
@@ -147,27 +182,32 @@ object WordleInteractiveRandomRunner extends App
 
 object WordleSimulationStandardRunner extends App
   with XrdleSimulationRunner with WordleStandardRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 object WordleSimulationAnswerOnlyRunner extends App
   with XrdleSimulationRunner with WordleAnswerOnlyRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 object WordleSimulationCharFreqRunner extends App
   with XrdleSimulationRunner with WordleCharFreqRunner {
-  runSimulation()
+  printResults(runSimulation())
+}
+
+object WordleSimulationWordFreqRunner extends App
+  with XrdleSimulationRunner with WordleWordFreqRunner {
+  printResults(runSimulation())
 }
 
 object WordleSimulationReverseRunner extends App
   with XrdleSimulationRunner with WordleReverseRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 object WordleSimulationRandomRunner extends App
   with XrdleSimulationRunner with WordleRandomGuessRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 
@@ -183,6 +223,11 @@ object WordleFirstGuessOptAnswerOnlyRunner extends App
 
 object WordleFirstGuessOptCharFreqRunner extends App
   with FirstGuessRunner with WordleCharFreqRunner {
+  runOptimizer(numFirstGuessSuggestions)
+}
+
+object WordleFirstGuessOptWordFreqRunner extends App
+  with FirstGuessRunner with WordleWordFreqRunner {
   runOptimizer(numFirstGuessSuggestions)
 }
 

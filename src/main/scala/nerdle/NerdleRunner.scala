@@ -16,16 +16,18 @@ trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGene
 trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory{
 
-  val startGuess = "54-38=16"
+  val firstGuess = "54-38=16"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new NerdleInteractiveProcessor with ClusterAndFreqStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new NerdleSimulationProcessor with NerdleProcessor with ClusterAndFreqStrategyCaching with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
     }
   }
   def createFirstGuessOptimizer(): FirstGuessOptimizer = {
@@ -43,17 +45,19 @@ trait MiniNerdleWordSets extends GuessAndAnswerSets with NerdleGuessableGenerato
 trait MiniNerdleRunner extends NerdleRunner with MiniNerdleWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  val startGuess = "28/7=4"
+  val firstGuess = "28/7=4"
   override def puzzleName: String = "mini nerdlegame"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new MiniNerdleInteractiveProcessor with ClusterStrategy with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
-  override def createSimulationProcessor(): SimulationProcessor = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new MiniNerdleSimulationProcessor with ClusterStrategyCaching with FixedGuessesStrategy {
-      override def fixedGuesses: Seq[String] = Seq(startGuess)
+      override def fixedGuesses: Seq[String] = {
+        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+      }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
@@ -69,7 +73,7 @@ trait NerdleRandomGuessRunner extends NerdleRunner with NerdleStandardWordSets
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new NerdleInteractiveProcessor with RandomGuessStrategy
   }
-  override def createSimulationProcessor(): SimulationProcessor = {
+  override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new NerdleSimulationProcessor with NerdleProcessor with RandomGuessStrategy
   }
 }
@@ -93,17 +97,17 @@ object NerdleInteractiveRandomRunner extends App
 
 object NerdleSimulationStandardRunner extends App
   with XrdleSimulationRunner with NerdleStandardRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 object NerdleSimulationMiniRunner extends App
   with XrdleSimulationRunner with MiniNerdleRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 object NerdleSimulationRandomRunner extends App
   with XrdleSimulationRunner with NerdleRandomGuessRunner {
-  runSimulation()
+  printResults(runSimulation())
 }
 
 

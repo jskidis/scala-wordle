@@ -44,4 +44,6 @@ trait CharFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy
   }
 }
 
+object CharFreqStrategy extends CharFreqStrategy
+
 

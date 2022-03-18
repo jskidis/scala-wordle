@@ -4,13 +4,14 @@ trait FirstGuessOptimizer extends SolveStrategy with GuessAndAnswerSets with Hin
   def generateTopGuess(numToReturn: Int): Seq[String] = {
     val startTimestamp = System.currentTimeMillis()
 
-    val phrases = generateNextGuesses(guessSet, Nil, numToReturn)
-    phrases.foreach(writeLine)
+    val topFirstGuesses = generateNextGuesses(guessSet, Nil, numToReturn)
+    topFirstGuesses.foreach(writeLine)
+    writeLine(s"Seq(\"${topFirstGuesses.mkString("\", \"")}\")")
 
     val endTimestamp = System.currentTimeMillis()
     writeLine(s"Time Elapsed: ${(endTimestamp - startTimestamp) / 1000}")
 
-    phrases
+    topFirstGuesses
   }
 }
 
