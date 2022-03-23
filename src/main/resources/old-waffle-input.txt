@@ -1,0 +1,32 @@
+Seq("tebik", "e e u", "aclur", "d e n", "llehd"),
+Seq("gbbyg", "b b b", "ybgbb", "b g y", "gbybg"),
+
+Seq("mardh", "d g i", "ndiad", "e t a", "ceacy"),
+Seq("ggybg", "y b b", "yygby", "y y y", "gbybg"),
+
+Seq("gleeh", "y e a", "nraoc", "p t a", "nresl"),
+Seq("ggbbg", "b g b", "ybgby", "b b b", "gbbyg"),
+
+Seq("rsson", "l e i", "heino", "o b a", "mrrue"),
+Seq("gbbbg", "b b y", "bbgby", "b b b", "gbybg"),
+
+Seq("deler", "r i u", "yaone", "u c a", "lrder"),
+Seq("gbbgg", "b y g", "bbgby", "b b b", "gbbgg"),
+
+Seq("iarac", "i h l", "cmete", "p e d", "ylsrs"),
+Seq("gbbgg", "b b b", "gygbg", "b b b", "gybbg"),
+
+Seq("apltt", "d e e", "eeodd", "s g e", "rrsny"),
+Seq("gybbg", "b y g", "ybgbb", "b b b", "gbbbg"),
+
+Seq("ldral", "y s o", "aorea", "t w a", "tsloy"),
+Seq("gbbgg", "b y g", "gygbb", "b b b", "gybbg"),
+
+Seq("miimc", "e l o", "uegre", "r o a", "raawy"),
+Seq("ggyyg", "y y b", "bygyb", "b y y", "gybbg"),
+
+Seq("ranrh", "g r u", "oobae", "r e e", "mlamy"),
+Seq("gbybg", "b g b", "bbgyy", "b b b", "gbybg"),
+
+Seq("guahm", "p l d", "nrtea", "r e o", "tueam"),
+Seq("gbybg", "b b y", "bbggy", "y g b", "gyybg"),
