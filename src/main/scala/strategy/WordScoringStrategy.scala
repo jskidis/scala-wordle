@@ -18,6 +18,8 @@ trait WordScoringStrategy extends SolveStrategy {
     val wordScores = remainingWords.map { potentialAnswer: XrdleWord =>
       WordScore(potentialAnswer, scoreWordFunction(potentialAnswer))
     }
-    wordScores.toVector.sortBy(-_.score)
+    sortWordScores(wordScores.toVector)
   }
+
+  def sortWordScores(wordScores: Vector[WordScore]): Vector[WordScore] = wordScores.sortBy(-_.score)
 }
