@@ -12,9 +12,9 @@ object WordFrequencyGenerator extends App  {
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-  val answers = Source.fromResource("answers.txt").getLines.map(w => w.toUpperCase()).toVector
+  val answers = Source.fromResource("answers.txt").getLines().map(w => w.toUpperCase()).toVector
 
-  val words = Source.fromResource("guessable-words.txt").getLines.map(w => w.toUpperCase())
+  val words = Source.fromResource("guessable-words.txt").getLines().map(w => w.toUpperCase())
   val wordChunks = words.grouped(500)
 //  val words: Iterator[String] = Source.fromResource("answers.txt").getLines.map(w => w.toUpperCase())
 //  val wordChunks = words.grouped(80)
