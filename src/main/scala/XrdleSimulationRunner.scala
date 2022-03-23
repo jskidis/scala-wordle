@@ -13,7 +13,7 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory {
     }
   }
 
-  def runSimulation(startingGuesses: Seq[String] = Nil): (Seq[Int], Double) = {
+  def runSimulation(startingGuesses: Seq[String] = Nil): (Seq[Int], Long) = {
     def runWordle(processor: SimulationProcessor, answer: String): Int = {
       processor.process(guessSet, answer) match {
         case Left(_) => -1
@@ -36,10 +36,10 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory {
     (guessCounts, timeElapsed)
   }
 
-  def printResults(results: (Seq[Int], Double)): Unit = results match {
-    case(gc: Seq[Int], te: Double) => printResults(gc, te)
+  def printResults(results: (Seq[Int], Long)): Unit = results match {
+    case(gc: Seq[Int], te: Long) => printResults(gc, te)
   }
-  def printResults(guessCounts: Seq[Int], timeElapsed: Double): Unit = {
+  def printResults(guessCounts: Seq[Int], timeElapsed: Long): Unit = {
     val grouped = groupGuessCounts(guessCounts)
     val avgGuesses = determineAvgGuesses(guessCounts, grouped)
 
