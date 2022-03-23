@@ -1,7 +1,5 @@
 package com.skidis.wordle
 
-import scala.io.BufferedSource
-
 trait MultiSimulationRunner extends XrdleSimulationRunner {
   def simulateFirstGuesses(wordSet: WordSet, strategy: SolveStrategy, numToTry: Int): Unit = {
     val sorted = strategy.generateNextGuesses(wordSet, Nil, numToTry)
@@ -13,7 +11,7 @@ trait MultiSimulationRunner extends XrdleSimulationRunner {
     }
   }
 
-  def simulateFirstTwoGuesses(wordSet: WordSet, wordSource: BufferedSource, strategy: SolveStrategy, numToTry: Int, missHint: MissHint): Unit = {
+  def simulateFirstTwoGuesses(wordSet: WordSet, strategy: SolveStrategy, numToTry: Int, missHint: MissHint): Unit = {
     val sorted = strategy.generateNextGuesses(wordSet, Nil, numToTry)
     val startingGuessesSet: Seq[Seq[String]] = for {
       firstGuess <- sorted
