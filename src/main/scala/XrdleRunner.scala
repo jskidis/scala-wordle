@@ -20,4 +20,5 @@ trait FirstGuessOptFactory {
 
 trait XrdleRunner extends GuessAndAnswerSets {
   def puzzleName: String
+  def hardMode: Boolean
 }

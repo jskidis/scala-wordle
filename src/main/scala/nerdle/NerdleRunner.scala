@@ -5,6 +5,7 @@ import strategy._
 
 trait NerdleRunner extends XrdleRunner {
   override def puzzleName: String = "nerdlegame"
+  override def hardMode: Boolean = false
 }
 
 trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGenerator {
