@@ -34,4 +34,6 @@ object TestFixtures {
     override def invalidGuessCharError: String = "Invalid Characters"
   }
   object TestGuessProps extends TestGuessProps
+
+  case class TWord(text: String) extends XrdleWord
 }
