@@ -1,7 +1,7 @@
 package com.skidis.wordle
+package strategy
 
 import TestFixtures.{TWord, TestHintProps}
-import strategy.{FixedGuessHardModeStrategy, FixedGuessWithThresholdStrategy, FixedGuessesStrategy}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
