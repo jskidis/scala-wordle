@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package strategy
 
-import TestFixtures.{TWord, TestHintProps}
+import TestFixtures.{SolveStrategyWithNextGuessFixture, TWord, TestHintProps}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -17,15 +17,9 @@ class HardModeWordElimStrategySpec extends AnyFunSpec with Matchers with TestHin
     }
   }
 
-  trait NextGuessFixture {
-    def generateNextGuesses(remainingWords: WordSet,
-      previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
-    : Seq[String] = remainingWords.take(numToReturn).map(_.text).toSeq
-  }
-
   describe("Hard Mode Word Elimination Strategy") {
     it("reduces word set to only include words that match the pattern of the current guess") {
-      val strategy = new HardModeWordElimStrategy with WordPatternMatcherFixture with NextGuessFixture
+      val strategy = new HardModeWordElimStrategy with WordPatternMatcherFixture with SolveStrategyWithNextGuessFixture
       val result = strategy.reduceWordSet(wordSet, "ZZZZZ", Seq.fill(5)(missHint))
       result must contain theSameElementsAs wordsThatMatch.map(TWord)
     }

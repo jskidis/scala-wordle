@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package strategy
 
-import TestFixtures.{TWord, TestHintProps}
+import TestFixtures.{SolveStrategyWithReduceWordSetFixture, TWord, TestHintProps}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -12,11 +12,7 @@ class FixedGuessesStrategySpec extends AnyFunSpec with Matchers with TestHintPro
   val wordSet: WordSet = Set(TWord("WORD0"), TWord("WORD1"),
     TWord("WORD2"), TWord("WORD3"), TWord("WORD4"))
 
-  trait BaseClassStrategy extends SolveStrategy {
-    override def reduceWordSet(wordSet: WordSet,
-      currentGuess: String, wordHints: WordHints)
-    : WordSet = wordSet
-
+  trait BaseClassStrategy extends SolveStrategyWithReduceWordSetFixture {
     override def generateNextGuesses(remainingWords: WordSet,
       previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
     : Seq[String] = Seq(baseClassGuess)
