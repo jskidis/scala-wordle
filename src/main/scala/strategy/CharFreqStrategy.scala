@@ -7,9 +7,7 @@ trait CharFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy
     val words = remainingWords.map{l: XrdleWord => l.text}.toSeq
     val charFreqMap = createCharFreqMap(words)
     val charIdxFreqMap = createCharIndexFreqMap(words)
-    (word: XrdleWord) => {
-      scoreWord(word, charFreqMap, charIdxFreqMap) / remainingWords.size.toDouble
-    }
+    (word: XrdleWord) => scoreWord(word, charFreqMap, charIdxFreqMap) / remainingWords.size.toDouble
   }
 }
 

@@ -3,11 +3,7 @@ package strategy
 
 trait WordFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy {
   override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {
-    scoreWord(remainingWords)
-  }
-
-  def scoreWord(remainingWords: WordSet)(potentialAnswer: XrdleWord): Double = {
-    potentialAnswer match { case wf: XrdleFreqWord => wf.frequency }
+    case wf: XrdleFreqWord => Math.log10(wf.frequency)
   }
 }
 
