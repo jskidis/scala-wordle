@@ -30,19 +30,19 @@ trait WordleStandardRunner extends WordleRunner with WordleStandardWordSets
   val firstGuess = "SLATE"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
-    new WordleInteractiveProcessor with ClusterAndFreqStrategy with FixedGuessHardModeStrategy {
+    new WordleInteractiveProcessor with ClusterAndWordFreqStrategy with FixedGuessHardModeStrategy {
       override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
   override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
-    new WordleSimulationProcessor with WordleProcessor with ClusterStrategyCaching with FixedGuessHardModeStrategy {
+    new WordleSimulationProcessor with WordleProcessor with ClusterAndBothFreqStrategyCaching with FixedGuessHardModeStrategy {
       override def fixedGuesses: Seq[String] = {
         if (startGuesses == Nil) Seq(firstGuess) else startGuesses
       }
     }
   }
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = {
-    new WordleFirstGuessOptimizer with ClusterAndFreqStrategy with WordleStandardWordSets
+    new WordleFirstGuessOptimizer with ClusterAndWordFreqStrategy with WordleStandardWordSets
   }
 }
 
