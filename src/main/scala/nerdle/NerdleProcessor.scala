@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package nerdle
 
+import runners.{FirstGuessOptimizer, InteractiveProcessor, SimulationProcessor}
+
 trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
 trait MiniNerdleProcessor extends NerdleHintProps with MiniNerdleGuessProps
 

@@ -1,6 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
+import runners._
 import strategy._
 
 trait NerdleRunner extends XrdleRunner {

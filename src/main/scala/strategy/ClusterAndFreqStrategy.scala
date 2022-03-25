@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package strategy
 
+import hintgen.CachingWordHintsGenerator
+
 trait ClusterAndFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy {
 
   override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {

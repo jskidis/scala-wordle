@@ -1,7 +1,8 @@
 package com.skidis.wordle
 package util
 
-import wordle.WordleHintProps
+import hintgen.WordHintsGenerator
+import wordle.{WordReader, WordleHintProps}
 
 import java.io.{BufferedWriter, File, FileWriter}
 import scala.io.Source

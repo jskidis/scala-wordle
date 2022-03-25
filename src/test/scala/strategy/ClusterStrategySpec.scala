@@ -2,6 +2,7 @@ package com.skidis.wordle
 package strategy
 
 import TestFixtures.{TWord, TestHintProps}
+import hintgen.WordHintsGenerator
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers

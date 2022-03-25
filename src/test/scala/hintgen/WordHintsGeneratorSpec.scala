@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package hintgen
 
 import TestFixtures.{TInPosHint, TInWordHint, TMissHint, TestHintProps}
 

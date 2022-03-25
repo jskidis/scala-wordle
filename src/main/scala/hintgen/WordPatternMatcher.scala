@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package hintgen
 
 trait WordPatternMatcher {
   def doesWordMatch(word: String, wordPattern: Seq[(Char, HintBlock)]): Boolean = {

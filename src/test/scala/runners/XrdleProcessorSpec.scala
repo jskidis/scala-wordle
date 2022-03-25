@@ -1,7 +1,7 @@
 package com.skidis.wordle
+package runners
 
-import TestFixtures.{TInPosHint, TInWordHint, TestGuessProps, TestHintProps}
-import wordle.SimpleWordleWord
+import TestFixtures._
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -32,9 +32,9 @@ class XrdleProcessorSpec extends AnyFunSpec with Matchers {
   }
 
   val (word1, word2, word3, word4, word5, word6, word7, word8) = (
-    SimpleWordleWord("abcde"), SimpleWordleWord("lmnop"), SimpleWordleWord("vwxyz"),
-    SimpleWordleWord("edcba"), SimpleWordleWord("ponml"), SimpleWordleWord("zyxwx"),
-    SimpleWordleWord("fffff"), SimpleWordleWord("jjjjj")
+    TWord("abcde"), TWord("lmnop"), TWord("vwxyz"),
+    TWord("edcba"), TWord("ponml"), TWord("zyxwx"),
+    TWord("fffff"), TWord("jjjjj")
   )
   val words:WordSet = ListSet(word1, word2, word3, word4, word5, word6, word7, word8)
 

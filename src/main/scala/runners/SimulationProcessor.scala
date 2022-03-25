@@ -1,4 +1,7 @@
 package com.skidis.wordle
+package runners
+
+import hintgen.WordHintsGenerator
 
 trait SimulationProcessor extends XrdleProcessor with NullWriter
   with WordHintsGenerator {

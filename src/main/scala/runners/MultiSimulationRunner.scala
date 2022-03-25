@@ -1,4 +1,7 @@
 package com.skidis.wordle
+package runners
+
+import hintgen.WordPatternMatcher
 
 trait MultiSimulationRunner extends XrdleSimulationRunner {
   def simulateFirstGuesses(wordSet: WordSet, strategy: SolveStrategy, numToTry: Int): Unit = {

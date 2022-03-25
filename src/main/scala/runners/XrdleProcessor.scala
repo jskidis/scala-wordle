@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package runners
 
 import scala.annotation.tailrec
 

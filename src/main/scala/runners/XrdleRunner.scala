@@ -1,5 +1,5 @@
 package com.skidis.wordle
-
+package runners
 
 trait GuessAndAnswerSets {
   val guessSet: WordSet

@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package waffle
 
+import hintgen.WordPatternMatcher
+
 import scala.annotation.tailrec
 
 trait WaffleHintFilter extends WaffleHintProps with WaffleGuessProps {

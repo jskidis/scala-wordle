@@ -1,6 +1,8 @@
 package com.skidis.wordle
 package waffle
 
+import wordle.WordReader
+
 import scala.io.Source
 
 object WaffleRunner extends App with WaffleHintProps with CharFreqMapGenerator with LetterFreqFilter

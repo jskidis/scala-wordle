@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package runners
 
 trait FirstGuessOptimizer extends SolveStrategy with GuessAndAnswerSets with HintProps with ConsoleWriter {
   def generateTopGuess(numToReturn: Int): Seq[String] = {

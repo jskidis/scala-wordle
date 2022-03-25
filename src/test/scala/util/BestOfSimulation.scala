@@ -1,6 +1,7 @@
 package com.skidis.wordle
 package util
 
+import runners.{SimulationProcessor, XrdleSimulationRunner}
 import wordle.{WordleAnswerOnlyRunner, WordleCharFreqRunner, WordleStandardRunner}
 
 import scala.concurrent.ExecutionContext.Implicits.global

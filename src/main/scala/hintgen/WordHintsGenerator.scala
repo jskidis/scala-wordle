@@ -1,4 +1,5 @@
 package com.skidis.wordle
+package hintgen
 
 import scala.collection.mutable
 

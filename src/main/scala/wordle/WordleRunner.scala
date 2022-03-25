@@ -1,6 +1,7 @@
 package com.skidis.wordle
 package wordle
 
+import runners._
 import strategy._
 
 import scala.io.Source
