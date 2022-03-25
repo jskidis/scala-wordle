@@ -9,8 +9,8 @@ trait CharAndWordFreqStrategy extends WordScoringStrategy with HardModeWordElimS
     (word: XrdleWord) => charFreqScoreFunc(word) + wordFreqScoreFunc(word) *10
   }
 
-  def charFreqStrategy: CharFreqStrategy = CharFreqStrategy
-  def wordFreqStrategy: WordFreqStrategy = WordFreqStrategy
+  lazy val charFreqStrategy: CharFreqStrategy = CharFreqStrategy
+  lazy val wordFreqStrategy: WordFreqStrategy = WordFreqStrategy
 }
 
 object CharAndWordFreqStrategy extends CharAndWordFreqStrategy

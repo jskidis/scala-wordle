@@ -3,24 +3,20 @@ package strategy
 
 import hintgen.CachingWordHintsGenerator
 
-trait ClusterAndBothFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy {
+trait ClusterAndWordFreqStrategy extends WordScoringStrategy with HardModeWordElimStrategy {
 
   override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {
     val clusterScoreFunc = clusterStrategy.scoreWordFunction(remainingWords)
     val wordFreqScoreFunc = wordFreqStrategy.scoreWordFunction(remainingWords)
-    val charFreqScoreFunc = charFreqStrategy.scoreWordFunction(remainingWords)
-    (word: XrdleWord) => clusterScoreFunc(word) +
-      wordFreqScoreFunc(word) *2 + charFreqScoreFunc(word) / 10
+    (word: XrdleWord) => clusterScoreFunc(word) + wordFreqScoreFunc(word) *2
   }
 
   lazy val clusterStrategy: ClusterStrategy = ClusterStrategy
   lazy val wordFreqStrategy: WordFreqStrategy = WordFreqStrategy
-  lazy val charFreqStrategy: CharFreqStrategy = CharFreqStrategy
 }
 
-object ClusterAndBothFreqStrategy extends ClusterAndBothFreqStrategy
+object ClusterAndWordFreqStrategy extends ClusterAndWordFreqStrategy
 
-trait ClusterAndBothFreqStrategyCaching extends ClusterAndBothFreqStrategy {
+trait ClusterAndWordFreqStrategyCaching extends ClusterAndWordFreqStrategy {
   override lazy val clusterStrategy: ClusterStrategy = new ClusterStrategy with CachingWordHintsGenerator
 }
-

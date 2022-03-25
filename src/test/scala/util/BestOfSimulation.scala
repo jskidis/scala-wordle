@@ -2,7 +2,7 @@ package com.skidis.wordle
 package util
 
 import runners.{SimulationProcessor, XrdleSimulationRunner}
-import wordle.{WordleAnswerOnlyRunner, WordleCharFreqRunner, WordleStandardRunner}
+import wordle.{WordleAnswerOnlyRunner, WordleCharFreqRunner, WordleStandardRunner, WordleWordFreqRunner}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
@@ -17,7 +17,8 @@ object BestOfSimulation extends App {
     val runners = Seq(
       new XrdleSimulationRunner with WordleStandardRunner,
       new XrdleSimulationRunner with WordleAnswerOnlyRunner,
-      new XrdleSimulationRunner with WordleCharFreqRunner
+      new XrdleSimulationRunner with WordleCharFreqRunner,
+      new XrdleSimulationRunner with WordleWordFreqRunner
     )
 
     val answers = runners.head.answerSet.toSeq.map {a: XrdleWord => a.text }

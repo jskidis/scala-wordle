@@ -21,19 +21,19 @@ trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets
   val firstGuess = "54-38=16"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
-    new NerdleInteractiveProcessor with ClusterAndFreqStrategy with FixedGuessesStrategy {
+    new NerdleInteractiveProcessor with ClusterAndWordFreqStrategy with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
   override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
-    new NerdleSimulationProcessor with NerdleProcessor with ClusterAndFreqStrategyCaching with FixedGuessesStrategy {
+    new NerdleSimulationProcessor with NerdleProcessor with ClusterAndWordFreqStrategyCaching with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = {
         if (startGuesses == Nil) Seq(firstGuess) else startGuesses
       }
     }
   }
   def createFirstGuessOptimizer(): FirstGuessOptimizer = {
-    new NerdleFirstGuessOptimizer with ClusterAndFreqStrategy with NerdleStandardWordSets
+    new NerdleFirstGuessOptimizer with ClusterAndWordFreqStrategy with NerdleStandardWordSets
   }
 }
 
