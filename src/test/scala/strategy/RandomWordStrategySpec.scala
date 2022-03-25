@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package strategy
 
-import TestFixtures.{SolveStrategyWithReduceWordSetFixture, TWord}
+import TestFixtures.TWord
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -30,5 +30,4 @@ class RandomWordStrategySpec extends AnyFunSpec with Matchers {
       result2 must not be result3
     }
   }
-
 }

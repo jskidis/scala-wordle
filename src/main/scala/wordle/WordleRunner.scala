@@ -120,18 +120,18 @@ trait WordleWordFreqRunner extends WordleRunner with WordleAnswerOnlyWordSets
 trait WordleReverseRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  val firstGuess = "JAZZY"
+  val firstTwoGuesses = Seq("JAZZY", "QUEUE")
   override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(100)
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
     new WordleInteractiveProcessor with ReverseClusterStrategy with FixedGuessHardModeStrategy {
-      override def fixedGuesses: Seq[String] = Seq(firstGuess)
+      override def fixedGuesses: Seq[String] = firstTwoGuesses
     }
   }
   override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
     new WordleSimulationProcessor with ReverseClusterStrategyCaching with FixedGuessHardModeStrategy {
       override def fixedGuesses: Seq[String] = {
-        if (startGuesses == Nil) Seq(firstGuess) else startGuesses
+        if (startGuesses == Nil) firstTwoGuesses else startGuesses
       }
     }
   }

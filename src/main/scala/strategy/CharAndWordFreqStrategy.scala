@@ -3,11 +3,12 @@ package strategy
 
 trait CharAndWordFreqStrategy extends CharFreqStrategy {
 
-  override def scoreWord(charFreqMap: Map[Char, Int], charIdxFreqMap: Map[(Char, Int), Int], remainingWords: WordSet)
-    (potentialAnswer: XrdleWord): Double = {
-
-    super.scoreWord(charFreqMap, charIdxFreqMap, remainingWords)(potentialAnswer) +
-      Math.log10(WordFreqStrategy.scoreWord(remainingWords)(potentialAnswer))*10
+  override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {
+    val baseScoreFunction = super.scoreWordFunction(remainingWords)
+    (word: XrdleWord) => {
+      baseScoreFunction(word) +
+        Math.log10(WordFreqStrategy.scoreWord(remainingWords)(word)) *10
+    }
   }
 }
 

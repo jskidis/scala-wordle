@@ -3,9 +3,12 @@ package strategy
 
 trait ClusterAndFreqStrategy extends ClusterStrategy {
 
-  override def scoreWord(remainingWords: WordSet)(potentialAnswer: XrdleWord): Double = {
-    super.scoreWord(remainingWords)(potentialAnswer) +
-      Math.log10(WordFreqStrategy.scoreWord(remainingWords)(potentialAnswer)) *2
+  override def scoreWordFunction(remainingWords: WordSet): XrdleWord => Double = {
+    val baseScoreFunction = super.scoreWordFunction(remainingWords)
+    (word: XrdleWord) => {
+      baseScoreFunction(word) +
+        Math.log10(WordFreqStrategy.scoreWord(remainingWords)(word)) *2
+    }
   }
 }
 

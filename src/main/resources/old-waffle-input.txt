@@ -30,3 +30,6 @@ Seq("gbybg", "b g b", "bbgyy", "b b b", "gbybg"),
 
 Seq("guahm", "p l d", "nrtea", "r e o", "tueam"),
 Seq("gbybg", "b b y", "bbggy", "y g b", "gyybg"),
+
+Seq("bllvk", "r a t", "orevp", "s i n", "toace"),
+Seq("ggbbg", "b y b", "gygby", "g b y", "gbbbg"),
