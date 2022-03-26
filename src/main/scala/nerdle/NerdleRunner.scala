@@ -11,7 +11,7 @@ trait NerdleRunner extends XrdleRunner {
 
 trait NerdleStandardWordSets extends GuessAndAnswerSets with NerdleGuessableGenerator {
   val equations: Set[NerdleEquation] = generate8CharEquations()
-  override lazy val guessSet: WordSet = generateWithFrequencies(equations)
+  override lazy val guessSet: WordSet = equations
   override lazy val answerSet: WordSet = equations
 }
 
@@ -21,19 +21,19 @@ trait NerdleStandardRunner extends NerdleRunner with NerdleStandardWordSets
   val firstGuess = "54-38=16"
 
   override def createInteractiveProcessor(): InteractiveProcessor = {
-    new NerdleInteractiveProcessor with ClusterAndWordFreqStrategy with FixedGuessesStrategy {
+    new NerdleInteractiveProcessor with ClusterAndCharFreqStrategy with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = Seq(firstGuess)
     }
   }
   override def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor  = {
-    new NerdleSimulationProcessor with NerdleProcessor with ClusterAndWordFreqStrategyCaching with FixedGuessesStrategy {
+    new NerdleSimulationProcessor with NerdleProcessor with ClusterAndCharFreqStrategyCaching with FixedGuessesStrategy {
       override def fixedGuesses: Seq[String] = {
         if (startGuesses == Nil) Seq(firstGuess) else startGuesses
       }
     }
   }
   def createFirstGuessOptimizer(): FirstGuessOptimizer = {
-    new NerdleFirstGuessOptimizer with ClusterAndWordFreqStrategy with NerdleStandardWordSets
+    new NerdleFirstGuessOptimizer with ClusterAndCharFreqStrategy with NerdleStandardWordSets
   }
 }
 
