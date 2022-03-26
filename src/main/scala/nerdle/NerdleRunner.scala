@@ -97,15 +97,15 @@ object NerdleInteractiveRandomRunner extends App
 }
 
 
-trait NerdleSimulationStandardRunner extends XrdleSimulationRunner with NerdleStandardRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait NerdleSimulationStandardRunner extends XrdleSimulationRunner with NerdleStandardRunner
+object NerdleSimulationStandardRunner extends NerdleSimulationStandardRunner with App {
+  printResults(runSimulation())
 }
-object NerdleSimulationStandardRunner extends NerdleSimulationStandardRunner
 
-trait NerdleSimulationMiniRunner extends XrdleSimulationRunner with MiniNerdleRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait NerdleSimulationMiniRunner extends XrdleSimulationRunner with MiniNerdleRunner
+object NerdleSimulationMiniRunner extends NerdleSimulationMiniRunner with App {
+  printResults(runSimulation())
 }
-object NerdleSimulationMiniRunner extends NerdleSimulationMiniRunner
 
 object NerdleFirstGuessOptStandardRunner extends App
   with FirstGuessRunner with NerdleStandardRunner {

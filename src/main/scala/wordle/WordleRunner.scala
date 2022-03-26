@@ -154,10 +154,10 @@ trait WordleRandomGuessRunner extends WordleRunner with WordleStandardWordSets
 }
 
 
-object WordleInteractiveStandardRunner extends App
-  with XrdleInteractiveRunner with WordleStandardRunner {
-  runInteractive()
+trait WordleInteractiveStandardRunner extends XrdleInteractiveRunner with WordleStandardRunner {
+  def run(): Unit = runInteractive()
 }
+object WordleInteractiveStandardRunner extends WordleInteractiveStandardRunner with App { run() }
 
 object WordleInteractiveAnswerOnlyRunner extends App
   with XrdleInteractiveRunner with WordleAnswerOnlyRunner {
@@ -185,30 +185,30 @@ object WordleInteractiveRandomRunner extends App
 }
 
 
-trait WordleSimulationStandardRunner extends XrdleSimulationRunner with WordleStandardRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait WordleSimulationStandardRunner extends XrdleSimulationRunner with WordleStandardRunner
+object WordleSimulationStandardRunner extends WordleSimulationStandardRunner with App {
+  printResults(runSimulation())
 }
-object WordleSimulationStandardRunner extends WordleSimulationStandardRunner
 
-trait WordleSimulationAnswerOnlyRunner extends XrdleSimulationRunner with WordleAnswerOnlyRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait WordleSimulationAnswerOnlyRunner extends XrdleSimulationRunner with WordleAnswerOnlyRunner
+object WordleSimulationAnswerOnlyRunner extends WordleSimulationAnswerOnlyRunner with App {
+  printResults(runSimulation())
 }
-object WordleSimulationAnswerOnlyRunner extends WordleSimulationAnswerOnlyRunner
 
-trait WordleSimulationCharFreqRunner extends XrdleSimulationRunner with WordleCharFreqRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait WordleSimulationCharFreqRunner extends XrdleSimulationRunner with WordleCharFreqRunner
+object WordleSimulationCharFreqRunner extends WordleSimulationCharFreqRunner with App {
+  printResults(runSimulation())
 }
-object WordleSimulationCharFreqRunner extends WordleSimulationCharFreqRunner
 
-trait WordleSimulationWordFreqRunner extends XrdleSimulationRunner with WordleWordFreqRunner {
-  def main(args: Array[String]):Unit = printResults(runSimulation())
+trait WordleSimulationWordFreqRunner extends XrdleSimulationRunner with WordleWordFreqRunner
+object WordleSimulationWordFreqRunner extends WordleSimulationWordFreqRunner with App{
+  printResults(runSimulation())
 }
-object WordleSimulationWordFreqRunner extends WordleSimulationWordFreqRunner
 
-trait WordleSimulationReverseRunner extends XrdleSimulationRunner with WordleReverseRunner {
-def main(args: Array[String]):Unit = printResults(runSimulation())
+trait WordleSimulationReverseRunner extends XrdleSimulationRunner with WordleReverseRunner
+object WordleSimulationReverseRunner extends WordleSimulationReverseRunner with App {
+  printResults(runSimulation())
 }
-object WordleSimulationReverseRunner extends WordleSimulationReverseRunner
 
 
 object WordleFirstGuessOptStandardRunner extends App
