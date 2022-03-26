@@ -11,12 +11,12 @@ trait ClusterAndWordFreqStrategy extends WordScoringStrategy with HardModeWordEl
     (word: XrdleWord) => clusterScoreFunc(word) + wordFreqScoreFunc(word) *2
   }
 
-  lazy val clusterStrategy: ClusterStrategy = ClusterStrategy
+  lazy val clusterStrategy: ClusterStrategy = new ClusterStrategy with GenericHintProps
   lazy val wordFreqStrategy: WordFreqStrategy = WordFreqStrategy
 }
 
 object ClusterAndWordFreqStrategy extends ClusterAndWordFreqStrategy
 
 trait ClusterAndWordFreqStrategyCaching extends ClusterAndWordFreqStrategy {
-  override lazy val clusterStrategy: ClusterStrategy = new ClusterStrategy with CachingWordHintsGenerator
+  override lazy val clusterStrategy: ClusterStrategy = new ClusterStrategy with CachingWordHintsGenerator with GenericHintProps
 }

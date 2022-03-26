@@ -12,14 +12,10 @@ trait ClusterStrategy extends WordScoringStrategy with HardModeWordElimStrategy 
   }
 }
 
-object ClusterStrategy extends ClusterStrategy
-
 trait ClusterStrategyCaching extends ClusterStrategy with CachingWordHintsGenerator
 
-trait ClusterGenerator extends WordHintsGenerator with GenericHintProps {
+trait ClusterGenerator extends WordHintsGenerator {
   def generateUniquePatterns(potentialAnswer: XrdleWord, wordSet: WordSet): Set[WordHints] = {
     wordSet.map { word: XrdleWord => generateWordHints(potentialAnswer, word) }
   }
 }
-
-object ClusterGenerator extends ClusterGenerator
