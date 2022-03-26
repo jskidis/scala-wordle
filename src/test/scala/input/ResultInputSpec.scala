@@ -6,30 +6,23 @@ import TestFixtures._
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
 
-import scala.collection.mutable.ListBuffer
-
 class ResultInputSpec extends AnyFunSpec with Matchers {
   val validInput: String = Seq(inPosChar, inWordChar, missChar, inPosChar, inWordChar).mkString
   val validInputColors = Seq(TInPosHint, TInWordHint, TMissHint, TInPosHint, TInWordHint)
 
-  class TestBasicResultInput(inputs: Vector[String]) extends ResultInput with TestHintProps {
+  class TestBasicResultInput(inputs: Vector[String]) extends ResultInput with TestHintProps with WriterToBuffer {
     var linesRead = 0
-    var lineWritten = new ListBuffer[String]()
 
     override def readLine(): String = {
       linesRead = linesRead +1
       inputs(linesRead -1)
     }
 
-    override def writeLine(s: String): Unit = lineWritten.addOne(s)
-    override def writeString(s: String): Unit = lineWritten.addOne(s)
-
     def errorMsg = "Input invalid"
     override def validateResult(input: String): Option[String] = {
       if (input == validInput) None
       else Some(errorMsg)
     }
-
   }
 
   describe("Gather Results") {
@@ -41,8 +34,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       result must not be empty
       result mustBe validInputColors
 
-      resultInput.lineWritten must have size 1
-      resultInput.lineWritten.head mustBe resultInput.resultPrompt
+      resultInput.linesWritten must have size 1
+      resultInput.linesWritten.head mustBe resultInput.resultPrompt
     }
 
     it("re-asks for results if not valid") {
@@ -57,8 +50,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       resultInput.linesRead mustBe 2
 
       // It should have written the prompt text twice, and written the error message once
-      resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 2
-      resultInput.lineWritten.count(_ == resultInput.errorMsg) mustBe 1
+      resultInput.linesWritten.count(_ == resultInput.resultPrompt) mustBe 2
+      resultInput.linesWritten.count(_ == resultInput.errorMsg) mustBe 1
     }
 
     it("returns None if input is blank") {
@@ -72,8 +65,8 @@ class ResultInputSpec extends AnyFunSpec with Matchers {
       resultInput.linesRead mustBe 3
 
       // It should have written the prompt text 3 times, and written the error message twice
-      resultInput.lineWritten.count(_ == resultInput.resultPrompt) mustBe 3
-      resultInput.lineWritten.count(_ == resultInput.errorMsg) mustBe 2
+      resultInput.linesWritten.count(_ == resultInput.resultPrompt) mustBe 3
+      resultInput.linesWritten.count(_ == resultInput.errorMsg) mustBe 2
     }
   }
 }

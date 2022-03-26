@@ -5,7 +5,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 
-trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory {
+trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory with ConsoleWriter {
 
   def runMultipleSimulations(startingGuessesSets: Seq[Seq[String]]): Seq[(Seq[String], Double)] = {
     startingGuessesSets.map { startingGuesses: Seq[String] =>
@@ -47,11 +47,11 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory {
     grouped.foreach {
       case (numGuesses, count) =>
         val percent = 100.0 * count / guessCounts.size
-        println(f"$numGuesses Guesses: $count%5d ($percent%5.2f%%)")
+        writeLine(f"$numGuesses Guesses: $count%5d ($percent%5.2f%%)")
     }
 
-    println(f"Avg Guesses: $avgGuesses%1.3f")
-    println(s"Time Elapsed: ${timeElapsed / 1000.0}")
+    writeLine(f"Avg Guesses: $avgGuesses%1.3f")
+    writeLine(s"Time Elapsed: ${timeElapsed / 1000.0}")
   }
 
   def groupGuessCounts(results: Seq[Int]): Vector[(Int, Int)] = {

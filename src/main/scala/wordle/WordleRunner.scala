@@ -185,30 +185,30 @@ object WordleInteractiveRandomRunner extends App
 }
 
 
-object WordleSimulationStandardRunner extends App
-  with XrdleSimulationRunner with WordleStandardRunner {
-  printResults(runSimulation())
+trait WordleSimulationStandardRunner extends XrdleSimulationRunner with WordleStandardRunner {
+  def main(args: Array[String]):Unit = printResults(runSimulation())
 }
+object WordleSimulationStandardRunner extends WordleSimulationStandardRunner
 
-object WordleSimulationAnswerOnlyRunner extends App
-  with XrdleSimulationRunner with WordleAnswerOnlyRunner {
-  printResults(runSimulation())
+trait WordleSimulationAnswerOnlyRunner extends XrdleSimulationRunner with WordleAnswerOnlyRunner {
+  def main(args: Array[String]):Unit = printResults(runSimulation())
 }
+object WordleSimulationAnswerOnlyRunner extends WordleSimulationAnswerOnlyRunner
 
-object WordleSimulationCharFreqRunner extends App
-  with XrdleSimulationRunner with WordleCharFreqRunner {
-  printResults(runSimulation())
+trait WordleSimulationCharFreqRunner extends XrdleSimulationRunner with WordleCharFreqRunner {
+  def main(args: Array[String]):Unit = printResults(runSimulation())
 }
+object WordleSimulationCharFreqRunner extends WordleSimulationCharFreqRunner
 
-object WordleSimulationWordFreqRunner extends App
-  with XrdleSimulationRunner with WordleWordFreqRunner {
-  printResults(runSimulation())
+trait WordleSimulationWordFreqRunner extends XrdleSimulationRunner with WordleWordFreqRunner {
+  def main(args: Array[String]):Unit = printResults(runSimulation())
 }
+object WordleSimulationWordFreqRunner extends WordleSimulationWordFreqRunner
 
-object WordleSimulationReverseRunner extends App
-  with XrdleSimulationRunner with WordleReverseRunner {
-  printResults(runSimulation())
+trait WordleSimulationReverseRunner extends XrdleSimulationRunner with WordleReverseRunner {
+def main(args: Array[String]):Unit = printResults(runSimulation())
 }
+object WordleSimulationReverseRunner extends WordleSimulationReverseRunner
 
 
 object WordleFirstGuessOptStandardRunner extends App

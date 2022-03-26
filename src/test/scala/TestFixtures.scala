@@ -1,5 +1,9 @@
 package com.skidis.wordle
 
+import org.scalatest.Tag
+
+import scala.collection.mutable.ListBuffer
+
 object TestFixtures {
   val inPosChar: Char = TInPosHint.inputChar
   val inWordChar: Char = TInWordHint.inputChar
@@ -37,3 +41,11 @@ object TestFixtures {
 
   case class TWord(text: String) extends XrdleWord
 }
+
+trait WriterToBuffer extends Writer {
+  var linesWritten:ListBuffer[String] = new ListBuffer[String]()
+  override def writeLine(s: String): Unit = linesWritten.addOne(s)
+  override def writeString(s: String): Unit = linesWritten.addOne(s)
+}
+
+object IntegrationTest extends Tag("IntegrationTest")

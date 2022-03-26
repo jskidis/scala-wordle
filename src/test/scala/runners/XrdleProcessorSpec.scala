@@ -10,7 +10,8 @@ import scala.collection.immutable.ListSet
 
 class XrdleProcessorSpec extends AnyFunSpec with Matchers {
 
-  class TestXrdleProcessor(wordHints: Seq[WordHints]) extends XrdleProcessor with TestHintProps with TestGuessProps {
+  class TestXrdleProcessor(wordHints: Seq[WordHints]) extends XrdleProcessor
+    with TestHintProps with TestGuessProps with NullWriter {
     var cycles = 0
     override def maxGuesses = 6
 
@@ -25,10 +26,6 @@ class XrdleProcessorSpec extends AnyFunSpec with Matchers {
       cycles += 1
       wordHints(cycles -1)
     }
-
-    // Writer
-    override def writeLine(s: String): Unit = {}
-    override def writeString(s: String): Unit = {}
   }
 
   val (word1, word2, word3, word4, word5, word6, word7, word8) = (
