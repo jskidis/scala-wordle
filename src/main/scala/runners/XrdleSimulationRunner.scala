@@ -16,7 +16,7 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
 
   def runSimulation(startingGuesses: Seq[String] = Nil): (Seq[Int], Long) = {
     def runWordle(processor: SimulationProcessor, answer: String): Int = {
-      processor.process(guessSet, answer) match {
+      processor.process(guessSet, answer, startingGuesses) match {
         case Left(_) => -1
         case Right(result) => result.size
       }
@@ -25,7 +25,7 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
     val startTimestamp = System.currentTimeMillis()
 
     val answers = answerSet.toSeq.map(_.text)
-    val processor = createSimulationProcessor(startingGuesses)
+    val processor = createSimulationProcessor()
 
     val guessCounts = for {
       result <- Await.result(Future.sequence(

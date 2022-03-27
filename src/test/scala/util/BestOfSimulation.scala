@@ -2,7 +2,7 @@ package com.skidis.wordle
 package util
 
 import runners.{SimulationProcessor, XrdleSimulationRunner}
-import wordle.{WordleAnswerOnlyRunner, WordleCharFreqRunner, WordleStandardRunner, WordleWordFreqRunner}
+import wordle.runner.{WordleAnswerOnlyRunner, WordleCharFreqRunner, WordleStandardRunner, WordleWordFreqRunner}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
@@ -43,7 +43,7 @@ object BestOfSimulation extends App {
   }
 
   def runWordle(processor: SimulationProcessor, answer: String, guessSet: WordSet): Int = {
-    processor.process(guessSet, answer) match {
+    processor.process(guessSet, answer, Nil) match {
       case Left(_) => -1
       case Right(result) => result.size
       //    println(s"Processes: $answer - ${result.size} Guesses")

@@ -11,7 +11,7 @@ trait InteractiveProcessorFactory {
 }
 
 trait SimulationProcessFactory {
-  def createSimulationProcessor(startGuesses: Seq[String] = Nil): SimulationProcessor
+  def createSimulationProcessor(): SimulationProcessor
 }
 
 trait FirstGuessOptFactory {

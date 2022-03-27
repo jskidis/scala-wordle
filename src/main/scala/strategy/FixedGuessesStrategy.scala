@@ -1,8 +1,11 @@
 package com.skidis.wordle
 package strategy
 
-trait FixedGuessesStrategy extends SolveStrategy {
+trait FixedGuessesProvider {
   def fixedGuesses: Seq[String]
+}
+
+trait FixedGuessesStrategy extends SolveStrategy with FixedGuessesProvider {
 
   abstract override def generateNextGuesses(remainingWords: WordSet, previousGuesses: Seq[(String, WordHints)], numToReturn: Int)
   : Seq[String] = {

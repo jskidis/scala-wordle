@@ -15,17 +15,22 @@ trait XrdleProcessor extends SolveStrategy with GuessRetriever with WordHintsRet
     processRecurse(wordSet)
   }
 
-  def process(wordSet: WordSet, answer: String): Either[String, Seq[(String, WordHints)]] = {
-    processRecurse(wordSet, Option(answer))
+  def process(wordSet: WordSet, answer: String, suppliedGuesses: Seq[String])
+  : Either[String, Seq[(String, WordHints)]] = {
+    processRecurse(wordSet, Option(answer), suppliedGuesses)
   }
 
   @tailrec
-  private def processRecurse(wordSet: WordSet, answer: Option[String] = None, guesses: Seq[(String, WordHints)] = Nil)
+  private def processRecurse(wordSet: WordSet, answer: Option[String] = None,
+    suppliedGuesses: Seq[String] = Nil, guesses: Seq[(String, WordHints)] = Nil)
   : Either[String, Seq[(String, WordHints)]] = {
 
     writeLine(s"${Seq.fill(40)('*').mkString}")
 
-    lazy val suggestions = generateNextGuesses(wordSet, guesses, numSuggestions)
+    lazy val suggestions =
+      if(suppliedGuesses.isEmpty) generateNextGuesses(wordSet, guesses, numSuggestions)
+      else Seq(suppliedGuesses.head)
+
     if (wordSet.size == 1) {
       writeLine("Only 1 choice left!!!")
       writeLine(s"Current Guess: ${wordSet.head.text}, Guess #:${guesses.size +1}")
@@ -47,8 +52,9 @@ trait XrdleProcessor extends SolveStrategy with GuessRetriever with WordHintsRet
       else {
         // Eliminate words from set based on current guess and word hints
         val remainingWords = reduceWordSet(wordSet, currentGuess, wordHints)
+        val remainingSuppliedGuesses = if(suppliedGuesses.isEmpty) Nil else suppliedGuesses.tail
         writeLine(s"Remaining Words: ${remainingWords.size}")
-        processRecurse(remainingWords, answer, updatedGuesses)
+        processRecurse(remainingWords, answer, remainingSuppliedGuesses, updatedGuesses)
       }
     }
   }
