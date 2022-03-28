@@ -3,7 +3,7 @@ package com.skidis.wordle.nerdle
 import com.skidis.wordle.hintgen.WordHintsGenerator
 import com.skidis.wordle.nerdle.runner._
 import com.skidis.wordle.runners.{InteractiveProcessor, XrdleInteractiveRunner, XrdleSimulationRunner}
-import com.skidis.wordle.{IntegrationTest, WordHints, WordSet, WriterToBuffer}
+import com.skidis.wordle.{IntegrationTest, WordHints, WordSet}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 
@@ -39,12 +39,12 @@ class NerdleRunnerIntegrationTests extends AnyFunSuite with Matchers
   }
 
   test("Run Nerdle Simulation Apps", IntegrationTest) {
-    val standardFixture = new NerdleSimulationStandardRunner {
+    val standardFixture = new XrdleSimulationRunner with NerdleStandardRunner {
       override lazy val answerSet: WordSet = Random.shuffle(equations8Char.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(standardFixture, "Standard")
 
-    val miniFixture = new NerdleSimulationMiniRunner with WriterToBuffer {
+    val miniFixture = new XrdleSimulationRunner with NerdleMiniRunner {
       override lazy val answerSet: WordSet = Random.shuffle(equations6Char.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(miniFixture, "Mini")
@@ -66,7 +66,7 @@ class NerdleRunnerIntegrationTests extends AnyFunSuite with Matchers
         generateWordHints(miniAnswerOfTheDay.getOrElse(""), guess)
     }
 
-    val standardFixture: XrdleInteractiveRunner = new NerdleInteractiveStandardRunner {
+    val standardFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with NerdleStandardRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new NerdleStandardInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -74,7 +74,7 @@ class NerdleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(standardFixture, "Standard")
 
-    val miniFixture: XrdleInteractiveRunner = new NerdleInteractiveMiniRunner {
+    val miniFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with NerdleMiniRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new NerdleMiniInteractiveProcessor with MiniInteractiveProcessorFixture {}
       }
@@ -82,7 +82,7 @@ class NerdleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(miniFixture, "Mini")
 
-    val randomFixture: XrdleInteractiveRunner = new NerdleInteractiveRandomRunner {
+    val randomFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with NerdleRandomGuessRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new NerdleRandomInteractiveProcessor with InteractiveProcessorFixture {}
       }

@@ -40,27 +40,27 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
   }
 
   test("Run Wordle Simulation Apps", IntegrationTest) {
-    val standardFixture = new WordleSimulationStandardRunner {
+    val standardFixture = new XrdleSimulationRunner with WordleStandardRunner {
       override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(standardFixture, "Standard")
 
-    val answerOnlyFixture = new WordleSimulationAnswerOnlyRunner {
+    val answerOnlyFixture = new XrdleSimulationRunner with WordleAnswerOnlyRunner {
       override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(answerOnlyFixture, "Answer-Only")
 
-    val charFreqFixture = new WordleSimulationCharFreqRunner {
+    val charFreqFixture = new XrdleSimulationRunner with WordleCharFreqRunner {
       override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(charFreqFixture, "Char Frequency")
 
-    val wordFreqFixture = new WordleSimulationWordFreqRunner {
+    val wordFreqFixture = new XrdleSimulationRunner with WordleWordFreqRunner {
       override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(wordFreqFixture, "Word Frequency")
 
-    val reverseFixture = new WordleSimulationReverseRunner {
+    val reverseFixture = new XrdleSimulationRunner with WordleReverseRunner {
       override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
     }
     validateAndPrintSimulations(reverseFixture, "Reverse")
@@ -75,7 +75,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
         generateWordHints(answerOfTheDay, guess)
     }
 
-    val standardFixture: XrdleInteractiveRunner = new WordleInteractiveStandardRunner {
+    val standardFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleStandardRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleStandardInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -83,7 +83,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(standardFixture, "Standard")
 
-    val answerOnlyFixture: XrdleInteractiveRunner = new WordleInteractiveAnswerOnlyRunner {
+    val answerOnlyFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleAnswerOnlyRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleAnswerOnlyInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -91,7 +91,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(answerOnlyFixture, "Answer-Only")
 
-    val charFreqFixture: XrdleInteractiveRunner = new WordleInteractiveCharFreqRunner {
+    val charFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleCharFreqRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleCharFreqInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -99,7 +99,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(charFreqFixture, "Char Frequency")
 
-    val wordFreqFixture: XrdleInteractiveRunner = new WordleInteractiveWordFreqRunner  {
+    val wordFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleWordFreqRunner  {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleWordFreqInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -107,7 +107,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(wordFreqFixture, "Word Frequency")
 
-    val reverseFixture: XrdleInteractiveRunner = new WordleInteractiveReverseRunner  {
+    val reverseFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleReverseRunner  {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleReverseInteractiveProcessor with InteractiveProcessorFixture {}
       }
@@ -115,7 +115,7 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(reverseFixture, "Reverse")
 
-    val randomFixture: XrdleInteractiveRunner = new WordleInteractiveRandomRunner  {
+    val randomFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleRandomRunner  {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleRandomInteractiveProcessor with InteractiveProcessorFixture {}
       }
