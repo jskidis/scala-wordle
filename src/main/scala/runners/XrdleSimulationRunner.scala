@@ -8,13 +8,15 @@ import scala.concurrent.{Await, Future}
 trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory with ConsoleWriter {
 
   def runMultipleSimulations(startingGuessesSets: Seq[Seq[String]]): Seq[(Seq[String], Double)] = {
+    val processor = createSimulationProcessor()
     startingGuessesSets.map { startingGuesses: Seq[String] =>
-      val (guessCounts, _) = runSimulation(startingGuesses)
+      val (guessCounts, _) = runSimulation(startingGuesses, processor)
       (startingGuesses, determineAvgGuesses(guessCounts, groupGuessCounts(guessCounts)))
     }
   }
 
-  def runSimulation(startingGuesses: Seq[String] = Nil): (Seq[Int], Long) = {
+  def runSimulation(startingGuesses: Seq[String] = Nil,
+    processor: SimulationProcessor = createSimulationProcessor()): (Seq[Int], Long) = {
     def runWordle(processor: SimulationProcessor, answer: String): Int = {
       processor.process(guessSet, answer, startingGuesses) match {
         case Left(_) => -1
@@ -25,7 +27,6 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
     val startTimestamp = System.currentTimeMillis()
 
     val answers = answerSet.toSeq.map(_.text)
-    val processor = createSimulationProcessor()
 
     val guessCounts = for {
       result <- Await.result(Future.sequence(

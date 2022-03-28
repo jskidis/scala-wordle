@@ -20,6 +20,7 @@ object BestOfSimulation extends App {
       new XrdleSimulationRunner with WordleCharFreqRunner,
       new XrdleSimulationRunner with WordleWordFreqRunner
     )
+    val runnerAndProcessor = runners.map { r => (r, r.createSimulationProcessor()) }
 
     val answers = runners.head.answerSet.toSeq.map {a: XrdleWord => a.text }
 
@@ -27,8 +28,9 @@ object BestOfSimulation extends App {
       result <- Await.result(Future.sequence(
         answers.map{ answer =>
           Future {
-            val runResults = runners.map{ runner =>
-              runWordle(runner.createSimulationProcessor(), answer, runner.guessSet)
+            val runResults = runnerAndProcessor.map{
+              case (runner: XrdleSimulationRunner, processor: SimulationProcessor) =>
+                runWordle(processor, answer, runner.guessSet)
             }
             if (runResults.forall(_ > 6)) println(answer)
             runResults.min
