@@ -1,8 +1,8 @@
 package com.skidis.wordle
 package runners
 
-trait FirstGuessOptimizer extends SolveStrategy with GuessAndAnswerSets with HintProps with ConsoleWriter {
-  def generateTopGuess(numToReturn: Int): Seq[String] = {
+trait FirstGuessOptimizer extends SolveStrategy with HintProps with ConsoleWriter {
+  def generateTopGuess(numToReturn: Int, guessSet: WordSet): Seq[String] = {
     val startTimestamp = System.currentTimeMillis()
 
     val topFirstGuesses = generateNextGuesses(guessSet, Nil, numToReturn)
@@ -16,9 +16,9 @@ trait FirstGuessOptimizer extends SolveStrategy with GuessAndAnswerSets with Hin
   }
 }
 
-trait FirstGuessRunner extends FirstGuessOptFactory {
+trait FirstGuessRunner extends FirstGuessOptFactory with GuessAndAnswerSets {
   def runOptimizer(numGuesses: Int): Unit = {
     val optimizer = createFirstGuessOptimizer()
-    optimizer.generateTopGuess(numGuesses)
+    optimizer.generateTopGuess(numGuesses, guessSet)
   }
 }

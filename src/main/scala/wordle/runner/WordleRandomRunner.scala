@@ -4,7 +4,7 @@ package wordle.runner
 import runners._
 import strategy._
 
-trait WordleRandomProcessor extends WordleProcessor with WordleStandardWordSets
+trait WordleRandomProcessor extends WordleProcessor
   with RandomGuessStrategy
 
 trait WordleRandomInteractiveProcessor extends WordleRandomProcessor with InteractiveProcessor

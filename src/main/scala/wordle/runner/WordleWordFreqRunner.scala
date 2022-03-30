@@ -5,7 +5,7 @@ import runners._
 import strategy._
 import wordle._
 
-trait WordleWordFreqProcessor extends WordleProcessor with WordleStandardWordSets
+trait WordleWordFreqProcessor extends WordleProcessor
   with WordFreqStrategy with FixedGuessesProvider {
   override def fixedGuesses: Seq[String] = Seq("SLATE")
 }

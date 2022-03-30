@@ -4,7 +4,7 @@ package nerdle.runner
 import runners._
 import strategy._
 
-trait NerdleRandomProcessor extends NerdleProcessor with NerdleStandardWordSets with RandomGuessStrategy
+trait NerdleRandomProcessor extends NerdleProcessor with RandomGuessStrategy
 trait NerdleRandomInteractiveProcessor extends NerdleRandomProcessor with InteractiveProcessor
 trait NerdleRandomSimulationProcessor extends NerdleRandomProcessor with SimulationProcessor
 

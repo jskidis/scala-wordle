@@ -5,7 +5,7 @@ import hintgen.CachingWordHintsGenerator
 import runners._
 import strategy._
 
-trait NerdleStandardProcessor extends NerdleProcessor with NerdleStandardWordSets
+trait NerdleStandardProcessor extends NerdleProcessor
   with ClusterAndCharFreqStrategy with FixedGuessesProvider {
   override def fixedGuesses: Seq[String] = Seq("54-38=16")
 }

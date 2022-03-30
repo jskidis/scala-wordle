@@ -7,7 +7,7 @@ import strategy._
 
 import scala.io.Source
 
-trait WordleReverseProcessor extends WordleProcessor with WordleStandardWordSets
+trait WordleReverseProcessor extends WordleProcessor
   with ClusterStrategy with ReverseScoringStrategy with FixedGuessesProvider {
   override def fixedGuesses: Seq[String] = Seq("JAZZY", "QUEUE")
 }

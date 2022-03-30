@@ -5,7 +5,7 @@ import hintgen.CachingWordHintsGenerator
 import runners._
 import strategy._
 
-trait WordleStandardProcessor extends WordleProcessor with WordleStandardWordSets
+trait WordleStandardProcessor extends WordleProcessor
   with ClusterAndWordFreqStrategy with FixedGuessesProvider {
   override def fixedGuesses: Seq[String] = Seq("SLATE")
 }
