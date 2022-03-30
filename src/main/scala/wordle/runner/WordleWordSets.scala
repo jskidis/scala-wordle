@@ -10,10 +10,10 @@ trait WordleAnswerSet extends WordReader {
   lazy val answerSet: WordSet = readWords(Source.fromResource("answers.txt"))
 }
 
-trait WordleStandardWordSets extends WordleAnswerSet with GuessAndAnswerSets with WordReader {
+trait WordleStandardWordSets extends WordleAnswerSet with GuessAndAnswerSets {
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-filtered.txt"))
 }
 
-trait WordleAnswerOnlyWordSets extends WordleAnswerSet with GuessAndAnswerSets with WordReader {
+trait WordleAnswerOnlyWordSets extends WordleAnswerSet with GuessAndAnswerSets {
   override lazy val guessSet: WordSet = readWordFrequencies(Source.fromResource("word-frequency-answers.txt"))
 }
