@@ -25,6 +25,10 @@ object NerdleSimulationMiniRunner extends App with XrdleSimulationRunner with Ne
   printResults(runSimulation())
 }
 
+object NerdleSimulationReverseRunner extends App with XrdleSimulationRunner with NerdleReverseRunner {
+  printResults(runSimulation())
+}
+
 /* First Guess(es) Optimizer Apps */
 object FirstGuessSuggestion { val number = 12 }
 
@@ -33,6 +37,10 @@ object NerdleFirstGuessOptStandardRunner extends App with FirstGuessRunner with 
 }
 
 object NerdleFirstGuessOptMiniRunner extends App with FirstGuessRunner with NerdleMiniRunner {
+  runOptimizer(FirstGuessSuggestion.number)
+}
+
+object NerdleFirstGuessOptReverseRunner extends App with FirstGuessRunner with NerdleReverseRunner {
   runOptimizer(FirstGuessSuggestion.number)
 }
 

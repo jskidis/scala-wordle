@@ -19,7 +19,8 @@ trait WordleReverseOptimizer extends WordleReverseProcessor with FirstGuessOptim
 trait WordleReverseRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
-  override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(100)
+  override lazy val answerSet: WordSet =  readWords(Source.fromResource("answers.txt")).take(231)
+  override lazy val guessSet: WordSet = readWords(Source.fromResource("guessable-words.txt"))
 
   override def createInteractiveProcessor(): InteractiveProcessor = new WordleReverseInteractiveProcessor {}
   override def createSimulationProcessor(): SimulationProcessor = new WordleReverseSimulationProcessor {}
