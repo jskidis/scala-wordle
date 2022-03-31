@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract, operators}
+import nerdle.NerdleOperator.{NerdleOperator, operators}
 
 import scala.annotation.tailrec
 
@@ -19,7 +19,7 @@ trait ExpressionParser {
   val notIntExprMsg = "The expression is not a valid integer expression"
   val leadingZeroMsg = "Expression can not have leading zeros"
 
-  def parseExpression(text: String): Either[String, OperatorExpr] = {
+  def parseExpression(text: String): Either[String, IntExpression] = {
     def getValueTokens(tokens: Vector[ExpressionToken]): Vector[NumberToken] = tokens.flatMap {
       case nt: NumberToken => Option(nt)
       case _ => None
@@ -82,32 +82,13 @@ trait ExpressionParser {
     else None
   }
 
-  private def createExprFromTokens(valTokens: Seq[NumberToken], opTokens: Seq[OperatorToken]): OperatorExpr = {
-    def createOneOpExpr(val1: NumberToken, op: OperatorToken, val2: NumberToken) = {
-      OperatorExpr(IntValueExpr(val1.value), op.operator, IntValueExpr(val2.value))
-    }
-    def createLeftExpr(val1: NumberToken, op1: OperatorToken, val2: NumberToken, op2: OperatorToken, val3: NumberToken) = {
-      OperatorExpr(
-        OperatorExpr(IntValueExpr(val1.value), op1.operator, IntValueExpr(val2.value)),
-        op2.operator,
-        IntValueExpr(val3.value))
-    }
-    def createRightExpr(val1: NumberToken, op1: OperatorToken, val2: NumberToken, op2: OperatorToken, val3: NumberToken) = {
-      OperatorExpr(
-        IntValueExpr(val1.value),
-        op1.operator,
-        OperatorExpr(IntValueExpr(val2.value), op2.operator, IntValueExpr(val3.value)))
-    }
-
+  private def createExprFromTokens(valTokens: Seq[NumberToken], opTokens: Seq[OperatorToken]): IntExpression = {
     if (opTokens.size == 1) {
-      createOneOpExpr(valTokens(0), opTokens(0), valTokens(1))
-    }
-    else if (opTokens(0).operator == Multiply || opTokens(0).operator == Divide ||
-      opTokens(1).operator == Add || opTokens(1).operator == Subtract) {
-      createLeftExpr(valTokens(0), opTokens(0), valTokens(1), opTokens(1), valTokens(2))
+      OneOperatorExpression(valTokens(0).value, opTokens(0).operator, valTokens(1).value)
     }
     else {
-      createRightExpr(valTokens(0), opTokens(0), valTokens(1), opTokens(1), valTokens(2))
+      TwoOperatorExpression(valTokens(0).value, opTokens(0).operator, valTokens(1).value,
+        opTokens(1).operator, valTokens(2).value)
     }
   }
 }

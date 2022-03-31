@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import nerdle.NerdleOperator.{Add, Divide, Multiply, NerdleOperator, Subtract, operators}
+import nerdle.NerdleOperator.operators
 
 trait NerdleGuessableGenerator extends NerdleGuessProps {
   def generate8CharEquations(): Set[NerdleEquation] = {
@@ -22,7 +22,7 @@ trait NerdleGuessableGenerator extends NerdleGuessProps {
         operand1 <- rangeFromNumDigits(op1Digits)
         operand2 <- rangeFromNumDigits(op2Digits)
       } yield {
-        val expr = createExpression(operand1, operator, operand2)
+        val expr = OneOperatorExpression(operand1, operator, operand2)
         generateEquation(expr, 4 - op1Digits - op2Digits)
       }
     }.flatten
@@ -38,7 +38,7 @@ trait NerdleGuessableGenerator extends NerdleGuessProps {
         operand1 <- rangeFromNumDigits(op1Digits)
         operand2 <- rangeFromNumDigits(op2Digits)
       } yield {
-        val expr = createExpression(operand1, operator, operand2)
+        val expr = OneOperatorExpression(operand1, operator, operand2)
         generateEquation(expr, 6 - op1Digits - op2Digits)
       }
     }.flatten
@@ -54,23 +54,12 @@ trait NerdleGuessableGenerator extends NerdleGuessProps {
       operand2 <- rangeFromNumDigits(op2Digits)
       operand3 <- rangeFromNumDigits(op3Digits)
     } yield {
-      val expr = createExpression(operand1, operator1, operand2, operator2, operand3)
+      val expr = TwoOperatorExpression(operand1, operator1, operand2, operator2, operand3)
       generateEquation(expr, resultDigits)
     }
   }.flatten
 
-  private def createExpression(operand1: Int, operator: NerdleOperator, operand2: Int): OperatorExpr = {
-    OperatorExpr(IntValueExpr(operand1), operator, IntValueExpr(operand2))
-  }
-
-  private def createExpression(operand1: Int, operator1: NerdleOperator, operand2: Int, operator2: Char, operand3: Int): OperatorExpr = {
-    if ((operator2 == Multiply || operator2 == Divide) && (operator1 == Add || operator1 == Subtract)) {
-      OperatorExpr(IntValueExpr(operand1), operator1, OperatorExpr(IntValueExpr(operand2), operator2, IntValueExpr(operand3)))
-    }
-    else OperatorExpr(OperatorExpr(IntValueExpr(operand1), operator1, IntValueExpr(operand2)), operator2, IntValueExpr(operand3) )
-  }
-
-  private def generateEquation(expr: OperatorExpr, resultDigits: Int): Option[NerdleEquation] = {
+  private def generateEquation(expr: IntExpression, resultDigits: Int): Option[NerdleEquation] = {
     if (!expr.isValid) None
     else if (!rangeFromNumDigits(resultDigits, allowZero = true).contains(expr.value)) None
     else Option(NerdleEquation(expr))

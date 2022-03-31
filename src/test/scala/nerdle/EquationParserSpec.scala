@@ -14,7 +14,7 @@ class EquationParserSpec extends AnyFunSpec with Matchers {
     it("return the equation if it valid") {
       val eq = EquationParser.parseEquation("2+4=6")
       eq.isRight mustBe true
-      eq.map { _ mustBe NerdleEquation(OperatorExpr(IntValueExpr(2), Add, IntValueExpr(4))) }
+      eq.map { _ mustBe NerdleEquation(OneOperatorExpression(2, Add, 4)) }
     }
 
     it("returns an error if there is no equals sign or are multiple equals") {

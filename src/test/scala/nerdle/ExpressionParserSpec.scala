@@ -1,7 +1,7 @@
 package com.skidis.wordle
 package nerdle
 
-import nerdle.NerdleOperator.{Add, Multiply, Subtract}
+import nerdle.NerdleOperator.{Add, Subtract}
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.must.Matchers
@@ -11,30 +11,17 @@ class ExpressionParserSpec extends AnyFunSpec with Matchers {
     it("handles a single operator expressions") {
       val addExpression = ExpressionParser.parseExpression("2+3")
       addExpression.isRight mustBe true
-      addExpression.map { x => x mustBe OperatorExpr(IntValueExpr(2), Add, IntValueExpr(3)) }
+      addExpression.map { x => x mustBe OneOperatorExpression(2, Add, 3) }
 
       val subExpression = ExpressionParser.parseExpression("34-12")
       subExpression.isRight mustBe true
-      subExpression.map { x => x mustBe OperatorExpr(IntValueExpr(34), Subtract, IntValueExpr(12)) }
+      subExpression.map { x => x mustBe OneOperatorExpression(34, Subtract, 12) }
     }
 
     it("handles a two operator expressions") {
       val addSubExpression = ExpressionParser.parseExpression("2+34-5")
       addSubExpression.isRight mustBe true
-      addSubExpression.map { x => x mustBe OperatorExpr(
-        OperatorExpr(IntValueExpr(2), Add, IntValueExpr(34)),
-        Subtract,
-        IntValueExpr(5))
-      }
-    }
-
-    it("handles operator precedence") {
-      val subMultExpression = ExpressionParser.parseExpression("9-2*3")
-      subMultExpression.isRight mustBe true
-      subMultExpression.map { x => x mustBe OperatorExpr(
-        IntValueExpr(9),
-        Subtract,
-        OperatorExpr(IntValueExpr(2), Multiply, IntValueExpr(3)))
+      addSubExpression.map { x => x mustBe TwoOperatorExpression(2, Add, 34, Subtract, 5)
       }
     }
 
