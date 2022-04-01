@@ -44,6 +44,7 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
   def printResults(guessCounts: Seq[Int], timeElapsed: Long): Unit = {
     val grouped = groupGuessCounts(guessCounts)
     val avgGuesses = determineAvgGuesses(guessCounts, grouped)
+    val avgGuessesPlus = determineAvgGuessesPlus(guessCounts, grouped)
 
     grouped.foreach {
       case (numGuesses, count) =>
@@ -52,6 +53,7 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
     }
 
     writeLine(f"Avg Guesses: $avgGuesses%1.3f")
+    writeLine(f"Avg Guesses+: $avgGuessesPlus%1.3f")
     writeLine(s"Time Elapsed: ${timeElapsed / 1000.0}")
   }
 
@@ -63,6 +65,13 @@ trait XrdleSimulationRunner extends XrdleRunner with SimulationProcessFactory wi
 
   def determineAvgGuesses(results: Seq[Int], grouped: Vector[(Int, Int)]): Double = {
     val successful = grouped.filter(t => t._1 > 0 && t._1 <= 6)
+    successful.map {
+      case (numGuesses, count) => numGuesses * count
+    }.sum * 1.0 / results.count(i => i > 0 && i <= 6)
+  }
+
+  def determineAvgGuessesPlus(results: Seq[Int], grouped: Vector[(Int, Int)]): Double = {
+    val successful = grouped.filter(t => t._1 > 0)
     successful.map {
       case (numGuesses, count) => numGuesses * count
     }.sum * 1.0 / results.count(i => i > 0 && i <= 6)
