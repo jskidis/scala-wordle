@@ -9,6 +9,9 @@ trait NerdleRunner extends XrdleRunner {
   override def hardMode: Boolean = false
 }
 
-trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps with NerdleInputValidator
-trait NerdleProcessorMiniProps extends NerdleHintProps with MiniNerdleGuessProps with NerdleInputValidator
+trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
+  with NerdleInputValidator //with NerdleWordHintsGenerator
+
+trait NerdleProcessorMiniProps extends NerdleHintProps with MiniNerdleGuessProps
+  with NerdleInputValidator //with NerdleWordHintsGenerator
 
