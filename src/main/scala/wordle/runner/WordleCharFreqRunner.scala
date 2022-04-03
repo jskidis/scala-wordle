@@ -24,6 +24,7 @@ trait WordleCharFreqOptimizer extends WordleCharFreqProcessor with FirstGuessOpt
 trait WordleCharFreqRunner extends WordleRunner with WordleStandardWordSets
   with InteractiveProcessorFactory with SimulationProcessFactory with FirstGuessOptFactory {
 
+  override def hardMode: Boolean = false
   override def createInteractiveProcessor(): InteractiveProcessor = new WordleCharFreqInteractiveProcessor {}
   override def createSimulationProcessor(): SimulationProcessor = new WordleCharFreqSimulationProcessor {}
   override def createFirstGuessOptimizer(): FirstGuessOptimizer = new WordleCharFreqOptimizer {}
