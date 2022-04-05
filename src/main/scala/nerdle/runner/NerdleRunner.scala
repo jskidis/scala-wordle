@@ -10,8 +10,8 @@ trait NerdleRunner extends XrdleRunner {
 }
 
 trait NerdleProcessor extends NerdleHintProps with NerdleGuessProps
-  with NerdleInputValidator //with NerdleWordHintsGenerator
+  with NerdleInputValidator with NerdleWordHintsGenerator
 
 trait NerdleProcessorMiniProps extends NerdleHintProps with MiniNerdleGuessProps
-  with NerdleInputValidator //with NerdleWordHintsGenerator
+  with NerdleInputValidator with NerdleWordHintsGenerator
 

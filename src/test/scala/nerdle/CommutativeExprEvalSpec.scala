@@ -57,9 +57,14 @@ class CommutativeExprEvalSpec extends AnyFunSpec with Matchers {
           TwoOperatorExpression(3, Multiply, 4, Multiply, 2).toString
         )
 
-      // Subtraction and Division don't generate any equiv expressions (this is how Nerdle handles it anyway)
-      CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(10, Subtract, 7, Subtract, 2)) mustBe Nil
-      CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(12, Divide, 4, Divide, 3)) mustBe Nil
+      // Subtraction and Division will generate one equiv expression
+      CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(10, Subtract, 7, Subtract, 2))
+        .map(_.toString) must contain theSameElementsAs
+        Seq(TwoOperatorExpression(10, Subtract, 2, Subtract, 7).toString)
+
+      CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(12, Divide, 4, Divide, 3))
+        .map(_.toString) must contain theSameElementsAs
+        Seq(TwoOperatorExpression(12, Divide, 3, Divide, 4).toString)
     }
 
     it("two operator with mix of Addition and Multiplication") {
@@ -86,11 +91,14 @@ class CommutativeExprEvalSpec extends AnyFunSpec with Matchers {
     it("two operator with mix of Addition and either Subtraction or Division") {
       CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(2, Add, 9, Subtract, 1))
         .map(_.toString) must contain theSameElementsAs
-        Seq(TwoOperatorExpression(9, Add, 2, Subtract, 1).toString)
+        Seq(TwoOperatorExpression(9, Add, 2, Subtract, 1).toString,
+          TwoOperatorExpression(9, Subtract, 1, Add, 2).toString,
+          TwoOperatorExpression(2, Subtract, 1, Add, 9).toString)
 
       CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(9, Subtract, 1, Add, 2))
         .map(_.toString) must contain theSameElementsAs
-        Seq(TwoOperatorExpression(2, Add, 9, Subtract, 1).toString)
+        Seq(TwoOperatorExpression(2, Add, 9, Subtract, 1).toString,
+          TwoOperatorExpression(9, Add, 2, Subtract, 1).toString)
 
       CommutativeExprEval.getEquivalentEqs(TwoOperatorExpression(10, Divide, 2, Add, 7))
         .map(_.toString) must contain theSameElementsAs

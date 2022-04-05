@@ -36,12 +36,21 @@ trait CommutativeExprEval {
       else Option(OperatorExpr(right, operator, OperatorExpr(left.expr2, left.operator, left.expr1)))
     }
     def swapInsideRightToOut(): Option[IntExpression] = {
-      if (left.operator != operator || operator == Subtract || operator == Divide) None
-      else Option(OperatorExpr(OperatorExpr(left.expr1, operator, right), left.operator, left.expr2))
+      if (
+        (left.operator == operator && (operator == Add || operator == Multiply)) ||
+          ((left.operator == Add || left.operator == Subtract) && (operator == Add || operator == Subtract)) ||
+          (left.operator == Divide && operator == Divide)
+      )
+        Option(OperatorExpr(OperatorExpr(left.expr1, operator, right), left.operator, left.expr2))
+      else None
     }
     def swapInsideLeftToOut(): Option[IntExpression] = {
-      if (left.operator != operator || operator == Subtract || operator == Divide) None
-      else Option(OperatorExpr(OperatorExpr(left.expr2, operator, right), left.operator, left.expr1))
+      if (
+        (left.operator == operator && (operator == Add || operator == Multiply)) ||
+          (left.operator == Add && operator == Subtract)
+      )
+        Option(OperatorExpr(OperatorExpr(left.expr2, operator, right), left.operator, left.expr1))
+      else None
     }
     Seq(swapInside(), swapOutside(), swapInsideAndOut(),
       swapInsideRightToOut(), swapInsideLeftToOut()).flatten
