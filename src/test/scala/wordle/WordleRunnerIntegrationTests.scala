@@ -14,7 +14,11 @@ import scala.util.Random
 class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
   with WordHintsGenerator with WordleHintProps {
 
-  val answers: Set[SimpleWordleWord] = WordReader.readWords(Source.fromResource("answers.txt"))
+  val answers: WordSet = WordReader.readWords(Source.fromResource("answers.txt"))
+  val simulationAnswers: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
+  //  val simulationAnswers = WordReader.readWords(Source.fromResource("recent-answers.txt"))
+  val answerOfTheDay = "CHEEK" //Random.shuffle(answers).headOption.map(_.text).getOrElse("")
+
 
   def didAnySimulationsReturnErrors(results: (Seq[Int], Long)): Boolean = {
     val guesses = results._1
@@ -40,48 +44,56 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
   }
 
   test("Run Wordle Simulation Apps", IntegrationTest) {
-    val standardFixture = new XrdleSimulationRunner with WordleStandardRunner {
-      override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
-    }
-    validateAndPrintSimulations(standardFixture, "Standard")
-
     val answerOnlyFixture = new XrdleSimulationRunner with WordleAnswerOnlyRunner {
-      override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
+      override lazy val answerSet: WordSet = simulationAnswers
     }
     validateAndPrintSimulations(answerOnlyFixture, "Answer-Only")
 
-    val charFreqFixture = new XrdleSimulationRunner with WordleCharFreqRunner {
-      override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
+    val standardFixture = new XrdleSimulationRunner with WordleStandardRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
     }
-    validateAndPrintSimulations(charFreqFixture, "Char Frequency")
+    validateAndPrintSimulations(standardFixture, "All three (Standard)")
+
+    val charAndWordFreqFixture = new XrdleSimulationRunner with WordleCharFreqRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
+    }
+    validateAndPrintSimulations(charAndWordFreqFixture, "Char And Word Freq")
 
     val wordFreqFixture = new XrdleSimulationRunner with WordleWordFreqRunner {
-      override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
+      override lazy val answerSet: WordSet = simulationAnswers
     }
-    validateAndPrintSimulations(wordFreqFixture, "Word Frequency")
+    validateAndPrintSimulations(wordFreqFixture, "Word Freq Only")
 
-    val reverseFixture = new XrdleSimulationRunner with WordleReverseRunner {
-      override lazy val answerSet: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
+    val clusterAndBothFreqFixture = new XrdleSimulationRunner with WordleClusterAndBothFreqRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
     }
-    validateAndPrintSimulations(reverseFixture, "Reverse")
+    validateAndPrintSimulations(clusterAndBothFreqFixture, "Cluster And Both Freq")
+
+    val clusterOnlyFixture = new XrdleSimulationRunner with WordleClusterOnlyRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
+    }
+    validateAndPrintSimulations(clusterOnlyFixture, "Cluster Only")
+
+    val clusterCharFixture = new XrdleSimulationRunner with WordleClusterAndCharFreqRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
+    }
+    validateAndPrintSimulations(clusterCharFixture, "Cluster And Char Freq")
+
+    val charOnlyFreqFixture = new XrdleSimulationRunner with WordleCharFreqOnlyRunner {
+      override lazy val answerSet: WordSet = simulationAnswers
+    }
+    validateAndPrintSimulations(charOnlyFreqFixture, "Char Freq Only")
   }
 
+  // I use the test to "interactively" run all of the different runner with known word of the day
+  // just to see how they all do on a given day
   test("Run Wordle Interactive Runners", IntegrationTest) {
-    val answerOfTheDay = Random.shuffle(answers).headOption.map(_.text).getOrElse("")
 
     trait InteractiveProcessorFixture extends InteractiveProcessor {
       override def retrieveGuess(suggestions: Seq[String]): String = suggestions.headOption.getOrElse("")
       override def retrieveWordHints(guess: String, answer: Option[String]): WordHints =
         generateWordHints(answerOfTheDay, guess)
     }
-
-    val standardFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleStandardRunner {
-      override def createInteractiveProcessor(): InteractiveProcessor = {
-        new WordleStandardInteractiveProcessor with InteractiveProcessorFixture {}
-      }
-      override def inputPuzzleNumber(): String = ""
-    }
-    validateAndPrintInteractive(standardFixture, "Standard")
 
     val answerOnlyFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleAnswerOnlyRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
@@ -91,13 +103,21 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
     }
     validateAndPrintInteractive(answerOnlyFixture, "Answer-Only")
 
-    val charFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleCharFreqRunner {
+    val standardFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleStandardRunner {
+      override def createInteractiveProcessor(): InteractiveProcessor = {
+        new WordleStandardInteractiveProcessor with InteractiveProcessorFixture {}
+      }
+      override def inputPuzzleNumber(): String = ""
+    }
+    validateAndPrintInteractive(standardFixture, "Cluster And Word Freq (Standard)")
+
+    val charAndWordFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleCharFreqRunner {
       override def createInteractiveProcessor(): InteractiveProcessor = {
         new WordleCharFreqInteractiveProcessor with InteractiveProcessorFixture {}
       }
       override def inputPuzzleNumber(): String = ""
     }
-    validateAndPrintInteractive(charFreqFixture, "Char Frequency")
+    validateAndPrintInteractive(charAndWordFreqFixture, "Char And Word Freq")
 
     val wordFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleWordFreqRunner  {
       override def createInteractiveProcessor(): InteractiveProcessor = {
@@ -105,7 +125,39 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
       }
       override def inputPuzzleNumber(): String = ""
     }
-    validateAndPrintInteractive(wordFreqFixture, "Word Frequency")
+    validateAndPrintInteractive(wordFreqFixture, "Word Freq Only")
+
+    val clusterAndBothFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleClusterAndBothFreqRunner {
+      override def createInteractiveProcessor(): InteractiveProcessor = {
+        new WordleClusterAndBothFreqProcessor with InteractiveProcessorFixture {}
+      }
+      override def inputPuzzleNumber(): String = ""
+    }
+    validateAndPrintInteractive(clusterAndBothFreqFixture, "Cluster And Both Freq")
+
+    val clusterAndCharFreqFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleClusterAndCharFreqRunner {
+      override def createInteractiveProcessor(): InteractiveProcessor = {
+        new WordleClusterAndCharFreqProcessor with InteractiveProcessorFixture {}
+      }
+      override def inputPuzzleNumber(): String = ""
+    }
+    validateAndPrintInteractive(clusterAndCharFreqFixture, "Cluster and Char Freq")
+
+    val charFreqOnlyFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleCharFreqOnlyRunner {
+      override def createInteractiveProcessor(): InteractiveProcessor = {
+        new WordleCharFreqOnlyProcessor with InteractiveProcessorFixture {}
+      }
+      override def inputPuzzleNumber(): String = ""
+    }
+    validateAndPrintInteractive(charFreqOnlyFixture, "Char Freq Only")
+
+    val clusterOnlyFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleClusterOnlyRunner {
+      override def createInteractiveProcessor(): InteractiveProcessor = {
+        new WordleClusterOnlyProcessor with InteractiveProcessorFixture {}
+      }
+      override def inputPuzzleNumber(): String = ""
+    }
+    validateAndPrintInteractive(clusterOnlyFixture, "Cluster Only")
 
     val reverseFixture: XrdleInteractiveRunner = new XrdleInteractiveRunner with WordleReverseRunner  {
       override def createInteractiveProcessor(): InteractiveProcessor = {
