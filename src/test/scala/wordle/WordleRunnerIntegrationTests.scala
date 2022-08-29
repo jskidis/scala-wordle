@@ -15,9 +15,15 @@ class WordleRunnerIntegrationTests extends AnyFunSuite with Matchers
   with WordHintsGenerator with WordleHintProps {
 
   val answers: WordSet = WordReader.readWords(Source.fromResource("answers.txt"))
-  val simulationAnswers: WordSet = Random.shuffle(answers.toSeq).take(3).toSet
-  //  val simulationAnswers = WordReader.readWords(Source.fromResource("recent-answers.txt"))
-  val answerOfTheDay = "CHEEK" //Random.shuffle(answers).headOption.map(_.text).getOrElse("")
+  val simulationAnswers: WordSet = WordReader.readWords(Source.fromResource("simulation-answers.txt")) match {
+    case sa: Set[_] if sa.nonEmpty => sa
+    case _ => Random.shuffle(answers.toSeq).take(3).toSet
+  }
+
+  val answerOfTheDay: String = WordReader.readWords(Source.fromResource("answer-ofthe-day.txt")).toSeq match {
+    case x +: _ if x.text.nonEmpty => x.text
+    case _ => Random.shuffle(answers.toSeq).headOption.map(_.text).getOrElse("")
+  }
 
 
   def didAnySimulationsReturnErrors(results: (Seq[Int], Long)): Boolean = {
